@@ -11,14 +11,13 @@ import { Chess } from 'chess.js';
 })
 export class PuzzleComponent implements OnInit, AfterViewInit {
   @ViewChild(BoardComponent) boardChild!: BoardComponent;
-  cg!: any;
+  cg!: Api;
   chess!: Chess;
 
   constructor(private service: ChessgroundService) {}
 
   ngOnInit(): void {
     this.chess = new Chess();
-    console.log(this.chess);
   }
 
   ngAfterViewInit(): void {
@@ -26,5 +25,6 @@ export class PuzzleComponent implements OnInit, AfterViewInit {
       this.boardChild.el.nativeElement,
       this.chess
     );
+    console.log(this.chess)
   }
 }

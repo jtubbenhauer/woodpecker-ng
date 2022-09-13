@@ -19,6 +19,8 @@ export class ChessgroundService {
   }
 
   initChessground(el: HTMLElement, chess: Chess):any {
-    this.getRandomPuzzle().subscribe({next: (puzzle) => console.log({...puzzle})})
+    this.getRandomPuzzle().subscribe({next: (puzzle) => {
+      return Chessground(el, {fen:chess.fen()})
+      }})
   }
 }
