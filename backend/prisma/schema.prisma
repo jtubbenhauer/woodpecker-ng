@@ -55,12 +55,12 @@ model VerificationToken {
 
 model puzzles {
   id               String  @id @default(uuid())
-  fen              String? @db.VarChar(72)
-  moves            String? @db.VarChar(101)
-  rating           Int?
-  ratingDeviation  Int?
-  popularity       Int?
-  nbPlays          Int?
+  fen              String @db.VarChar(72)
+  moves            String @db.VarChar(101)
+  rating           Int
+  ratingDeviation  Int
+  popularity       Int
+  nbPlays          Int
   themes           String? @db.VarChar(100)
   gameUrl          String? @db.VarChar(38)
   openingFamily    String? @db.VarChar(31)

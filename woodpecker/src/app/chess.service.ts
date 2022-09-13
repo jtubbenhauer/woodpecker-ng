@@ -9,8 +9,10 @@ import {Api} from "chessground/api";
 @Injectable({
   providedIn: 'root',
 })
-export class ChessgroundService {
+export class ChessService {
   puzzle!: puzzles;
+  cg!:Api
+  chess!:Chess;
 
   constructor(private http: HttpClient) {}
 
@@ -18,9 +20,10 @@ export class ChessgroundService {
     return this.http.get<puzzles>('http://localhost:3000/puzzle/random');
   }
 
-  initChessground(el: HTMLElement, chess: Chess):any {
-    this.getRandomPuzzle().subscribe({next: (puzzle) => {
-      return Chessground(el, {fen:chess.fen()})
+  initChessground(el: HTMLElement):any {
+    this.getRandomPuzzle().subscribe({next: (puzzle ) => {
+        this.chess = new Chess(puzzle.fen)
+        this.cg = Chessground(el, {fen: this.chess.fen()})
       }})
   }
 }

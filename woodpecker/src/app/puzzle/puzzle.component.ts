@@ -1,8 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { Api } from 'chessground/api';
-import { ChessgroundService } from '../chessground.service';
+import { ChessService } from '../chess.service';
 import { BoardComponent } from './board/board.component';
-import { Chess } from 'chess.js';
 
 @Component({
   selector: 'app-puzzle',
@@ -10,21 +8,23 @@ import { Chess } from 'chess.js';
   styleUrls: ['./puzzle.component.css'],
 })
 export class PuzzleComponent implements OnInit, AfterViewInit {
-  @ViewChild(BoardComponent) boardChild!: BoardComponent;
-  cg!: Api;
-  chess!: Chess;
 
-  constructor(private service: ChessgroundService) {}
+  @ViewChild(BoardComponent) boardChild!: BoardComponent;
+
+  constructor(private service: ChessService) {}
 
   ngOnInit(): void {
-    this.chess = new Chess();
   }
 
   ngAfterViewInit(): void {
-    this.cg = this.service.initChessground(
+    this.service.initChessground(
       this.boardChild.el.nativeElement,
-      this.chess
     );
-    console.log(this.chess)
+  }
+
+  handleRandomPuzzle() {
+    this.service.initChessground(
+      this.boardChild.el.nativeElement,
+    );
   }
 }

@@ -70,12 +70,12 @@ export type VerificationToken = {
  */
 export type puzzles = {
   id: string
-  fen: string | null
-  moves: string | null
-  rating: number | null
-  ratingDeviation: number | null
-  popularity: number | null
-  nbPlays: number | null
+  fen: string
+  moves: string
+  rating: number
+  ratingDeviation: number
+  popularity: number
+  nbPlays: number
   themes: string | null
   gameUrl: string | null
   openingFamily: string | null
@@ -4912,12 +4912,12 @@ export namespace Prisma {
 
   export type PuzzlesGroupByOutputType = {
     id: string
-    fen: string | null
-    moves: string | null
-    rating: number | null
-    ratingDeviation: number | null
-    popularity: number | null
-    nbPlays: number | null
+    fen: string
+    moves: string
+    rating: number
+    ratingDeviation: number
+    popularity: number
+    nbPlays: number
     themes: string | null
     gameUrl: string | null
     openingFamily: string | null
@@ -5970,12 +5970,12 @@ export namespace Prisma {
     OR?: Enumerable<puzzlesWhereInput>
     NOT?: Enumerable<puzzlesWhereInput>
     id?: StringFilter | string
-    fen?: StringNullableFilter | string | null
-    moves?: StringNullableFilter | string | null
-    rating?: IntNullableFilter | number | null
-    ratingDeviation?: IntNullableFilter | number | null
-    popularity?: IntNullableFilter | number | null
-    nbPlays?: IntNullableFilter | number | null
+    fen?: StringFilter | string
+    moves?: StringFilter | string
+    rating?: IntFilter | number
+    ratingDeviation?: IntFilter | number
+    popularity?: IntFilter | number
+    nbPlays?: IntFilter | number
     themes?: StringNullableFilter | string | null
     gameUrl?: StringNullableFilter | string | null
     openingFamily?: StringNullableFilter | string | null
@@ -6024,12 +6024,12 @@ export namespace Prisma {
     OR?: Enumerable<puzzlesScalarWhereWithAggregatesInput>
     NOT?: Enumerable<puzzlesScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
-    fen?: StringNullableWithAggregatesFilter | string | null
-    moves?: StringNullableWithAggregatesFilter | string | null
-    rating?: IntNullableWithAggregatesFilter | number | null
-    ratingDeviation?: IntNullableWithAggregatesFilter | number | null
-    popularity?: IntNullableWithAggregatesFilter | number | null
-    nbPlays?: IntNullableWithAggregatesFilter | number | null
+    fen?: StringWithAggregatesFilter | string
+    moves?: StringWithAggregatesFilter | string
+    rating?: IntWithAggregatesFilter | number
+    ratingDeviation?: IntWithAggregatesFilter | number
+    popularity?: IntWithAggregatesFilter | number
+    nbPlays?: IntWithAggregatesFilter | number
     themes?: StringNullableWithAggregatesFilter | string | null
     gameUrl?: StringNullableWithAggregatesFilter | string | null
     openingFamily?: StringNullableWithAggregatesFilter | string | null
@@ -6296,12 +6296,12 @@ export namespace Prisma {
 
   export type puzzlesCreateInput = {
     id?: string
-    fen?: string | null
-    moves?: string | null
-    rating?: number | null
-    ratingDeviation?: number | null
-    popularity?: number | null
-    nbPlays?: number | null
+    fen: string
+    moves: string
+    rating: number
+    ratingDeviation: number
+    popularity: number
+    nbPlays: number
     themes?: string | null
     gameUrl?: string | null
     openingFamily?: string | null
@@ -6310,12 +6310,12 @@ export namespace Prisma {
 
   export type puzzlesUncheckedCreateInput = {
     id?: string
-    fen?: string | null
-    moves?: string | null
-    rating?: number | null
-    ratingDeviation?: number | null
-    popularity?: number | null
-    nbPlays?: number | null
+    fen: string
+    moves: string
+    rating: number
+    ratingDeviation: number
+    popularity: number
+    nbPlays: number
     themes?: string | null
     gameUrl?: string | null
     openingFamily?: string | null
@@ -6324,12 +6324,12 @@ export namespace Prisma {
 
   export type puzzlesUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    fen?: NullableStringFieldUpdateOperationsInput | string | null
-    moves?: NullableStringFieldUpdateOperationsInput | string | null
-    rating?: NullableIntFieldUpdateOperationsInput | number | null
-    ratingDeviation?: NullableIntFieldUpdateOperationsInput | number | null
-    popularity?: NullableIntFieldUpdateOperationsInput | number | null
-    nbPlays?: NullableIntFieldUpdateOperationsInput | number | null
+    fen?: StringFieldUpdateOperationsInput | string
+    moves?: StringFieldUpdateOperationsInput | string
+    rating?: IntFieldUpdateOperationsInput | number
+    ratingDeviation?: IntFieldUpdateOperationsInput | number
+    popularity?: IntFieldUpdateOperationsInput | number
+    nbPlays?: IntFieldUpdateOperationsInput | number
     themes?: NullableStringFieldUpdateOperationsInput | string | null
     gameUrl?: NullableStringFieldUpdateOperationsInput | string | null
     openingFamily?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6338,12 +6338,12 @@ export namespace Prisma {
 
   export type puzzlesUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    fen?: NullableStringFieldUpdateOperationsInput | string | null
-    moves?: NullableStringFieldUpdateOperationsInput | string | null
-    rating?: NullableIntFieldUpdateOperationsInput | number | null
-    ratingDeviation?: NullableIntFieldUpdateOperationsInput | number | null
-    popularity?: NullableIntFieldUpdateOperationsInput | number | null
-    nbPlays?: NullableIntFieldUpdateOperationsInput | number | null
+    fen?: StringFieldUpdateOperationsInput | string
+    moves?: StringFieldUpdateOperationsInput | string
+    rating?: IntFieldUpdateOperationsInput | number
+    ratingDeviation?: IntFieldUpdateOperationsInput | number
+    popularity?: IntFieldUpdateOperationsInput | number
+    nbPlays?: IntFieldUpdateOperationsInput | number
     themes?: NullableStringFieldUpdateOperationsInput | string | null
     gameUrl?: NullableStringFieldUpdateOperationsInput | string | null
     openingFamily?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6352,12 +6352,12 @@ export namespace Prisma {
 
   export type puzzlesCreateManyInput = {
     id?: string
-    fen?: string | null
-    moves?: string | null
-    rating?: number | null
-    ratingDeviation?: number | null
-    popularity?: number | null
-    nbPlays?: number | null
+    fen: string
+    moves: string
+    rating: number
+    ratingDeviation: number
+    popularity: number
+    nbPlays: number
     themes?: string | null
     gameUrl?: string | null
     openingFamily?: string | null
@@ -6366,12 +6366,12 @@ export namespace Prisma {
 
   export type puzzlesUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    fen?: NullableStringFieldUpdateOperationsInput | string | null
-    moves?: NullableStringFieldUpdateOperationsInput | string | null
-    rating?: NullableIntFieldUpdateOperationsInput | number | null
-    ratingDeviation?: NullableIntFieldUpdateOperationsInput | number | null
-    popularity?: NullableIntFieldUpdateOperationsInput | number | null
-    nbPlays?: NullableIntFieldUpdateOperationsInput | number | null
+    fen?: StringFieldUpdateOperationsInput | string
+    moves?: StringFieldUpdateOperationsInput | string
+    rating?: IntFieldUpdateOperationsInput | number
+    ratingDeviation?: IntFieldUpdateOperationsInput | number
+    popularity?: IntFieldUpdateOperationsInput | number
+    nbPlays?: IntFieldUpdateOperationsInput | number
     themes?: NullableStringFieldUpdateOperationsInput | string | null
     gameUrl?: NullableStringFieldUpdateOperationsInput | string | null
     openingFamily?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6380,12 +6380,12 @@ export namespace Prisma {
 
   export type puzzlesUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    fen?: NullableStringFieldUpdateOperationsInput | string | null
-    moves?: NullableStringFieldUpdateOperationsInput | string | null
-    rating?: NullableIntFieldUpdateOperationsInput | number | null
-    ratingDeviation?: NullableIntFieldUpdateOperationsInput | number | null
-    popularity?: NullableIntFieldUpdateOperationsInput | number | null
-    nbPlays?: NullableIntFieldUpdateOperationsInput | number | null
+    fen?: StringFieldUpdateOperationsInput | string
+    moves?: StringFieldUpdateOperationsInput | string
+    rating?: IntFieldUpdateOperationsInput | number
+    ratingDeviation?: IntFieldUpdateOperationsInput | number
+    popularity?: IntFieldUpdateOperationsInput | number
+    nbPlays?: IntFieldUpdateOperationsInput | number
     themes?: NullableStringFieldUpdateOperationsInput | string | null
     gameUrl?: NullableStringFieldUpdateOperationsInput | string | null
     openingFamily?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6682,6 +6682,17 @@ export namespace Prisma {
     expires?: SortOrder
   }
 
+  export type IntFilter = {
+    equals?: number
+    in?: Enumerable<number>
+    notIn?: Enumerable<number>
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntFilter | number
+  }
+
   export type puzzlesCountOrderByAggregateInput = {
     id?: SortOrder
     fen?: SortOrder
@@ -6736,6 +6747,22 @@ export namespace Prisma {
     ratingDeviation?: SortOrder
     popularity?: SortOrder
     nbPlays?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter = {
+    equals?: number
+    in?: Enumerable<number>
+    notIn?: Enumerable<number>
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntWithAggregatesFilter | number
+    _count?: NestedIntFilter
+    _avg?: NestedFloatFilter
+    _sum?: NestedIntFilter
+    _min?: NestedIntFilter
+    _max?: NestedIntFilter
   }
 
   export type UserCreateNestedOneWithoutAccountsInput = {
@@ -6872,6 +6899,14 @@ export namespace Prisma {
     update?: Enumerable<SessionUpdateWithWhereUniqueWithoutUserInput>
     updateMany?: Enumerable<SessionUpdateManyWithWhereWithoutUserInput>
     deleteMany?: Enumerable<SessionScalarWhereInput>
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type NestedStringFilter = {
@@ -7033,6 +7068,33 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter
     _min?: NestedDateTimeNullableFilter
     _max?: NestedDateTimeNullableFilter
+  }
+
+  export type NestedIntWithAggregatesFilter = {
+    equals?: number
+    in?: Enumerable<number>
+    notIn?: Enumerable<number>
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntWithAggregatesFilter | number
+    _count?: NestedIntFilter
+    _avg?: NestedFloatFilter
+    _sum?: NestedIntFilter
+    _min?: NestedIntFilter
+    _max?: NestedIntFilter
+  }
+
+  export type NestedFloatFilter = {
+    equals?: number
+    in?: Enumerable<number>
+    notIn?: Enumerable<number>
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedFloatFilter | number
   }
 
   export type UserCreateWithoutAccountsInput = {
