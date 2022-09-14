@@ -8,23 +8,17 @@ import { BoardComponent } from './board/board.component';
   styleUrls: ['./puzzle.component.css'],
 })
 export class PuzzleComponent implements OnInit, AfterViewInit {
-
   @ViewChild(BoardComponent) boardChild!: BoardComponent;
 
   constructor(private service: ChessService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    this.service.initChessground(
-      this.boardChild.el.nativeElement,
-    );
+    this.service.initChessground(this.boardChild.el.nativeElement);
   }
 
   handleRandomPuzzle() {
-    this.service.initChessground(
-      this.boardChild.el.nativeElement,
-    );
+    this.service.initChessground(this.boardChild.el.nativeElement);
   }
 }
