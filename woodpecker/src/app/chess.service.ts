@@ -3,7 +3,7 @@ import { Chessground } from 'chessground';
 import { Chess, SQUARES } from 'chess.js';
 import { HttpClient } from '@angular/common/http';
 import { puzzles } from 'prismaclient';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Api } from 'chessground/api';
 import { Color, Key } from 'chessground/types';
 
@@ -15,7 +15,8 @@ export class ChessService {
   cg!: Api;
   chess!: Chess;
   moves!: Key[];
-  lastMove = 0;
+  currentMove!: number;
+  feedbackMessage = new BehaviorSubject<string>('Make a move');
 
   constructor(private http: HttpClient) {}
 
@@ -24,40 +25,129 @@ export class ChessService {
   }
 
   initChessground(el: HTMLElement): any {
+    this.currentMove = 0;
     this.getRandomPuzzle().subscribe({
       next: (puzzle) => {
         this.puzzle = puzzle;
+        console.log(this.puzzle.moves);
         this.chess = new Chess(puzzle.fen);
         this.cg = Chessground(el, {
           fen: this.chess.fen(),
           movable: {
             free: false,
-            color: this.toColour(this.chess),
+            color: this.toColour(),
             showDests: false,
-            events: { after: (orig, dest) => this.handleMove(orig, dest) },
+            events: { after: (orig, dest) => this.onMove(orig, dest) },
             dests: this.getLegalMoves(),
           },
-          turnColor: this.toColour(this.chess),
-          orientation: this.getOrientation(this.chess),
+          turnColor: this.toColour(),
+          orientation: this.getOrientation(),
         });
-        this.makeFirstMove(this.movesToArr(this.puzzle.moves));
+        this.moves = this.movesToArr();
+        this.makeFirstMove();
       },
     });
   }
 
-  toColour(chess: Chess): Color {
-    return chess.turn() == 'w' ? 'white' : 'black';
+  resetPuzzle() {
+    this.currentMove = 0;
+    this.chess = new Chess(this.puzzle.fen);
+    this.cg.set({
+      fen: this.chess.fen(),
+      movable: {
+        free: false,
+        color: this.toColour(),
+        showDests: false,
+        events: { after: (orig, dest) => this.onMove(orig, dest) },
+        dests: this.getLegalMoves(),
+      },
+      turnColor: this.toColour(),
+      orientation: this.getOrientation(),
+    });
+    this.moves = this.movesToArr();
+    this.makeFirstMove();
   }
 
-  getOrientation(chess: Chess): Color {
-    return chess.turn() == 'w' ? 'black' : 'white';
+  makeMove(from: Key, to: Key) {
+    this.chess.move({ from: from, to: to });
+    this.cg.set({
+      turnColor: this.toColour(),
+      movable: {
+        color: this.toColour(),
+        dests: this.getLegalMoves(),
+      },
+    });
+    this.cg.move(from, to);
   }
 
-  makeFirstMove(moves: Key[]) {
-    let move = this.convertSingleMove(moves[0]);
-    this.cg.move(move.from as Key, move.to as Key);
+  onMove(orig: Key, dest: Key) {
+    // If there's moves remaining in the puzzle
+    if (this.currentMove < this.moves.length - 1) {
+      // If player's move is correct
+      if (this.isCorrect(orig, dest)) {
+        this.onRightMove(orig, dest);
+      } else {
+        this.onWrongMove(orig, dest);
+      }
+    } else {
+      // If final move
+      if (this.isCorrect(orig, dest)) {
+        this.feedbackMessage.next('Puzzle complete');
+        this.makeMove(orig, dest);
+        this.cg.stop();
+      } else {
+        this.onWrongMove(orig, dest);
+      }
+    }
   }
 
+  onRightMove(orig: Key, dest: Key) {
+    this.feedbackMessage.next('Correct! Keep going');
+    this.currentMove++;
+    this.makeMove(orig, dest);
+    // Make computers next move after delay
+    setTimeout(() => {
+      let { from, to } = this.convertSingleMove(this.moves[this.currentMove]);
+      this.makeMove(from as Key, to as Key);
+      this.currentMove++;
+    }, 300);
+  }
+
+  onWrongMove(orig: Key, dest: Key) {
+    this.feedbackMessage.next('Wrong move! Try again');
+    this.cg.move(dest, orig);
+    this.cg.set({
+      fen: this.chess.fen(),
+      turnColor: this.toColour(),
+      movable: { color: this.toColour(), dests: this.getLegalMoves() },
+    });
+  }
+
+  getFeedbackMessage() {
+    return this.feedbackMessage;
+  }
+
+  isCorrect(orig: Key, dest: Key) {
+    let move = '';
+    move = move.concat(orig, dest);
+    return move === this.moves[this.currentMove];
+  }
+
+  toColour(): Color {
+    return this.chess.turn() == 'w' ? 'white' : 'black';
+  }
+
+  getOrientation(): Color {
+    return this.chess.turn() == 'w' ? 'black' : 'white';
+  }
+
+  makeFirstMove() {
+    let move = this.convertSingleMove(this.moves[0]);
+    this.makeMove(move.from as Key, move.to as Key);
+    this.currentMove = 1;
+  }
+
+  // Convert move to object
   convertSingleMove(move: Key) {
     return {
       from: move.substring(0, 2),
@@ -65,16 +155,12 @@ export class ChessService {
     };
   }
 
-  movesToArr(moves: string) {
+  movesToArr() {
     let arr: Key[] = [];
     this.puzzle.moves.split(' ').map((move) => {
       arr.push(move as Key);
     });
     return arr;
-  }
-
-  handleMove(orig: Key, dest: Key) {
-    console.log('move');
   }
 
   getLegalMoves(): Map<Key, Key[]> {

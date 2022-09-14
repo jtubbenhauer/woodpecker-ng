@@ -1,6 +1,11 @@
 <div class="grid grid-cols-3">
-  <div class="flex justify-center">
+  <div class="flex flex-col items-center">
+    <p>{{feedbackMessage}}</p>
+    <div class="flex gap-4">
+
+    <button class="btn btn-primary" (click)="handleReset()">Reset</button>
     <button class="btn btn-primary" (click)="handleRandomPuzzle()">Random</button>
+    </div>
   </div>
   <app-board></app-board>
   <div></div>
