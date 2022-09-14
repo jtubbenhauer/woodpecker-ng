@@ -13,62 +13,21 @@ type UnwrapTuple<Tuple extends readonly unknown[]> = {
 
 
 /**
- * Model Account
- * 
- */
-export type Account = {
-  id: string
-  userId: string
-  type: string
-  provider: string
-  providerAccountId: string
-  refresh_token: string | null
-  access_token: string | null
-  expires_at: number | null
-  token_type: string | null
-  scope: string | null
-  id_token: string | null
-  session_state: string | null
-}
-
-/**
- * Model Session
- * 
- */
-export type Session = {
-  id: string
-  sessionToken: string
-  userId: string
-  expires: Date
-}
-
-/**
  * Model User
  * 
  */
 export type User = {
   id: string
-  name: string | null
-  email: string | null
-  emailVerified: Date | null
-  image: string | null
+  login: string
+  password: string
+  createdAt: Date
 }
 
 /**
- * Model VerificationToken
+ * Model Puzzle
  * 
  */
-export type VerificationToken = {
-  identifier: string
-  token: string
-  expires: Date
-}
-
-/**
- * Model puzzles
- * 
- */
-export type puzzles = {
+export type Puzzle = {
   id: string
   fen: string
   moves: string
@@ -90,8 +49,8 @@ export type puzzles = {
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Accounts
- * const accounts = await prisma.account.findMany()
+ * // Fetch zero or more Users
+ * const users = await prisma.user.findMany()
  * ```
  *
  * 
@@ -136,8 +95,8 @@ export class PrismaClient<
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Accounts
-   * const accounts = await prisma.account.findMany()
+   * // Fetch zero or more Users
+   * const users = await prisma.user.findMany()
    * ```
    *
    * 
@@ -224,26 +183,6 @@ export class PrismaClient<
   $transaction<P extends PrismaPromise<any>[]>(arg: [...P]): Promise<UnwrapTuple<P>>;
 
       /**
-   * `prisma.account`: Exposes CRUD operations for the **Account** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Accounts
-    * const accounts = await prisma.account.findMany()
-    * ```
-    */
-  get account(): Prisma.AccountDelegate<GlobalReject>;
-
-  /**
-   * `prisma.session`: Exposes CRUD operations for the **Session** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Sessions
-    * const sessions = await prisma.session.findMany()
-    * ```
-    */
-  get session(): Prisma.SessionDelegate<GlobalReject>;
-
-  /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
     * Example usage:
     * ```ts
@@ -254,24 +193,14 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<GlobalReject>;
 
   /**
-   * `prisma.verificationToken`: Exposes CRUD operations for the **VerificationToken** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more VerificationTokens
-    * const verificationTokens = await prisma.verificationToken.findMany()
-    * ```
-    */
-  get verificationToken(): Prisma.VerificationTokenDelegate<GlobalReject>;
-
-  /**
-   * `prisma.puzzles`: Exposes CRUD operations for the **puzzles** model.
+   * `prisma.puzzle`: Exposes CRUD operations for the **Puzzle** model.
     * Example usage:
     * ```ts
     * // Fetch zero or more Puzzles
-    * const puzzles = await prisma.puzzles.findMany()
+    * const puzzles = await prisma.puzzle.findMany()
     * ```
     */
-  get puzzles(): Prisma.puzzlesDelegate<GlobalReject>;
+  get puzzle(): Prisma.PuzzleDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
@@ -745,11 +674,8 @@ export namespace Prisma {
   }
 
   export const ModelName: {
-    Account: 'Account',
-    Session: 'Session',
     User: 'User',
-    VerificationToken: 'VerificationToken',
-    puzzles: 'puzzles'
+    Puzzle: 'Puzzle'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -908,1992 +834,10 @@ export namespace Prisma {
    */
 
 
-  /**
-   * Count Type UserCountOutputType
-   */
-
-
-  export type UserCountOutputType = {
-    accounts: number
-    sessions: number
-  }
-
-  export type UserCountOutputTypeSelect = {
-    accounts?: boolean
-    sessions?: boolean
-  }
-
-  export type UserCountOutputTypeGetPayload<
-    S extends boolean | null | undefined | UserCountOutputTypeArgs,
-    U = keyof S
-      > = S extends true
-        ? UserCountOutputType
-    : S extends undefined
-    ? never
-    : S extends UserCountOutputTypeArgs
-    ?'include' extends U
-    ? UserCountOutputType 
-    : 'select' extends U
-    ? {
-    [P in TrueKeys<S['select']>]:
-    P extends keyof UserCountOutputType ? UserCountOutputType[P] : never
-  } 
-    : UserCountOutputType
-  : UserCountOutputType
-
-
-
-
-  // Custom InputTypes
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeArgs = {
-    /**
-     * Select specific fields to fetch from the UserCountOutputType
-     * 
-    **/
-    select?: UserCountOutputTypeSelect | null
-  }
-
-
 
   /**
    * Models
    */
-
-  /**
-   * Model Account
-   */
-
-
-  export type AggregateAccount = {
-    _count: AccountCountAggregateOutputType | null
-    _avg: AccountAvgAggregateOutputType | null
-    _sum: AccountSumAggregateOutputType | null
-    _min: AccountMinAggregateOutputType | null
-    _max: AccountMaxAggregateOutputType | null
-  }
-
-  export type AccountAvgAggregateOutputType = {
-    expires_at: number | null
-  }
-
-  export type AccountSumAggregateOutputType = {
-    expires_at: number | null
-  }
-
-  export type AccountMinAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    type: string | null
-    provider: string | null
-    providerAccountId: string | null
-    refresh_token: string | null
-    access_token: string | null
-    expires_at: number | null
-    token_type: string | null
-    scope: string | null
-    id_token: string | null
-    session_state: string | null
-  }
-
-  export type AccountMaxAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    type: string | null
-    provider: string | null
-    providerAccountId: string | null
-    refresh_token: string | null
-    access_token: string | null
-    expires_at: number | null
-    token_type: string | null
-    scope: string | null
-    id_token: string | null
-    session_state: string | null
-  }
-
-  export type AccountCountAggregateOutputType = {
-    id: number
-    userId: number
-    type: number
-    provider: number
-    providerAccountId: number
-    refresh_token: number
-    access_token: number
-    expires_at: number
-    token_type: number
-    scope: number
-    id_token: number
-    session_state: number
-    _all: number
-  }
-
-
-  export type AccountAvgAggregateInputType = {
-    expires_at?: true
-  }
-
-  export type AccountSumAggregateInputType = {
-    expires_at?: true
-  }
-
-  export type AccountMinAggregateInputType = {
-    id?: true
-    userId?: true
-    type?: true
-    provider?: true
-    providerAccountId?: true
-    refresh_token?: true
-    access_token?: true
-    expires_at?: true
-    token_type?: true
-    scope?: true
-    id_token?: true
-    session_state?: true
-  }
-
-  export type AccountMaxAggregateInputType = {
-    id?: true
-    userId?: true
-    type?: true
-    provider?: true
-    providerAccountId?: true
-    refresh_token?: true
-    access_token?: true
-    expires_at?: true
-    token_type?: true
-    scope?: true
-    id_token?: true
-    session_state?: true
-  }
-
-  export type AccountCountAggregateInputType = {
-    id?: true
-    userId?: true
-    type?: true
-    provider?: true
-    providerAccountId?: true
-    refresh_token?: true
-    access_token?: true
-    expires_at?: true
-    token_type?: true
-    scope?: true
-    id_token?: true
-    session_state?: true
-    _all?: true
-  }
-
-  export type AccountAggregateArgs = {
-    /**
-     * Filter which Account to aggregate.
-     * 
-    **/
-    where?: AccountWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Accounts to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<AccountOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     * 
-    **/
-    cursor?: AccountWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Accounts from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Accounts.
-     * 
-    **/
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Accounts
-    **/
-    _count?: true | AccountCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: AccountAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: AccountSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: AccountMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: AccountMaxAggregateInputType
-  }
-
-  export type GetAccountAggregateType<T extends AccountAggregateArgs> = {
-        [P in keyof T & keyof AggregateAccount]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateAccount[P]>
-      : GetScalarType<T[P], AggregateAccount[P]>
-  }
-
-
-
-
-  export type AccountGroupByArgs = {
-    where?: AccountWhereInput
-    orderBy?: Enumerable<AccountOrderByWithAggregationInput>
-    by: Array<AccountScalarFieldEnum>
-    having?: AccountScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: AccountCountAggregateInputType | true
-    _avg?: AccountAvgAggregateInputType
-    _sum?: AccountSumAggregateInputType
-    _min?: AccountMinAggregateInputType
-    _max?: AccountMaxAggregateInputType
-  }
-
-
-  export type AccountGroupByOutputType = {
-    id: string
-    userId: string
-    type: string
-    provider: string
-    providerAccountId: string
-    refresh_token: string | null
-    access_token: string | null
-    expires_at: number | null
-    token_type: string | null
-    scope: string | null
-    id_token: string | null
-    session_state: string | null
-    _count: AccountCountAggregateOutputType | null
-    _avg: AccountAvgAggregateOutputType | null
-    _sum: AccountSumAggregateOutputType | null
-    _min: AccountMinAggregateOutputType | null
-    _max: AccountMaxAggregateOutputType | null
-  }
-
-  type GetAccountGroupByPayload<T extends AccountGroupByArgs> = PrismaPromise<
-    Array<
-      PickArray<AccountGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof AccountGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], AccountGroupByOutputType[P]>
-            : GetScalarType<T[P], AccountGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type AccountSelect = {
-    id?: boolean
-    userId?: boolean
-    type?: boolean
-    provider?: boolean
-    providerAccountId?: boolean
-    refresh_token?: boolean
-    access_token?: boolean
-    expires_at?: boolean
-    token_type?: boolean
-    scope?: boolean
-    id_token?: boolean
-    session_state?: boolean
-    user?: boolean | UserArgs
-  }
-
-  export type AccountInclude = {
-    user?: boolean | UserArgs
-  }
-
-  export type AccountGetPayload<
-    S extends boolean | null | undefined | AccountArgs,
-    U = keyof S
-      > = S extends true
-        ? Account
-    : S extends undefined
-    ? never
-    : S extends AccountArgs | AccountFindManyArgs
-    ?'include' extends U
-    ? Account  & {
-    [P in TrueKeys<S['include']>]:
-        P extends 'user' ? UserGetPayload<Exclude<S['include'], undefined | null>[P]> :  never
-  } 
-    : 'select' extends U
-    ? {
-    [P in TrueKeys<S['select']>]:
-        P extends 'user' ? UserGetPayload<Exclude<S['select'], undefined | null>[P]> :  P extends keyof Account ? Account[P] : never
-  } 
-    : Account
-  : Account
-
-
-  type AccountCountArgs = Merge<
-    Omit<AccountFindManyArgs, 'select' | 'include'> & {
-      select?: AccountCountAggregateInputType | true
-    }
-  >
-
-  export interface AccountDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
-    /**
-     * Find zero or one Account that matches the filter.
-     * @param {AccountFindUniqueArgs} args - Arguments to find a Account
-     * @example
-     * // Get one Account
-     * const account = await prisma.account.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUnique<T extends AccountFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, AccountFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Account'> extends True ? CheckSelect<T, Prisma__AccountClient<Account>, Prisma__AccountClient<AccountGetPayload<T>>> : CheckSelect<T, Prisma__AccountClient<Account | null >, Prisma__AccountClient<AccountGetPayload<T> | null >>
-
-    /**
-     * Find the first Account that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AccountFindFirstArgs} args - Arguments to find a Account
-     * @example
-     * // Get one Account
-     * const account = await prisma.account.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirst<T extends AccountFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, AccountFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Account'> extends True ? CheckSelect<T, Prisma__AccountClient<Account>, Prisma__AccountClient<AccountGetPayload<T>>> : CheckSelect<T, Prisma__AccountClient<Account | null >, Prisma__AccountClient<AccountGetPayload<T> | null >>
-
-    /**
-     * Find zero or more Accounts that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AccountFindManyArgs=} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Accounts
-     * const accounts = await prisma.account.findMany()
-     * 
-     * // Get first 10 Accounts
-     * const accounts = await prisma.account.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const accountWithIdOnly = await prisma.account.findMany({ select: { id: true } })
-     * 
-    **/
-    findMany<T extends AccountFindManyArgs>(
-      args?: SelectSubset<T, AccountFindManyArgs>
-    ): CheckSelect<T, PrismaPromise<Array<Account>>, PrismaPromise<Array<AccountGetPayload<T>>>>
-
-    /**
-     * Create a Account.
-     * @param {AccountCreateArgs} args - Arguments to create a Account.
-     * @example
-     * // Create one Account
-     * const Account = await prisma.account.create({
-     *   data: {
-     *     // ... data to create a Account
-     *   }
-     * })
-     * 
-    **/
-    create<T extends AccountCreateArgs>(
-      args: SelectSubset<T, AccountCreateArgs>
-    ): CheckSelect<T, Prisma__AccountClient<Account>, Prisma__AccountClient<AccountGetPayload<T>>>
-
-    /**
-     * Create many Accounts.
-     *     @param {AccountCreateManyArgs} args - Arguments to create many Accounts.
-     *     @example
-     *     // Create many Accounts
-     *     const account = await prisma.account.createMany({
-     *       data: {
-     *         // ... provide data here
-     *       }
-     *     })
-     *     
-    **/
-    createMany<T extends AccountCreateManyArgs>(
-      args?: SelectSubset<T, AccountCreateManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a Account.
-     * @param {AccountDeleteArgs} args - Arguments to delete one Account.
-     * @example
-     * // Delete one Account
-     * const Account = await prisma.account.delete({
-     *   where: {
-     *     // ... filter to delete one Account
-     *   }
-     * })
-     * 
-    **/
-    delete<T extends AccountDeleteArgs>(
-      args: SelectSubset<T, AccountDeleteArgs>
-    ): CheckSelect<T, Prisma__AccountClient<Account>, Prisma__AccountClient<AccountGetPayload<T>>>
-
-    /**
-     * Update one Account.
-     * @param {AccountUpdateArgs} args - Arguments to update one Account.
-     * @example
-     * // Update one Account
-     * const account = await prisma.account.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    update<T extends AccountUpdateArgs>(
-      args: SelectSubset<T, AccountUpdateArgs>
-    ): CheckSelect<T, Prisma__AccountClient<Account>, Prisma__AccountClient<AccountGetPayload<T>>>
-
-    /**
-     * Delete zero or more Accounts.
-     * @param {AccountDeleteManyArgs} args - Arguments to filter Accounts to delete.
-     * @example
-     * // Delete a few Accounts
-     * const { count } = await prisma.account.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-    **/
-    deleteMany<T extends AccountDeleteManyArgs>(
-      args?: SelectSubset<T, AccountDeleteManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Accounts.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AccountUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Accounts
-     * const account = await prisma.account.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    updateMany<T extends AccountUpdateManyArgs>(
-      args: SelectSubset<T, AccountUpdateManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one Account.
-     * @param {AccountUpsertArgs} args - Arguments to update or create a Account.
-     * @example
-     * // Update or create a Account
-     * const account = await prisma.account.upsert({
-     *   create: {
-     *     // ... data to create a Account
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Account we want to update
-     *   }
-     * })
-    **/
-    upsert<T extends AccountUpsertArgs>(
-      args: SelectSubset<T, AccountUpsertArgs>
-    ): CheckSelect<T, Prisma__AccountClient<Account>, Prisma__AccountClient<AccountGetPayload<T>>>
-
-    /**
-     * Find one Account that matches the filter or throw
-     * `NotFoundError` if no matches were found.
-     * @param {AccountFindUniqueOrThrowArgs} args - Arguments to find a Account
-     * @example
-     * // Get one Account
-     * const account = await prisma.account.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUniqueOrThrow<T extends AccountFindUniqueOrThrowArgs>(
-      args?: SelectSubset<T, AccountFindUniqueOrThrowArgs>
-    ): CheckSelect<T, Prisma__AccountClient<Account>, Prisma__AccountClient<AccountGetPayload<T>>>
-
-    /**
-     * Find the first Account that matches the filter or
-     * throw `NotFoundError` if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AccountFindFirstOrThrowArgs} args - Arguments to find a Account
-     * @example
-     * // Get one Account
-     * const account = await prisma.account.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirstOrThrow<T extends AccountFindFirstOrThrowArgs>(
-      args?: SelectSubset<T, AccountFindFirstOrThrowArgs>
-    ): CheckSelect<T, Prisma__AccountClient<Account>, Prisma__AccountClient<AccountGetPayload<T>>>
-
-    /**
-     * Count the number of Accounts.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AccountCountArgs} args - Arguments to filter Accounts to count.
-     * @example
-     * // Count the number of Accounts
-     * const count = await prisma.account.count({
-     *   where: {
-     *     // ... the filter for the Accounts we want to count
-     *   }
-     * })
-    **/
-    count<T extends AccountCountArgs>(
-      args?: Subset<T, AccountCountArgs>,
-    ): PrismaPromise<
-      T extends _Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], AccountCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Account.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AccountAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends AccountAggregateArgs>(args: Subset<T, AccountAggregateArgs>): PrismaPromise<GetAccountAggregateType<T>>
-
-    /**
-     * Group by Account.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AccountGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends AccountGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: AccountGroupByArgs['orderBy'] }
-        : { orderBy?: AccountGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends TupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, AccountGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAccountGroupByPayload<T> : PrismaPromise<InputErrors>
-
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Account.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export class Prisma__AccountClient<T> implements PrismaPromise<T> {
-    [prisma]: true;
-    private readonly _dmmf;
-    private readonly _fetcher;
-    private readonly _queryType;
-    private readonly _rootField;
-    private readonly _clientMethod;
-    private readonly _args;
-    private readonly _dataPath;
-    private readonly _errorFormat;
-    private readonly _measurePerformance?;
-    private _isList;
-    private _callsite;
-    private _requestPromise?;
-    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
-    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
-
-    user<T extends UserArgs = {}>(args?: Subset<T, UserArgs>): CheckSelect<T, Prisma__UserClient<User | null >, Prisma__UserClient<UserGetPayload<T> | null >>;
-
-    private get _document();
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
-  }
-
-
-
-  // Custom InputTypes
-
-  /**
-   * Account base type for findUnique actions
-   */
-  export type AccountFindUniqueArgsBase = {
-    /**
-     * Select specific fields to fetch from the Account
-     * 
-    **/
-    select?: AccountSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: AccountInclude | null
-    /**
-     * Filter, which Account to fetch.
-     * 
-    **/
-    where: AccountWhereUniqueInput
-  }
-
-  /**
-   * Account: findUnique
-   */
-  export interface AccountFindUniqueArgs extends AccountFindUniqueArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
-  }
-      
-
-  /**
-   * Account base type for findFirst actions
-   */
-  export type AccountFindFirstArgsBase = {
-    /**
-     * Select specific fields to fetch from the Account
-     * 
-    **/
-    select?: AccountSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: AccountInclude | null
-    /**
-     * Filter, which Account to fetch.
-     * 
-    **/
-    where?: AccountWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Accounts to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<AccountOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Accounts.
-     * 
-    **/
-    cursor?: AccountWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Accounts from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Accounts.
-     * 
-    **/
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Accounts.
-     * 
-    **/
-    distinct?: Enumerable<AccountScalarFieldEnum>
-  }
-
-  /**
-   * Account: findFirst
-   */
-  export interface AccountFindFirstArgs extends AccountFindFirstArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
-  }
-      
-
-  /**
-   * Account findMany
-   */
-  export type AccountFindManyArgs = {
-    /**
-     * Select specific fields to fetch from the Account
-     * 
-    **/
-    select?: AccountSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: AccountInclude | null
-    /**
-     * Filter, which Accounts to fetch.
-     * 
-    **/
-    where?: AccountWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Accounts to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<AccountOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Accounts.
-     * 
-    **/
-    cursor?: AccountWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Accounts from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Accounts.
-     * 
-    **/
-    skip?: number
-    distinct?: Enumerable<AccountScalarFieldEnum>
-  }
-
-
-  /**
-   * Account create
-   */
-  export type AccountCreateArgs = {
-    /**
-     * Select specific fields to fetch from the Account
-     * 
-    **/
-    select?: AccountSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: AccountInclude | null
-    /**
-     * The data needed to create a Account.
-     * 
-    **/
-    data: XOR<AccountCreateInput, AccountUncheckedCreateInput>
-  }
-
-
-  /**
-   * Account createMany
-   */
-  export type AccountCreateManyArgs = {
-    /**
-     * The data used to create many Accounts.
-     * 
-    **/
-    data: Enumerable<AccountCreateManyInput>
-    skipDuplicates?: boolean
-  }
-
-
-  /**
-   * Account update
-   */
-  export type AccountUpdateArgs = {
-    /**
-     * Select specific fields to fetch from the Account
-     * 
-    **/
-    select?: AccountSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: AccountInclude | null
-    /**
-     * The data needed to update a Account.
-     * 
-    **/
-    data: XOR<AccountUpdateInput, AccountUncheckedUpdateInput>
-    /**
-     * Choose, which Account to update.
-     * 
-    **/
-    where: AccountWhereUniqueInput
-  }
-
-
-  /**
-   * Account updateMany
-   */
-  export type AccountUpdateManyArgs = {
-    /**
-     * The data used to update Accounts.
-     * 
-    **/
-    data: XOR<AccountUpdateManyMutationInput, AccountUncheckedUpdateManyInput>
-    /**
-     * Filter which Accounts to update
-     * 
-    **/
-    where?: AccountWhereInput
-  }
-
-
-  /**
-   * Account upsert
-   */
-  export type AccountUpsertArgs = {
-    /**
-     * Select specific fields to fetch from the Account
-     * 
-    **/
-    select?: AccountSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: AccountInclude | null
-    /**
-     * The filter to search for the Account to update in case it exists.
-     * 
-    **/
-    where: AccountWhereUniqueInput
-    /**
-     * In case the Account found by the `where` argument doesn't exist, create a new Account with this data.
-     * 
-    **/
-    create: XOR<AccountCreateInput, AccountUncheckedCreateInput>
-    /**
-     * In case the Account was found with the provided `where` argument, update it with this data.
-     * 
-    **/
-    update: XOR<AccountUpdateInput, AccountUncheckedUpdateInput>
-  }
-
-
-  /**
-   * Account delete
-   */
-  export type AccountDeleteArgs = {
-    /**
-     * Select specific fields to fetch from the Account
-     * 
-    **/
-    select?: AccountSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: AccountInclude | null
-    /**
-     * Filter which Account to delete.
-     * 
-    **/
-    where: AccountWhereUniqueInput
-  }
-
-
-  /**
-   * Account deleteMany
-   */
-  export type AccountDeleteManyArgs = {
-    /**
-     * Filter which Accounts to delete
-     * 
-    **/
-    where?: AccountWhereInput
-  }
-
-
-  /**
-   * Account: findUniqueOrThrow
-   */
-  export type AccountFindUniqueOrThrowArgs = AccountFindUniqueArgsBase
-      
-
-  /**
-   * Account: findFirstOrThrow
-   */
-  export type AccountFindFirstOrThrowArgs = AccountFindFirstArgsBase
-      
-
-  /**
-   * Account without action
-   */
-  export type AccountArgs = {
-    /**
-     * Select specific fields to fetch from the Account
-     * 
-    **/
-    select?: AccountSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: AccountInclude | null
-  }
-
-
-
-  /**
-   * Model Session
-   */
-
-
-  export type AggregateSession = {
-    _count: SessionCountAggregateOutputType | null
-    _min: SessionMinAggregateOutputType | null
-    _max: SessionMaxAggregateOutputType | null
-  }
-
-  export type SessionMinAggregateOutputType = {
-    id: string | null
-    sessionToken: string | null
-    userId: string | null
-    expires: Date | null
-  }
-
-  export type SessionMaxAggregateOutputType = {
-    id: string | null
-    sessionToken: string | null
-    userId: string | null
-    expires: Date | null
-  }
-
-  export type SessionCountAggregateOutputType = {
-    id: number
-    sessionToken: number
-    userId: number
-    expires: number
-    _all: number
-  }
-
-
-  export type SessionMinAggregateInputType = {
-    id?: true
-    sessionToken?: true
-    userId?: true
-    expires?: true
-  }
-
-  export type SessionMaxAggregateInputType = {
-    id?: true
-    sessionToken?: true
-    userId?: true
-    expires?: true
-  }
-
-  export type SessionCountAggregateInputType = {
-    id?: true
-    sessionToken?: true
-    userId?: true
-    expires?: true
-    _all?: true
-  }
-
-  export type SessionAggregateArgs = {
-    /**
-     * Filter which Session to aggregate.
-     * 
-    **/
-    where?: SessionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Sessions to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<SessionOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     * 
-    **/
-    cursor?: SessionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Sessions from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Sessions.
-     * 
-    **/
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Sessions
-    **/
-    _count?: true | SessionCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: SessionMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: SessionMaxAggregateInputType
-  }
-
-  export type GetSessionAggregateType<T extends SessionAggregateArgs> = {
-        [P in keyof T & keyof AggregateSession]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateSession[P]>
-      : GetScalarType<T[P], AggregateSession[P]>
-  }
-
-
-
-
-  export type SessionGroupByArgs = {
-    where?: SessionWhereInput
-    orderBy?: Enumerable<SessionOrderByWithAggregationInput>
-    by: Array<SessionScalarFieldEnum>
-    having?: SessionScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: SessionCountAggregateInputType | true
-    _min?: SessionMinAggregateInputType
-    _max?: SessionMaxAggregateInputType
-  }
-
-
-  export type SessionGroupByOutputType = {
-    id: string
-    sessionToken: string
-    userId: string
-    expires: Date
-    _count: SessionCountAggregateOutputType | null
-    _min: SessionMinAggregateOutputType | null
-    _max: SessionMaxAggregateOutputType | null
-  }
-
-  type GetSessionGroupByPayload<T extends SessionGroupByArgs> = PrismaPromise<
-    Array<
-      PickArray<SessionGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof SessionGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], SessionGroupByOutputType[P]>
-            : GetScalarType<T[P], SessionGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type SessionSelect = {
-    id?: boolean
-    sessionToken?: boolean
-    userId?: boolean
-    expires?: boolean
-    user?: boolean | UserArgs
-  }
-
-  export type SessionInclude = {
-    user?: boolean | UserArgs
-  }
-
-  export type SessionGetPayload<
-    S extends boolean | null | undefined | SessionArgs,
-    U = keyof S
-      > = S extends true
-        ? Session
-    : S extends undefined
-    ? never
-    : S extends SessionArgs | SessionFindManyArgs
-    ?'include' extends U
-    ? Session  & {
-    [P in TrueKeys<S['include']>]:
-        P extends 'user' ? UserGetPayload<Exclude<S['include'], undefined | null>[P]> :  never
-  } 
-    : 'select' extends U
-    ? {
-    [P in TrueKeys<S['select']>]:
-        P extends 'user' ? UserGetPayload<Exclude<S['select'], undefined | null>[P]> :  P extends keyof Session ? Session[P] : never
-  } 
-    : Session
-  : Session
-
-
-  type SessionCountArgs = Merge<
-    Omit<SessionFindManyArgs, 'select' | 'include'> & {
-      select?: SessionCountAggregateInputType | true
-    }
-  >
-
-  export interface SessionDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
-    /**
-     * Find zero or one Session that matches the filter.
-     * @param {SessionFindUniqueArgs} args - Arguments to find a Session
-     * @example
-     * // Get one Session
-     * const session = await prisma.session.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUnique<T extends SessionFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, SessionFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Session'> extends True ? CheckSelect<T, Prisma__SessionClient<Session>, Prisma__SessionClient<SessionGetPayload<T>>> : CheckSelect<T, Prisma__SessionClient<Session | null >, Prisma__SessionClient<SessionGetPayload<T> | null >>
-
-    /**
-     * Find the first Session that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SessionFindFirstArgs} args - Arguments to find a Session
-     * @example
-     * // Get one Session
-     * const session = await prisma.session.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirst<T extends SessionFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, SessionFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Session'> extends True ? CheckSelect<T, Prisma__SessionClient<Session>, Prisma__SessionClient<SessionGetPayload<T>>> : CheckSelect<T, Prisma__SessionClient<Session | null >, Prisma__SessionClient<SessionGetPayload<T> | null >>
-
-    /**
-     * Find zero or more Sessions that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SessionFindManyArgs=} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Sessions
-     * const sessions = await prisma.session.findMany()
-     * 
-     * // Get first 10 Sessions
-     * const sessions = await prisma.session.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const sessionWithIdOnly = await prisma.session.findMany({ select: { id: true } })
-     * 
-    **/
-    findMany<T extends SessionFindManyArgs>(
-      args?: SelectSubset<T, SessionFindManyArgs>
-    ): CheckSelect<T, PrismaPromise<Array<Session>>, PrismaPromise<Array<SessionGetPayload<T>>>>
-
-    /**
-     * Create a Session.
-     * @param {SessionCreateArgs} args - Arguments to create a Session.
-     * @example
-     * // Create one Session
-     * const Session = await prisma.session.create({
-     *   data: {
-     *     // ... data to create a Session
-     *   }
-     * })
-     * 
-    **/
-    create<T extends SessionCreateArgs>(
-      args: SelectSubset<T, SessionCreateArgs>
-    ): CheckSelect<T, Prisma__SessionClient<Session>, Prisma__SessionClient<SessionGetPayload<T>>>
-
-    /**
-     * Create many Sessions.
-     *     @param {SessionCreateManyArgs} args - Arguments to create many Sessions.
-     *     @example
-     *     // Create many Sessions
-     *     const session = await prisma.session.createMany({
-     *       data: {
-     *         // ... provide data here
-     *       }
-     *     })
-     *     
-    **/
-    createMany<T extends SessionCreateManyArgs>(
-      args?: SelectSubset<T, SessionCreateManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a Session.
-     * @param {SessionDeleteArgs} args - Arguments to delete one Session.
-     * @example
-     * // Delete one Session
-     * const Session = await prisma.session.delete({
-     *   where: {
-     *     // ... filter to delete one Session
-     *   }
-     * })
-     * 
-    **/
-    delete<T extends SessionDeleteArgs>(
-      args: SelectSubset<T, SessionDeleteArgs>
-    ): CheckSelect<T, Prisma__SessionClient<Session>, Prisma__SessionClient<SessionGetPayload<T>>>
-
-    /**
-     * Update one Session.
-     * @param {SessionUpdateArgs} args - Arguments to update one Session.
-     * @example
-     * // Update one Session
-     * const session = await prisma.session.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    update<T extends SessionUpdateArgs>(
-      args: SelectSubset<T, SessionUpdateArgs>
-    ): CheckSelect<T, Prisma__SessionClient<Session>, Prisma__SessionClient<SessionGetPayload<T>>>
-
-    /**
-     * Delete zero or more Sessions.
-     * @param {SessionDeleteManyArgs} args - Arguments to filter Sessions to delete.
-     * @example
-     * // Delete a few Sessions
-     * const { count } = await prisma.session.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-    **/
-    deleteMany<T extends SessionDeleteManyArgs>(
-      args?: SelectSubset<T, SessionDeleteManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Sessions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SessionUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Sessions
-     * const session = await prisma.session.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    updateMany<T extends SessionUpdateManyArgs>(
-      args: SelectSubset<T, SessionUpdateManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one Session.
-     * @param {SessionUpsertArgs} args - Arguments to update or create a Session.
-     * @example
-     * // Update or create a Session
-     * const session = await prisma.session.upsert({
-     *   create: {
-     *     // ... data to create a Session
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Session we want to update
-     *   }
-     * })
-    **/
-    upsert<T extends SessionUpsertArgs>(
-      args: SelectSubset<T, SessionUpsertArgs>
-    ): CheckSelect<T, Prisma__SessionClient<Session>, Prisma__SessionClient<SessionGetPayload<T>>>
-
-    /**
-     * Find one Session that matches the filter or throw
-     * `NotFoundError` if no matches were found.
-     * @param {SessionFindUniqueOrThrowArgs} args - Arguments to find a Session
-     * @example
-     * // Get one Session
-     * const session = await prisma.session.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUniqueOrThrow<T extends SessionFindUniqueOrThrowArgs>(
-      args?: SelectSubset<T, SessionFindUniqueOrThrowArgs>
-    ): CheckSelect<T, Prisma__SessionClient<Session>, Prisma__SessionClient<SessionGetPayload<T>>>
-
-    /**
-     * Find the first Session that matches the filter or
-     * throw `NotFoundError` if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SessionFindFirstOrThrowArgs} args - Arguments to find a Session
-     * @example
-     * // Get one Session
-     * const session = await prisma.session.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirstOrThrow<T extends SessionFindFirstOrThrowArgs>(
-      args?: SelectSubset<T, SessionFindFirstOrThrowArgs>
-    ): CheckSelect<T, Prisma__SessionClient<Session>, Prisma__SessionClient<SessionGetPayload<T>>>
-
-    /**
-     * Count the number of Sessions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SessionCountArgs} args - Arguments to filter Sessions to count.
-     * @example
-     * // Count the number of Sessions
-     * const count = await prisma.session.count({
-     *   where: {
-     *     // ... the filter for the Sessions we want to count
-     *   }
-     * })
-    **/
-    count<T extends SessionCountArgs>(
-      args?: Subset<T, SessionCountArgs>,
-    ): PrismaPromise<
-      T extends _Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], SessionCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Session.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SessionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends SessionAggregateArgs>(args: Subset<T, SessionAggregateArgs>): PrismaPromise<GetSessionAggregateType<T>>
-
-    /**
-     * Group by Session.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SessionGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends SessionGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: SessionGroupByArgs['orderBy'] }
-        : { orderBy?: SessionGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends TupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, SessionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSessionGroupByPayload<T> : PrismaPromise<InputErrors>
-
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Session.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export class Prisma__SessionClient<T> implements PrismaPromise<T> {
-    [prisma]: true;
-    private readonly _dmmf;
-    private readonly _fetcher;
-    private readonly _queryType;
-    private readonly _rootField;
-    private readonly _clientMethod;
-    private readonly _args;
-    private readonly _dataPath;
-    private readonly _errorFormat;
-    private readonly _measurePerformance?;
-    private _isList;
-    private _callsite;
-    private _requestPromise?;
-    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
-    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
-
-    user<T extends UserArgs = {}>(args?: Subset<T, UserArgs>): CheckSelect<T, Prisma__UserClient<User | null >, Prisma__UserClient<UserGetPayload<T> | null >>;
-
-    private get _document();
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
-  }
-
-
-
-  // Custom InputTypes
-
-  /**
-   * Session base type for findUnique actions
-   */
-  export type SessionFindUniqueArgsBase = {
-    /**
-     * Select specific fields to fetch from the Session
-     * 
-    **/
-    select?: SessionSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: SessionInclude | null
-    /**
-     * Filter, which Session to fetch.
-     * 
-    **/
-    where: SessionWhereUniqueInput
-  }
-
-  /**
-   * Session: findUnique
-   */
-  export interface SessionFindUniqueArgs extends SessionFindUniqueArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
-  }
-      
-
-  /**
-   * Session base type for findFirst actions
-   */
-  export type SessionFindFirstArgsBase = {
-    /**
-     * Select specific fields to fetch from the Session
-     * 
-    **/
-    select?: SessionSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: SessionInclude | null
-    /**
-     * Filter, which Session to fetch.
-     * 
-    **/
-    where?: SessionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Sessions to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<SessionOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Sessions.
-     * 
-    **/
-    cursor?: SessionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Sessions from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Sessions.
-     * 
-    **/
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Sessions.
-     * 
-    **/
-    distinct?: Enumerable<SessionScalarFieldEnum>
-  }
-
-  /**
-   * Session: findFirst
-   */
-  export interface SessionFindFirstArgs extends SessionFindFirstArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
-  }
-      
-
-  /**
-   * Session findMany
-   */
-  export type SessionFindManyArgs = {
-    /**
-     * Select specific fields to fetch from the Session
-     * 
-    **/
-    select?: SessionSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: SessionInclude | null
-    /**
-     * Filter, which Sessions to fetch.
-     * 
-    **/
-    where?: SessionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Sessions to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<SessionOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Sessions.
-     * 
-    **/
-    cursor?: SessionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Sessions from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Sessions.
-     * 
-    **/
-    skip?: number
-    distinct?: Enumerable<SessionScalarFieldEnum>
-  }
-
-
-  /**
-   * Session create
-   */
-  export type SessionCreateArgs = {
-    /**
-     * Select specific fields to fetch from the Session
-     * 
-    **/
-    select?: SessionSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: SessionInclude | null
-    /**
-     * The data needed to create a Session.
-     * 
-    **/
-    data: XOR<SessionCreateInput, SessionUncheckedCreateInput>
-  }
-
-
-  /**
-   * Session createMany
-   */
-  export type SessionCreateManyArgs = {
-    /**
-     * The data used to create many Sessions.
-     * 
-    **/
-    data: Enumerable<SessionCreateManyInput>
-    skipDuplicates?: boolean
-  }
-
-
-  /**
-   * Session update
-   */
-  export type SessionUpdateArgs = {
-    /**
-     * Select specific fields to fetch from the Session
-     * 
-    **/
-    select?: SessionSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: SessionInclude | null
-    /**
-     * The data needed to update a Session.
-     * 
-    **/
-    data: XOR<SessionUpdateInput, SessionUncheckedUpdateInput>
-    /**
-     * Choose, which Session to update.
-     * 
-    **/
-    where: SessionWhereUniqueInput
-  }
-
-
-  /**
-   * Session updateMany
-   */
-  export type SessionUpdateManyArgs = {
-    /**
-     * The data used to update Sessions.
-     * 
-    **/
-    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyInput>
-    /**
-     * Filter which Sessions to update
-     * 
-    **/
-    where?: SessionWhereInput
-  }
-
-
-  /**
-   * Session upsert
-   */
-  export type SessionUpsertArgs = {
-    /**
-     * Select specific fields to fetch from the Session
-     * 
-    **/
-    select?: SessionSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: SessionInclude | null
-    /**
-     * The filter to search for the Session to update in case it exists.
-     * 
-    **/
-    where: SessionWhereUniqueInput
-    /**
-     * In case the Session found by the `where` argument doesn't exist, create a new Session with this data.
-     * 
-    **/
-    create: XOR<SessionCreateInput, SessionUncheckedCreateInput>
-    /**
-     * In case the Session was found with the provided `where` argument, update it with this data.
-     * 
-    **/
-    update: XOR<SessionUpdateInput, SessionUncheckedUpdateInput>
-  }
-
-
-  /**
-   * Session delete
-   */
-  export type SessionDeleteArgs = {
-    /**
-     * Select specific fields to fetch from the Session
-     * 
-    **/
-    select?: SessionSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: SessionInclude | null
-    /**
-     * Filter which Session to delete.
-     * 
-    **/
-    where: SessionWhereUniqueInput
-  }
-
-
-  /**
-   * Session deleteMany
-   */
-  export type SessionDeleteManyArgs = {
-    /**
-     * Filter which Sessions to delete
-     * 
-    **/
-    where?: SessionWhereInput
-  }
-
-
-  /**
-   * Session: findUniqueOrThrow
-   */
-  export type SessionFindUniqueOrThrowArgs = SessionFindUniqueArgsBase
-      
-
-  /**
-   * Session: findFirstOrThrow
-   */
-  export type SessionFindFirstOrThrowArgs = SessionFindFirstArgsBase
-      
-
-  /**
-   * Session without action
-   */
-  export type SessionArgs = {
-    /**
-     * Select specific fields to fetch from the Session
-     * 
-    **/
-    select?: SessionSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: SessionInclude | null
-  }
-
-
 
   /**
    * Model User
@@ -2908,52 +852,46 @@ export namespace Prisma {
 
   export type UserMinAggregateOutputType = {
     id: string | null
-    name: string | null
-    email: string | null
-    emailVerified: Date | null
-    image: string | null
+    login: string | null
+    password: string | null
+    createdAt: Date | null
   }
 
   export type UserMaxAggregateOutputType = {
     id: string | null
-    name: string | null
-    email: string | null
-    emailVerified: Date | null
-    image: string | null
+    login: string | null
+    password: string | null
+    createdAt: Date | null
   }
 
   export type UserCountAggregateOutputType = {
     id: number
-    name: number
-    email: number
-    emailVerified: number
-    image: number
+    login: number
+    password: number
+    createdAt: number
     _all: number
   }
 
 
   export type UserMinAggregateInputType = {
     id?: true
-    name?: true
-    email?: true
-    emailVerified?: true
-    image?: true
+    login?: true
+    password?: true
+    createdAt?: true
   }
 
   export type UserMaxAggregateInputType = {
     id?: true
-    name?: true
-    email?: true
-    emailVerified?: true
-    image?: true
+    login?: true
+    password?: true
+    createdAt?: true
   }
 
   export type UserCountAggregateInputType = {
     id?: true
-    name?: true
-    email?: true
-    emailVerified?: true
-    image?: true
+    login?: true
+    password?: true
+    createdAt?: true
     _all?: true
   }
 
@@ -3037,10 +975,9 @@ export namespace Prisma {
 
   export type UserGroupByOutputType = {
     id: string
-    name: string | null
-    email: string | null
-    emailVerified: Date | null
-    image: string | null
+    login: string
+    password: string
+    createdAt: Date
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -3062,19 +999,9 @@ export namespace Prisma {
 
   export type UserSelect = {
     id?: boolean
-    name?: boolean
-    email?: boolean
-    emailVerified?: boolean
-    image?: boolean
-    accounts?: boolean | AccountFindManyArgs
-    sessions?: boolean | SessionFindManyArgs
-    _count?: boolean | UserCountOutputTypeArgs
-  }
-
-  export type UserInclude = {
-    accounts?: boolean | AccountFindManyArgs
-    sessions?: boolean | SessionFindManyArgs
-    _count?: boolean | UserCountOutputTypeArgs
+    login?: boolean
+    password?: boolean
+    createdAt?: boolean
   }
 
   export type UserGetPayload<
@@ -3086,18 +1013,11 @@ export namespace Prisma {
     ? never
     : S extends UserArgs | UserFindManyArgs
     ?'include' extends U
-    ? User  & {
-    [P in TrueKeys<S['include']>]:
-        P extends 'accounts' ? Array < AccountGetPayload<Exclude<S['include'], undefined | null>[P]>>  :
-        P extends 'sessions' ? Array < SessionGetPayload<Exclude<S['include'], undefined | null>[P]>>  :
-        P extends '_count' ? UserCountOutputTypeGetPayload<Exclude<S['include'], undefined | null>[P]> :  never
-  } 
+    ? User 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]:
-        P extends 'accounts' ? Array < AccountGetPayload<Exclude<S['select'], undefined | null>[P]>>  :
-        P extends 'sessions' ? Array < SessionGetPayload<Exclude<S['select'], undefined | null>[P]>>  :
-        P extends '_count' ? UserCountOutputTypeGetPayload<Exclude<S['select'], undefined | null>[P]> :  P extends keyof User ? User[P] : never
+    P extends keyof User ? User[P] : never
   } 
     : User
   : User
@@ -3472,9 +1392,6 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    accounts<T extends AccountFindManyArgs = {}>(args?: Subset<T, AccountFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Account>>, PrismaPromise<Array<AccountGetPayload<T>>>>;
-
-    sessions<T extends SessionFindManyArgs = {}>(args?: Subset<T, SessionFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Session>>, PrismaPromise<Array<SessionGetPayload<T>>>>;
 
     private get _document();
     /**
@@ -3513,11 +1430,6 @@ export namespace Prisma {
     **/
     select?: UserSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: UserInclude | null
-    /**
      * Filter, which User to fetch.
      * 
     **/
@@ -3545,11 +1457,6 @@ export namespace Prisma {
      * 
     **/
     select?: UserSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: UserInclude | null
     /**
      * Filter, which User to fetch.
      * 
@@ -3614,11 +1521,6 @@ export namespace Prisma {
     **/
     select?: UserSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: UserInclude | null
-    /**
      * Filter, which Users to fetch.
      * 
     **/
@@ -3665,11 +1567,6 @@ export namespace Prisma {
     **/
     select?: UserSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: UserInclude | null
-    /**
      * The data needed to create a User.
      * 
     **/
@@ -3699,11 +1596,6 @@ export namespace Prisma {
      * 
     **/
     select?: UserSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: UserInclude | null
     /**
      * The data needed to update a User.
      * 
@@ -3744,11 +1636,6 @@ export namespace Prisma {
     **/
     select?: UserSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: UserInclude | null
-    /**
      * The filter to search for the User to update in case it exists.
      * 
     **/
@@ -3775,11 +1662,6 @@ export namespace Prisma {
      * 
     **/
     select?: UserSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: UserInclude | null
     /**
      * Filter which User to delete.
      * 
@@ -3821,903 +1703,38 @@ export namespace Prisma {
      * 
     **/
     select?: UserSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     * 
-    **/
-    include?: UserInclude | null
   }
 
 
 
   /**
-   * Model VerificationToken
+   * Model Puzzle
    */
 
 
-  export type AggregateVerificationToken = {
-    _count: VerificationTokenCountAggregateOutputType | null
-    _min: VerificationTokenMinAggregateOutputType | null
-    _max: VerificationTokenMaxAggregateOutputType | null
+  export type AggregatePuzzle = {
+    _count: PuzzleCountAggregateOutputType | null
+    _avg: PuzzleAvgAggregateOutputType | null
+    _sum: PuzzleSumAggregateOutputType | null
+    _min: PuzzleMinAggregateOutputType | null
+    _max: PuzzleMaxAggregateOutputType | null
   }
 
-  export type VerificationTokenMinAggregateOutputType = {
-    identifier: string | null
-    token: string | null
-    expires: Date | null
-  }
-
-  export type VerificationTokenMaxAggregateOutputType = {
-    identifier: string | null
-    token: string | null
-    expires: Date | null
-  }
-
-  export type VerificationTokenCountAggregateOutputType = {
-    identifier: number
-    token: number
-    expires: number
-    _all: number
-  }
-
-
-  export type VerificationTokenMinAggregateInputType = {
-    identifier?: true
-    token?: true
-    expires?: true
-  }
-
-  export type VerificationTokenMaxAggregateInputType = {
-    identifier?: true
-    token?: true
-    expires?: true
-  }
-
-  export type VerificationTokenCountAggregateInputType = {
-    identifier?: true
-    token?: true
-    expires?: true
-    _all?: true
-  }
-
-  export type VerificationTokenAggregateArgs = {
-    /**
-     * Filter which VerificationToken to aggregate.
-     * 
-    **/
-    where?: VerificationTokenWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of VerificationTokens to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<VerificationTokenOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     * 
-    **/
-    cursor?: VerificationTokenWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` VerificationTokens from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` VerificationTokens.
-     * 
-    **/
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned VerificationTokens
-    **/
-    _count?: true | VerificationTokenCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: VerificationTokenMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: VerificationTokenMaxAggregateInputType
-  }
-
-  export type GetVerificationTokenAggregateType<T extends VerificationTokenAggregateArgs> = {
-        [P in keyof T & keyof AggregateVerificationToken]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateVerificationToken[P]>
-      : GetScalarType<T[P], AggregateVerificationToken[P]>
-  }
-
-
-
-
-  export type VerificationTokenGroupByArgs = {
-    where?: VerificationTokenWhereInput
-    orderBy?: Enumerable<VerificationTokenOrderByWithAggregationInput>
-    by: Array<VerificationTokenScalarFieldEnum>
-    having?: VerificationTokenScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: VerificationTokenCountAggregateInputType | true
-    _min?: VerificationTokenMinAggregateInputType
-    _max?: VerificationTokenMaxAggregateInputType
-  }
-
-
-  export type VerificationTokenGroupByOutputType = {
-    identifier: string
-    token: string
-    expires: Date
-    _count: VerificationTokenCountAggregateOutputType | null
-    _min: VerificationTokenMinAggregateOutputType | null
-    _max: VerificationTokenMaxAggregateOutputType | null
-  }
-
-  type GetVerificationTokenGroupByPayload<T extends VerificationTokenGroupByArgs> = PrismaPromise<
-    Array<
-      PickArray<VerificationTokenGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof VerificationTokenGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], VerificationTokenGroupByOutputType[P]>
-            : GetScalarType<T[P], VerificationTokenGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type VerificationTokenSelect = {
-    identifier?: boolean
-    token?: boolean
-    expires?: boolean
-  }
-
-  export type VerificationTokenGetPayload<
-    S extends boolean | null | undefined | VerificationTokenArgs,
-    U = keyof S
-      > = S extends true
-        ? VerificationToken
-    : S extends undefined
-    ? never
-    : S extends VerificationTokenArgs | VerificationTokenFindManyArgs
-    ?'include' extends U
-    ? VerificationToken 
-    : 'select' extends U
-    ? {
-    [P in TrueKeys<S['select']>]:
-    P extends keyof VerificationToken ? VerificationToken[P] : never
-  } 
-    : VerificationToken
-  : VerificationToken
-
-
-  type VerificationTokenCountArgs = Merge<
-    Omit<VerificationTokenFindManyArgs, 'select' | 'include'> & {
-      select?: VerificationTokenCountAggregateInputType | true
-    }
-  >
-
-  export interface VerificationTokenDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
-    /**
-     * Find zero or one VerificationToken that matches the filter.
-     * @param {VerificationTokenFindUniqueArgs} args - Arguments to find a VerificationToken
-     * @example
-     * // Get one VerificationToken
-     * const verificationToken = await prisma.verificationToken.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUnique<T extends VerificationTokenFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, VerificationTokenFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'VerificationToken'> extends True ? CheckSelect<T, Prisma__VerificationTokenClient<VerificationToken>, Prisma__VerificationTokenClient<VerificationTokenGetPayload<T>>> : CheckSelect<T, Prisma__VerificationTokenClient<VerificationToken | null >, Prisma__VerificationTokenClient<VerificationTokenGetPayload<T> | null >>
-
-    /**
-     * Find the first VerificationToken that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {VerificationTokenFindFirstArgs} args - Arguments to find a VerificationToken
-     * @example
-     * // Get one VerificationToken
-     * const verificationToken = await prisma.verificationToken.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirst<T extends VerificationTokenFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, VerificationTokenFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'VerificationToken'> extends True ? CheckSelect<T, Prisma__VerificationTokenClient<VerificationToken>, Prisma__VerificationTokenClient<VerificationTokenGetPayload<T>>> : CheckSelect<T, Prisma__VerificationTokenClient<VerificationToken | null >, Prisma__VerificationTokenClient<VerificationTokenGetPayload<T> | null >>
-
-    /**
-     * Find zero or more VerificationTokens that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {VerificationTokenFindManyArgs=} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all VerificationTokens
-     * const verificationTokens = await prisma.verificationToken.findMany()
-     * 
-     * // Get first 10 VerificationTokens
-     * const verificationTokens = await prisma.verificationToken.findMany({ take: 10 })
-     * 
-     * // Only select the `identifier`
-     * const verificationTokenWithIdentifierOnly = await prisma.verificationToken.findMany({ select: { identifier: true } })
-     * 
-    **/
-    findMany<T extends VerificationTokenFindManyArgs>(
-      args?: SelectSubset<T, VerificationTokenFindManyArgs>
-    ): CheckSelect<T, PrismaPromise<Array<VerificationToken>>, PrismaPromise<Array<VerificationTokenGetPayload<T>>>>
-
-    /**
-     * Create a VerificationToken.
-     * @param {VerificationTokenCreateArgs} args - Arguments to create a VerificationToken.
-     * @example
-     * // Create one VerificationToken
-     * const VerificationToken = await prisma.verificationToken.create({
-     *   data: {
-     *     // ... data to create a VerificationToken
-     *   }
-     * })
-     * 
-    **/
-    create<T extends VerificationTokenCreateArgs>(
-      args: SelectSubset<T, VerificationTokenCreateArgs>
-    ): CheckSelect<T, Prisma__VerificationTokenClient<VerificationToken>, Prisma__VerificationTokenClient<VerificationTokenGetPayload<T>>>
-
-    /**
-     * Create many VerificationTokens.
-     *     @param {VerificationTokenCreateManyArgs} args - Arguments to create many VerificationTokens.
-     *     @example
-     *     // Create many VerificationTokens
-     *     const verificationToken = await prisma.verificationToken.createMany({
-     *       data: {
-     *         // ... provide data here
-     *       }
-     *     })
-     *     
-    **/
-    createMany<T extends VerificationTokenCreateManyArgs>(
-      args?: SelectSubset<T, VerificationTokenCreateManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a VerificationToken.
-     * @param {VerificationTokenDeleteArgs} args - Arguments to delete one VerificationToken.
-     * @example
-     * // Delete one VerificationToken
-     * const VerificationToken = await prisma.verificationToken.delete({
-     *   where: {
-     *     // ... filter to delete one VerificationToken
-     *   }
-     * })
-     * 
-    **/
-    delete<T extends VerificationTokenDeleteArgs>(
-      args: SelectSubset<T, VerificationTokenDeleteArgs>
-    ): CheckSelect<T, Prisma__VerificationTokenClient<VerificationToken>, Prisma__VerificationTokenClient<VerificationTokenGetPayload<T>>>
-
-    /**
-     * Update one VerificationToken.
-     * @param {VerificationTokenUpdateArgs} args - Arguments to update one VerificationToken.
-     * @example
-     * // Update one VerificationToken
-     * const verificationToken = await prisma.verificationToken.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    update<T extends VerificationTokenUpdateArgs>(
-      args: SelectSubset<T, VerificationTokenUpdateArgs>
-    ): CheckSelect<T, Prisma__VerificationTokenClient<VerificationToken>, Prisma__VerificationTokenClient<VerificationTokenGetPayload<T>>>
-
-    /**
-     * Delete zero or more VerificationTokens.
-     * @param {VerificationTokenDeleteManyArgs} args - Arguments to filter VerificationTokens to delete.
-     * @example
-     * // Delete a few VerificationTokens
-     * const { count } = await prisma.verificationToken.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-    **/
-    deleteMany<T extends VerificationTokenDeleteManyArgs>(
-      args?: SelectSubset<T, VerificationTokenDeleteManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more VerificationTokens.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {VerificationTokenUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many VerificationTokens
-     * const verificationToken = await prisma.verificationToken.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    updateMany<T extends VerificationTokenUpdateManyArgs>(
-      args: SelectSubset<T, VerificationTokenUpdateManyArgs>
-    ): PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one VerificationToken.
-     * @param {VerificationTokenUpsertArgs} args - Arguments to update or create a VerificationToken.
-     * @example
-     * // Update or create a VerificationToken
-     * const verificationToken = await prisma.verificationToken.upsert({
-     *   create: {
-     *     // ... data to create a VerificationToken
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the VerificationToken we want to update
-     *   }
-     * })
-    **/
-    upsert<T extends VerificationTokenUpsertArgs>(
-      args: SelectSubset<T, VerificationTokenUpsertArgs>
-    ): CheckSelect<T, Prisma__VerificationTokenClient<VerificationToken>, Prisma__VerificationTokenClient<VerificationTokenGetPayload<T>>>
-
-    /**
-     * Find one VerificationToken that matches the filter or throw
-     * `NotFoundError` if no matches were found.
-     * @param {VerificationTokenFindUniqueOrThrowArgs} args - Arguments to find a VerificationToken
-     * @example
-     * // Get one VerificationToken
-     * const verificationToken = await prisma.verificationToken.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUniqueOrThrow<T extends VerificationTokenFindUniqueOrThrowArgs>(
-      args?: SelectSubset<T, VerificationTokenFindUniqueOrThrowArgs>
-    ): CheckSelect<T, Prisma__VerificationTokenClient<VerificationToken>, Prisma__VerificationTokenClient<VerificationTokenGetPayload<T>>>
-
-    /**
-     * Find the first VerificationToken that matches the filter or
-     * throw `NotFoundError` if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {VerificationTokenFindFirstOrThrowArgs} args - Arguments to find a VerificationToken
-     * @example
-     * // Get one VerificationToken
-     * const verificationToken = await prisma.verificationToken.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirstOrThrow<T extends VerificationTokenFindFirstOrThrowArgs>(
-      args?: SelectSubset<T, VerificationTokenFindFirstOrThrowArgs>
-    ): CheckSelect<T, Prisma__VerificationTokenClient<VerificationToken>, Prisma__VerificationTokenClient<VerificationTokenGetPayload<T>>>
-
-    /**
-     * Count the number of VerificationTokens.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {VerificationTokenCountArgs} args - Arguments to filter VerificationTokens to count.
-     * @example
-     * // Count the number of VerificationTokens
-     * const count = await prisma.verificationToken.count({
-     *   where: {
-     *     // ... the filter for the VerificationTokens we want to count
-     *   }
-     * })
-    **/
-    count<T extends VerificationTokenCountArgs>(
-      args?: Subset<T, VerificationTokenCountArgs>,
-    ): PrismaPromise<
-      T extends _Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], VerificationTokenCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a VerificationToken.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {VerificationTokenAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends VerificationTokenAggregateArgs>(args: Subset<T, VerificationTokenAggregateArgs>): PrismaPromise<GetVerificationTokenAggregateType<T>>
-
-    /**
-     * Group by VerificationToken.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {VerificationTokenGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends VerificationTokenGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: VerificationTokenGroupByArgs['orderBy'] }
-        : { orderBy?: VerificationTokenGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends TupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, VerificationTokenGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVerificationTokenGroupByPayload<T> : PrismaPromise<InputErrors>
-
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for VerificationToken.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export class Prisma__VerificationTokenClient<T> implements PrismaPromise<T> {
-    [prisma]: true;
-    private readonly _dmmf;
-    private readonly _fetcher;
-    private readonly _queryType;
-    private readonly _rootField;
-    private readonly _clientMethod;
-    private readonly _args;
-    private readonly _dataPath;
-    private readonly _errorFormat;
-    private readonly _measurePerformance?;
-    private _isList;
-    private _callsite;
-    private _requestPromise?;
-    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
-    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
-
-
-    private get _document();
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
-  }
-
-
-
-  // Custom InputTypes
-
-  /**
-   * VerificationToken base type for findUnique actions
-   */
-  export type VerificationTokenFindUniqueArgsBase = {
-    /**
-     * Select specific fields to fetch from the VerificationToken
-     * 
-    **/
-    select?: VerificationTokenSelect | null
-    /**
-     * Filter, which VerificationToken to fetch.
-     * 
-    **/
-    where: VerificationTokenWhereUniqueInput
-  }
-
-  /**
-   * VerificationToken: findUnique
-   */
-  export interface VerificationTokenFindUniqueArgs extends VerificationTokenFindUniqueArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
-  }
-      
-
-  /**
-   * VerificationToken base type for findFirst actions
-   */
-  export type VerificationTokenFindFirstArgsBase = {
-    /**
-     * Select specific fields to fetch from the VerificationToken
-     * 
-    **/
-    select?: VerificationTokenSelect | null
-    /**
-     * Filter, which VerificationToken to fetch.
-     * 
-    **/
-    where?: VerificationTokenWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of VerificationTokens to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<VerificationTokenOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for VerificationTokens.
-     * 
-    **/
-    cursor?: VerificationTokenWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` VerificationTokens from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` VerificationTokens.
-     * 
-    **/
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of VerificationTokens.
-     * 
-    **/
-    distinct?: Enumerable<VerificationTokenScalarFieldEnum>
-  }
-
-  /**
-   * VerificationToken: findFirst
-   */
-  export interface VerificationTokenFindFirstArgs extends VerificationTokenFindFirstArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
-  }
-      
-
-  /**
-   * VerificationToken findMany
-   */
-  export type VerificationTokenFindManyArgs = {
-    /**
-     * Select specific fields to fetch from the VerificationToken
-     * 
-    **/
-    select?: VerificationTokenSelect | null
-    /**
-     * Filter, which VerificationTokens to fetch.
-     * 
-    **/
-    where?: VerificationTokenWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of VerificationTokens to fetch.
-     * 
-    **/
-    orderBy?: Enumerable<VerificationTokenOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing VerificationTokens.
-     * 
-    **/
-    cursor?: VerificationTokenWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` VerificationTokens from the position of the cursor.
-     * 
-    **/
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` VerificationTokens.
-     * 
-    **/
-    skip?: number
-    distinct?: Enumerable<VerificationTokenScalarFieldEnum>
-  }
-
-
-  /**
-   * VerificationToken create
-   */
-  export type VerificationTokenCreateArgs = {
-    /**
-     * Select specific fields to fetch from the VerificationToken
-     * 
-    **/
-    select?: VerificationTokenSelect | null
-    /**
-     * The data needed to create a VerificationToken.
-     * 
-    **/
-    data: XOR<VerificationTokenCreateInput, VerificationTokenUncheckedCreateInput>
-  }
-
-
-  /**
-   * VerificationToken createMany
-   */
-  export type VerificationTokenCreateManyArgs = {
-    /**
-     * The data used to create many VerificationTokens.
-     * 
-    **/
-    data: Enumerable<VerificationTokenCreateManyInput>
-    skipDuplicates?: boolean
-  }
-
-
-  /**
-   * VerificationToken update
-   */
-  export type VerificationTokenUpdateArgs = {
-    /**
-     * Select specific fields to fetch from the VerificationToken
-     * 
-    **/
-    select?: VerificationTokenSelect | null
-    /**
-     * The data needed to update a VerificationToken.
-     * 
-    **/
-    data: XOR<VerificationTokenUpdateInput, VerificationTokenUncheckedUpdateInput>
-    /**
-     * Choose, which VerificationToken to update.
-     * 
-    **/
-    where: VerificationTokenWhereUniqueInput
-  }
-
-
-  /**
-   * VerificationToken updateMany
-   */
-  export type VerificationTokenUpdateManyArgs = {
-    /**
-     * The data used to update VerificationTokens.
-     * 
-    **/
-    data: XOR<VerificationTokenUpdateManyMutationInput, VerificationTokenUncheckedUpdateManyInput>
-    /**
-     * Filter which VerificationTokens to update
-     * 
-    **/
-    where?: VerificationTokenWhereInput
-  }
-
-
-  /**
-   * VerificationToken upsert
-   */
-  export type VerificationTokenUpsertArgs = {
-    /**
-     * Select specific fields to fetch from the VerificationToken
-     * 
-    **/
-    select?: VerificationTokenSelect | null
-    /**
-     * The filter to search for the VerificationToken to update in case it exists.
-     * 
-    **/
-    where: VerificationTokenWhereUniqueInput
-    /**
-     * In case the VerificationToken found by the `where` argument doesn't exist, create a new VerificationToken with this data.
-     * 
-    **/
-    create: XOR<VerificationTokenCreateInput, VerificationTokenUncheckedCreateInput>
-    /**
-     * In case the VerificationToken was found with the provided `where` argument, update it with this data.
-     * 
-    **/
-    update: XOR<VerificationTokenUpdateInput, VerificationTokenUncheckedUpdateInput>
-  }
-
-
-  /**
-   * VerificationToken delete
-   */
-  export type VerificationTokenDeleteArgs = {
-    /**
-     * Select specific fields to fetch from the VerificationToken
-     * 
-    **/
-    select?: VerificationTokenSelect | null
-    /**
-     * Filter which VerificationToken to delete.
-     * 
-    **/
-    where: VerificationTokenWhereUniqueInput
-  }
-
-
-  /**
-   * VerificationToken deleteMany
-   */
-  export type VerificationTokenDeleteManyArgs = {
-    /**
-     * Filter which VerificationTokens to delete
-     * 
-    **/
-    where?: VerificationTokenWhereInput
-  }
-
-
-  /**
-   * VerificationToken: findUniqueOrThrow
-   */
-  export type VerificationTokenFindUniqueOrThrowArgs = VerificationTokenFindUniqueArgsBase
-      
-
-  /**
-   * VerificationToken: findFirstOrThrow
-   */
-  export type VerificationTokenFindFirstOrThrowArgs = VerificationTokenFindFirstArgsBase
-      
-
-  /**
-   * VerificationToken without action
-   */
-  export type VerificationTokenArgs = {
-    /**
-     * Select specific fields to fetch from the VerificationToken
-     * 
-    **/
-    select?: VerificationTokenSelect | null
-  }
-
-
-
-  /**
-   * Model puzzles
-   */
-
-
-  export type AggregatePuzzles = {
-    _count: PuzzlesCountAggregateOutputType | null
-    _avg: PuzzlesAvgAggregateOutputType | null
-    _sum: PuzzlesSumAggregateOutputType | null
-    _min: PuzzlesMinAggregateOutputType | null
-    _max: PuzzlesMaxAggregateOutputType | null
-  }
-
-  export type PuzzlesAvgAggregateOutputType = {
+  export type PuzzleAvgAggregateOutputType = {
     rating: number | null
     ratingDeviation: number | null
     popularity: number | null
     nbPlays: number | null
   }
 
-  export type PuzzlesSumAggregateOutputType = {
+  export type PuzzleSumAggregateOutputType = {
     rating: number | null
     ratingDeviation: number | null
     popularity: number | null
     nbPlays: number | null
   }
 
-  export type PuzzlesMinAggregateOutputType = {
+  export type PuzzleMinAggregateOutputType = {
     id: string | null
     fen: string | null
     moves: string | null
@@ -4731,7 +1748,7 @@ export namespace Prisma {
     openingVariation: string | null
   }
 
-  export type PuzzlesMaxAggregateOutputType = {
+  export type PuzzleMaxAggregateOutputType = {
     id: string | null
     fen: string | null
     moves: string | null
@@ -4745,7 +1762,7 @@ export namespace Prisma {
     openingVariation: string | null
   }
 
-  export type PuzzlesCountAggregateOutputType = {
+  export type PuzzleCountAggregateOutputType = {
     id: number
     fen: number
     moves: number
@@ -4761,21 +1778,21 @@ export namespace Prisma {
   }
 
 
-  export type PuzzlesAvgAggregateInputType = {
+  export type PuzzleAvgAggregateInputType = {
     rating?: true
     ratingDeviation?: true
     popularity?: true
     nbPlays?: true
   }
 
-  export type PuzzlesSumAggregateInputType = {
+  export type PuzzleSumAggregateInputType = {
     rating?: true
     ratingDeviation?: true
     popularity?: true
     nbPlays?: true
   }
 
-  export type PuzzlesMinAggregateInputType = {
+  export type PuzzleMinAggregateInputType = {
     id?: true
     fen?: true
     moves?: true
@@ -4789,7 +1806,7 @@ export namespace Prisma {
     openingVariation?: true
   }
 
-  export type PuzzlesMaxAggregateInputType = {
+  export type PuzzleMaxAggregateInputType = {
     id?: true
     fen?: true
     moves?: true
@@ -4803,7 +1820,7 @@ export namespace Prisma {
     openingVariation?: true
   }
 
-  export type PuzzlesCountAggregateInputType = {
+  export type PuzzleCountAggregateInputType = {
     id?: true
     fen?: true
     moves?: true
@@ -4818,99 +1835,99 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type PuzzlesAggregateArgs = {
+  export type PuzzleAggregateArgs = {
     /**
-     * Filter which puzzles to aggregate.
+     * Filter which Puzzle to aggregate.
      * 
     **/
-    where?: puzzlesWhereInput
+    where?: PuzzleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of puzzles to fetch.
+     * Determine the order of Puzzles to fetch.
      * 
     **/
-    orderBy?: Enumerable<puzzlesOrderByWithRelationInput>
+    orderBy?: Enumerable<PuzzleOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      * 
     **/
-    cursor?: puzzlesWhereUniqueInput
+    cursor?: PuzzleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` puzzles from the position of the cursor.
+     * Take `±n` Puzzles from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` puzzles.
+     * Skip the first `n` Puzzles.
      * 
     **/
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned puzzles
+     * Count returned Puzzles
     **/
-    _count?: true | PuzzlesCountAggregateInputType
+    _count?: true | PuzzleCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to average
     **/
-    _avg?: PuzzlesAvgAggregateInputType
+    _avg?: PuzzleAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to sum
     **/
-    _sum?: PuzzlesSumAggregateInputType
+    _sum?: PuzzleSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: PuzzlesMinAggregateInputType
+    _min?: PuzzleMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: PuzzlesMaxAggregateInputType
+    _max?: PuzzleMaxAggregateInputType
   }
 
-  export type GetPuzzlesAggregateType<T extends PuzzlesAggregateArgs> = {
-        [P in keyof T & keyof AggregatePuzzles]: P extends '_count' | 'count'
+  export type GetPuzzleAggregateType<T extends PuzzleAggregateArgs> = {
+        [P in keyof T & keyof AggregatePuzzle]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregatePuzzles[P]>
-      : GetScalarType<T[P], AggregatePuzzles[P]>
+        : GetScalarType<T[P], AggregatePuzzle[P]>
+      : GetScalarType<T[P], AggregatePuzzle[P]>
   }
 
 
 
 
-  export type PuzzlesGroupByArgs = {
-    where?: puzzlesWhereInput
-    orderBy?: Enumerable<puzzlesOrderByWithAggregationInput>
-    by: Array<PuzzlesScalarFieldEnum>
-    having?: puzzlesScalarWhereWithAggregatesInput
+  export type PuzzleGroupByArgs = {
+    where?: PuzzleWhereInput
+    orderBy?: Enumerable<PuzzleOrderByWithAggregationInput>
+    by: Array<PuzzleScalarFieldEnum>
+    having?: PuzzleScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: PuzzlesCountAggregateInputType | true
-    _avg?: PuzzlesAvgAggregateInputType
-    _sum?: PuzzlesSumAggregateInputType
-    _min?: PuzzlesMinAggregateInputType
-    _max?: PuzzlesMaxAggregateInputType
+    _count?: PuzzleCountAggregateInputType | true
+    _avg?: PuzzleAvgAggregateInputType
+    _sum?: PuzzleSumAggregateInputType
+    _min?: PuzzleMinAggregateInputType
+    _max?: PuzzleMaxAggregateInputType
   }
 
 
-  export type PuzzlesGroupByOutputType = {
+  export type PuzzleGroupByOutputType = {
     id: string
     fen: string
     moves: string
@@ -4922,28 +1939,28 @@ export namespace Prisma {
     gameUrl: string | null
     openingFamily: string | null
     openingVariation: string | null
-    _count: PuzzlesCountAggregateOutputType | null
-    _avg: PuzzlesAvgAggregateOutputType | null
-    _sum: PuzzlesSumAggregateOutputType | null
-    _min: PuzzlesMinAggregateOutputType | null
-    _max: PuzzlesMaxAggregateOutputType | null
+    _count: PuzzleCountAggregateOutputType | null
+    _avg: PuzzleAvgAggregateOutputType | null
+    _sum: PuzzleSumAggregateOutputType | null
+    _min: PuzzleMinAggregateOutputType | null
+    _max: PuzzleMaxAggregateOutputType | null
   }
 
-  type GetPuzzlesGroupByPayload<T extends PuzzlesGroupByArgs> = PrismaPromise<
+  type GetPuzzleGroupByPayload<T extends PuzzleGroupByArgs> = PrismaPromise<
     Array<
-      PickArray<PuzzlesGroupByOutputType, T['by']> &
+      PickArray<PuzzleGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof PuzzlesGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof PuzzleGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], PuzzlesGroupByOutputType[P]>
-            : GetScalarType<T[P], PuzzlesGroupByOutputType[P]>
+              : GetScalarType<T[P], PuzzleGroupByOutputType[P]>
+            : GetScalarType<T[P], PuzzleGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type puzzlesSelect = {
+  export type PuzzleSelect = {
     id?: boolean
     fen?: boolean
     moves?: boolean
@@ -4957,138 +1974,138 @@ export namespace Prisma {
     openingVariation?: boolean
   }
 
-  export type puzzlesGetPayload<
-    S extends boolean | null | undefined | puzzlesArgs,
+  export type PuzzleGetPayload<
+    S extends boolean | null | undefined | PuzzleArgs,
     U = keyof S
       > = S extends true
-        ? puzzles
+        ? Puzzle
     : S extends undefined
     ? never
-    : S extends puzzlesArgs | puzzlesFindManyArgs
+    : S extends PuzzleArgs | PuzzleFindManyArgs
     ?'include' extends U
-    ? puzzles 
+    ? Puzzle 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]:
-    P extends keyof puzzles ? puzzles[P] : never
+    P extends keyof Puzzle ? Puzzle[P] : never
   } 
-    : puzzles
-  : puzzles
+    : Puzzle
+  : Puzzle
 
 
-  type puzzlesCountArgs = Merge<
-    Omit<puzzlesFindManyArgs, 'select' | 'include'> & {
-      select?: PuzzlesCountAggregateInputType | true
+  type PuzzleCountArgs = Merge<
+    Omit<PuzzleFindManyArgs, 'select' | 'include'> & {
+      select?: PuzzleCountAggregateInputType | true
     }
   >
 
-  export interface puzzlesDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+  export interface PuzzleDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
     /**
-     * Find zero or one Puzzles that matches the filter.
-     * @param {puzzlesFindUniqueArgs} args - Arguments to find a Puzzles
+     * Find zero or one Puzzle that matches the filter.
+     * @param {PuzzleFindUniqueArgs} args - Arguments to find a Puzzle
      * @example
-     * // Get one Puzzles
-     * const puzzles = await prisma.puzzles.findUnique({
+     * // Get one Puzzle
+     * const puzzle = await prisma.puzzle.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findUnique<T extends puzzlesFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, puzzlesFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'puzzles'> extends True ? CheckSelect<T, Prisma__puzzlesClient<puzzles>, Prisma__puzzlesClient<puzzlesGetPayload<T>>> : CheckSelect<T, Prisma__puzzlesClient<puzzles | null >, Prisma__puzzlesClient<puzzlesGetPayload<T> | null >>
+    findUnique<T extends PuzzleFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, PuzzleFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Puzzle'> extends True ? CheckSelect<T, Prisma__PuzzleClient<Puzzle>, Prisma__PuzzleClient<PuzzleGetPayload<T>>> : CheckSelect<T, Prisma__PuzzleClient<Puzzle | null >, Prisma__PuzzleClient<PuzzleGetPayload<T> | null >>
 
     /**
-     * Find the first Puzzles that matches the filter.
+     * Find the first Puzzle that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {puzzlesFindFirstArgs} args - Arguments to find a Puzzles
+     * @param {PuzzleFindFirstArgs} args - Arguments to find a Puzzle
      * @example
-     * // Get one Puzzles
-     * const puzzles = await prisma.puzzles.findFirst({
+     * // Get one Puzzle
+     * const puzzle = await prisma.puzzle.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findFirst<T extends puzzlesFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, puzzlesFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'puzzles'> extends True ? CheckSelect<T, Prisma__puzzlesClient<puzzles>, Prisma__puzzlesClient<puzzlesGetPayload<T>>> : CheckSelect<T, Prisma__puzzlesClient<puzzles | null >, Prisma__puzzlesClient<puzzlesGetPayload<T> | null >>
+    findFirst<T extends PuzzleFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, PuzzleFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Puzzle'> extends True ? CheckSelect<T, Prisma__PuzzleClient<Puzzle>, Prisma__PuzzleClient<PuzzleGetPayload<T>>> : CheckSelect<T, Prisma__PuzzleClient<Puzzle | null >, Prisma__PuzzleClient<PuzzleGetPayload<T> | null >>
 
     /**
      * Find zero or more Puzzles that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {puzzlesFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @param {PuzzleFindManyArgs=} args - Arguments to filter and select certain fields only.
      * @example
      * // Get all Puzzles
-     * const puzzles = await prisma.puzzles.findMany()
+     * const puzzles = await prisma.puzzle.findMany()
      * 
      * // Get first 10 Puzzles
-     * const puzzles = await prisma.puzzles.findMany({ take: 10 })
+     * const puzzles = await prisma.puzzle.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const puzzlesWithIdOnly = await prisma.puzzles.findMany({ select: { id: true } })
+     * const puzzleWithIdOnly = await prisma.puzzle.findMany({ select: { id: true } })
      * 
     **/
-    findMany<T extends puzzlesFindManyArgs>(
-      args?: SelectSubset<T, puzzlesFindManyArgs>
-    ): CheckSelect<T, PrismaPromise<Array<puzzles>>, PrismaPromise<Array<puzzlesGetPayload<T>>>>
+    findMany<T extends PuzzleFindManyArgs>(
+      args?: SelectSubset<T, PuzzleFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<Puzzle>>, PrismaPromise<Array<PuzzleGetPayload<T>>>>
 
     /**
-     * Create a Puzzles.
-     * @param {puzzlesCreateArgs} args - Arguments to create a Puzzles.
+     * Create a Puzzle.
+     * @param {PuzzleCreateArgs} args - Arguments to create a Puzzle.
      * @example
-     * // Create one Puzzles
-     * const Puzzles = await prisma.puzzles.create({
+     * // Create one Puzzle
+     * const Puzzle = await prisma.puzzle.create({
      *   data: {
-     *     // ... data to create a Puzzles
+     *     // ... data to create a Puzzle
      *   }
      * })
      * 
     **/
-    create<T extends puzzlesCreateArgs>(
-      args: SelectSubset<T, puzzlesCreateArgs>
-    ): CheckSelect<T, Prisma__puzzlesClient<puzzles>, Prisma__puzzlesClient<puzzlesGetPayload<T>>>
+    create<T extends PuzzleCreateArgs>(
+      args: SelectSubset<T, PuzzleCreateArgs>
+    ): CheckSelect<T, Prisma__PuzzleClient<Puzzle>, Prisma__PuzzleClient<PuzzleGetPayload<T>>>
 
     /**
      * Create many Puzzles.
-     *     @param {puzzlesCreateManyArgs} args - Arguments to create many Puzzles.
+     *     @param {PuzzleCreateManyArgs} args - Arguments to create many Puzzles.
      *     @example
      *     // Create many Puzzles
-     *     const puzzles = await prisma.puzzles.createMany({
+     *     const puzzle = await prisma.puzzle.createMany({
      *       data: {
      *         // ... provide data here
      *       }
      *     })
      *     
     **/
-    createMany<T extends puzzlesCreateManyArgs>(
-      args?: SelectSubset<T, puzzlesCreateManyArgs>
+    createMany<T extends PuzzleCreateManyArgs>(
+      args?: SelectSubset<T, PuzzleCreateManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
-     * Delete a Puzzles.
-     * @param {puzzlesDeleteArgs} args - Arguments to delete one Puzzles.
+     * Delete a Puzzle.
+     * @param {PuzzleDeleteArgs} args - Arguments to delete one Puzzle.
      * @example
-     * // Delete one Puzzles
-     * const Puzzles = await prisma.puzzles.delete({
+     * // Delete one Puzzle
+     * const Puzzle = await prisma.puzzle.delete({
      *   where: {
-     *     // ... filter to delete one Puzzles
+     *     // ... filter to delete one Puzzle
      *   }
      * })
      * 
     **/
-    delete<T extends puzzlesDeleteArgs>(
-      args: SelectSubset<T, puzzlesDeleteArgs>
-    ): CheckSelect<T, Prisma__puzzlesClient<puzzles>, Prisma__puzzlesClient<puzzlesGetPayload<T>>>
+    delete<T extends PuzzleDeleteArgs>(
+      args: SelectSubset<T, PuzzleDeleteArgs>
+    ): CheckSelect<T, Prisma__PuzzleClient<Puzzle>, Prisma__PuzzleClient<PuzzleGetPayload<T>>>
 
     /**
-     * Update one Puzzles.
-     * @param {puzzlesUpdateArgs} args - Arguments to update one Puzzles.
+     * Update one Puzzle.
+     * @param {PuzzleUpdateArgs} args - Arguments to update one Puzzle.
      * @example
-     * // Update one Puzzles
-     * const puzzles = await prisma.puzzles.update({
+     * // Update one Puzzle
+     * const puzzle = await prisma.puzzle.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -5098,34 +2115,34 @@ export namespace Prisma {
      * })
      * 
     **/
-    update<T extends puzzlesUpdateArgs>(
-      args: SelectSubset<T, puzzlesUpdateArgs>
-    ): CheckSelect<T, Prisma__puzzlesClient<puzzles>, Prisma__puzzlesClient<puzzlesGetPayload<T>>>
+    update<T extends PuzzleUpdateArgs>(
+      args: SelectSubset<T, PuzzleUpdateArgs>
+    ): CheckSelect<T, Prisma__PuzzleClient<Puzzle>, Prisma__PuzzleClient<PuzzleGetPayload<T>>>
 
     /**
      * Delete zero or more Puzzles.
-     * @param {puzzlesDeleteManyArgs} args - Arguments to filter Puzzles to delete.
+     * @param {PuzzleDeleteManyArgs} args - Arguments to filter Puzzles to delete.
      * @example
      * // Delete a few Puzzles
-     * const { count } = await prisma.puzzles.deleteMany({
+     * const { count } = await prisma.puzzle.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
     **/
-    deleteMany<T extends puzzlesDeleteManyArgs>(
-      args?: SelectSubset<T, puzzlesDeleteManyArgs>
+    deleteMany<T extends PuzzleDeleteManyArgs>(
+      args?: SelectSubset<T, PuzzleDeleteManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
      * Update zero or more Puzzles.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {puzzlesUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {PuzzleUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
      * // Update many Puzzles
-     * const puzzles = await prisma.puzzles.updateMany({
+     * const puzzle = await prisma.puzzle.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -5135,93 +2152,93 @@ export namespace Prisma {
      * })
      * 
     **/
-    updateMany<T extends puzzlesUpdateManyArgs>(
-      args: SelectSubset<T, puzzlesUpdateManyArgs>
+    updateMany<T extends PuzzleUpdateManyArgs>(
+      args: SelectSubset<T, PuzzleUpdateManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
-     * Create or update one Puzzles.
-     * @param {puzzlesUpsertArgs} args - Arguments to update or create a Puzzles.
+     * Create or update one Puzzle.
+     * @param {PuzzleUpsertArgs} args - Arguments to update or create a Puzzle.
      * @example
-     * // Update or create a Puzzles
-     * const puzzles = await prisma.puzzles.upsert({
+     * // Update or create a Puzzle
+     * const puzzle = await prisma.puzzle.upsert({
      *   create: {
-     *     // ... data to create a Puzzles
+     *     // ... data to create a Puzzle
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Puzzles we want to update
+     *     // ... the filter for the Puzzle we want to update
      *   }
      * })
     **/
-    upsert<T extends puzzlesUpsertArgs>(
-      args: SelectSubset<T, puzzlesUpsertArgs>
-    ): CheckSelect<T, Prisma__puzzlesClient<puzzles>, Prisma__puzzlesClient<puzzlesGetPayload<T>>>
+    upsert<T extends PuzzleUpsertArgs>(
+      args: SelectSubset<T, PuzzleUpsertArgs>
+    ): CheckSelect<T, Prisma__PuzzleClient<Puzzle>, Prisma__PuzzleClient<PuzzleGetPayload<T>>>
 
     /**
-     * Find one Puzzles that matches the filter or throw
+     * Find one Puzzle that matches the filter or throw
      * `NotFoundError` if no matches were found.
-     * @param {puzzlesFindUniqueOrThrowArgs} args - Arguments to find a Puzzles
+     * @param {PuzzleFindUniqueOrThrowArgs} args - Arguments to find a Puzzle
      * @example
-     * // Get one Puzzles
-     * const puzzles = await prisma.puzzles.findUniqueOrThrow({
+     * // Get one Puzzle
+     * const puzzle = await prisma.puzzle.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findUniqueOrThrow<T extends puzzlesFindUniqueOrThrowArgs>(
-      args?: SelectSubset<T, puzzlesFindUniqueOrThrowArgs>
-    ): CheckSelect<T, Prisma__puzzlesClient<puzzles>, Prisma__puzzlesClient<puzzlesGetPayload<T>>>
+    findUniqueOrThrow<T extends PuzzleFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, PuzzleFindUniqueOrThrowArgs>
+    ): CheckSelect<T, Prisma__PuzzleClient<Puzzle>, Prisma__PuzzleClient<PuzzleGetPayload<T>>>
 
     /**
-     * Find the first Puzzles that matches the filter or
+     * Find the first Puzzle that matches the filter or
      * throw `NotFoundError` if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {puzzlesFindFirstOrThrowArgs} args - Arguments to find a Puzzles
+     * @param {PuzzleFindFirstOrThrowArgs} args - Arguments to find a Puzzle
      * @example
-     * // Get one Puzzles
-     * const puzzles = await prisma.puzzles.findFirstOrThrow({
+     * // Get one Puzzle
+     * const puzzle = await prisma.puzzle.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findFirstOrThrow<T extends puzzlesFindFirstOrThrowArgs>(
-      args?: SelectSubset<T, puzzlesFindFirstOrThrowArgs>
-    ): CheckSelect<T, Prisma__puzzlesClient<puzzles>, Prisma__puzzlesClient<puzzlesGetPayload<T>>>
+    findFirstOrThrow<T extends PuzzleFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, PuzzleFindFirstOrThrowArgs>
+    ): CheckSelect<T, Prisma__PuzzleClient<Puzzle>, Prisma__PuzzleClient<PuzzleGetPayload<T>>>
 
     /**
      * Count the number of Puzzles.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {puzzlesCountArgs} args - Arguments to filter Puzzles to count.
+     * @param {PuzzleCountArgs} args - Arguments to filter Puzzles to count.
      * @example
      * // Count the number of Puzzles
-     * const count = await prisma.puzzles.count({
+     * const count = await prisma.puzzle.count({
      *   where: {
      *     // ... the filter for the Puzzles we want to count
      *   }
      * })
     **/
-    count<T extends puzzlesCountArgs>(
-      args?: Subset<T, puzzlesCountArgs>,
+    count<T extends PuzzleCountArgs>(
+      args?: Subset<T, PuzzleCountArgs>,
     ): PrismaPromise<
       T extends _Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], PuzzlesCountAggregateOutputType>
+          : GetScalarType<T['select'], PuzzleCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Puzzles.
+     * Allows you to perform aggregations operations on a Puzzle.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PuzzlesAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {PuzzleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -5241,13 +2258,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends PuzzlesAggregateArgs>(args: Subset<T, PuzzlesAggregateArgs>): PrismaPromise<GetPuzzlesAggregateType<T>>
+    aggregate<T extends PuzzleAggregateArgs>(args: Subset<T, PuzzleAggregateArgs>): PrismaPromise<GetPuzzleAggregateType<T>>
 
     /**
-     * Group by Puzzles.
+     * Group by Puzzle.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {PuzzlesGroupByArgs} args - Group by arguments.
+     * @param {PuzzleGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -5262,14 +2279,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends PuzzlesGroupByArgs,
+      T extends PuzzleGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: PuzzlesGroupByArgs['orderBy'] }
-        : { orderBy?: PuzzlesGroupByArgs['orderBy'] },
+        ? { orderBy: PuzzleGroupByArgs['orderBy'] }
+        : { orderBy?: PuzzleGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -5318,17 +2335,17 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, PuzzlesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPuzzlesGroupByPayload<T> : PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, PuzzleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPuzzleGroupByPayload<T> : PrismaPromise<InputErrors>
 
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for puzzles.
+   * The delegate class that acts as a "Promise-like" for Puzzle.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__puzzlesClient<T> implements PrismaPromise<T> {
+  export class Prisma__PuzzleClient<T> implements PrismaPromise<T> {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -5374,25 +2391,25 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * puzzles base type for findUnique actions
+   * Puzzle base type for findUnique actions
    */
-  export type puzzlesFindUniqueArgsBase = {
+  export type PuzzleFindUniqueArgsBase = {
     /**
-     * Select specific fields to fetch from the puzzles
+     * Select specific fields to fetch from the Puzzle
      * 
     **/
-    select?: puzzlesSelect | null
+    select?: PuzzleSelect | null
     /**
-     * Filter, which puzzles to fetch.
+     * Filter, which Puzzle to fetch.
      * 
     **/
-    where: puzzlesWhereUniqueInput
+    where: PuzzleWhereUniqueInput
   }
 
   /**
-   * puzzles: findUnique
+   * Puzzle: findUnique
    */
-  export interface puzzlesFindUniqueArgs extends puzzlesFindUniqueArgsBase {
+  export interface PuzzleFindUniqueArgs extends PuzzleFindUniqueArgsBase {
    /**
     * Throw an Error if query returns no results
     * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
@@ -5402,60 +2419,60 @@ export namespace Prisma {
       
 
   /**
-   * puzzles base type for findFirst actions
+   * Puzzle base type for findFirst actions
    */
-  export type puzzlesFindFirstArgsBase = {
+  export type PuzzleFindFirstArgsBase = {
     /**
-     * Select specific fields to fetch from the puzzles
+     * Select specific fields to fetch from the Puzzle
      * 
     **/
-    select?: puzzlesSelect | null
+    select?: PuzzleSelect | null
     /**
-     * Filter, which puzzles to fetch.
+     * Filter, which Puzzle to fetch.
      * 
     **/
-    where?: puzzlesWhereInput
+    where?: PuzzleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of puzzles to fetch.
+     * Determine the order of Puzzles to fetch.
      * 
     **/
-    orderBy?: Enumerable<puzzlesOrderByWithRelationInput>
+    orderBy?: Enumerable<PuzzleOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for puzzles.
+     * Sets the position for searching for Puzzles.
      * 
     **/
-    cursor?: puzzlesWhereUniqueInput
+    cursor?: PuzzleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` puzzles from the position of the cursor.
+     * Take `±n` Puzzles from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` puzzles.
+     * Skip the first `n` Puzzles.
      * 
     **/
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of puzzles.
+     * Filter by unique combinations of Puzzles.
      * 
     **/
-    distinct?: Enumerable<PuzzlesScalarFieldEnum>
+    distinct?: Enumerable<PuzzleScalarFieldEnum>
   }
 
   /**
-   * puzzles: findFirst
+   * Puzzle: findFirst
    */
-  export interface puzzlesFindFirstArgs extends puzzlesFindFirstArgsBase {
+  export interface PuzzleFindFirstArgs extends PuzzleFindFirstArgsBase {
    /**
     * Throw an Error if query returns no results
     * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
@@ -5465,197 +2482,197 @@ export namespace Prisma {
       
 
   /**
-   * puzzles findMany
+   * Puzzle findMany
    */
-  export type puzzlesFindManyArgs = {
+  export type PuzzleFindManyArgs = {
     /**
-     * Select specific fields to fetch from the puzzles
+     * Select specific fields to fetch from the Puzzle
      * 
     **/
-    select?: puzzlesSelect | null
+    select?: PuzzleSelect | null
     /**
-     * Filter, which puzzles to fetch.
+     * Filter, which Puzzles to fetch.
      * 
     **/
-    where?: puzzlesWhereInput
+    where?: PuzzleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of puzzles to fetch.
+     * Determine the order of Puzzles to fetch.
      * 
     **/
-    orderBy?: Enumerable<puzzlesOrderByWithRelationInput>
+    orderBy?: Enumerable<PuzzleOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing puzzles.
+     * Sets the position for listing Puzzles.
      * 
     **/
-    cursor?: puzzlesWhereUniqueInput
+    cursor?: PuzzleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` puzzles from the position of the cursor.
+     * Take `±n` Puzzles from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` puzzles.
+     * Skip the first `n` Puzzles.
      * 
     **/
     skip?: number
-    distinct?: Enumerable<PuzzlesScalarFieldEnum>
+    distinct?: Enumerable<PuzzleScalarFieldEnum>
   }
 
 
   /**
-   * puzzles create
+   * Puzzle create
    */
-  export type puzzlesCreateArgs = {
+  export type PuzzleCreateArgs = {
     /**
-     * Select specific fields to fetch from the puzzles
+     * Select specific fields to fetch from the Puzzle
      * 
     **/
-    select?: puzzlesSelect | null
+    select?: PuzzleSelect | null
     /**
-     * The data needed to create a puzzles.
+     * The data needed to create a Puzzle.
      * 
     **/
-    data: XOR<puzzlesCreateInput, puzzlesUncheckedCreateInput>
+    data: XOR<PuzzleCreateInput, PuzzleUncheckedCreateInput>
   }
 
 
   /**
-   * puzzles createMany
+   * Puzzle createMany
    */
-  export type puzzlesCreateManyArgs = {
+  export type PuzzleCreateManyArgs = {
     /**
-     * The data used to create many puzzles.
+     * The data used to create many Puzzles.
      * 
     **/
-    data: Enumerable<puzzlesCreateManyInput>
+    data: Enumerable<PuzzleCreateManyInput>
     skipDuplicates?: boolean
   }
 
 
   /**
-   * puzzles update
+   * Puzzle update
    */
-  export type puzzlesUpdateArgs = {
+  export type PuzzleUpdateArgs = {
     /**
-     * Select specific fields to fetch from the puzzles
+     * Select specific fields to fetch from the Puzzle
      * 
     **/
-    select?: puzzlesSelect | null
+    select?: PuzzleSelect | null
     /**
-     * The data needed to update a puzzles.
+     * The data needed to update a Puzzle.
      * 
     **/
-    data: XOR<puzzlesUpdateInput, puzzlesUncheckedUpdateInput>
+    data: XOR<PuzzleUpdateInput, PuzzleUncheckedUpdateInput>
     /**
-     * Choose, which puzzles to update.
+     * Choose, which Puzzle to update.
      * 
     **/
-    where: puzzlesWhereUniqueInput
+    where: PuzzleWhereUniqueInput
   }
 
 
   /**
-   * puzzles updateMany
+   * Puzzle updateMany
    */
-  export type puzzlesUpdateManyArgs = {
+  export type PuzzleUpdateManyArgs = {
     /**
-     * The data used to update puzzles.
+     * The data used to update Puzzles.
      * 
     **/
-    data: XOR<puzzlesUpdateManyMutationInput, puzzlesUncheckedUpdateManyInput>
+    data: XOR<PuzzleUpdateManyMutationInput, PuzzleUncheckedUpdateManyInput>
     /**
-     * Filter which puzzles to update
+     * Filter which Puzzles to update
      * 
     **/
-    where?: puzzlesWhereInput
+    where?: PuzzleWhereInput
   }
 
 
   /**
-   * puzzles upsert
+   * Puzzle upsert
    */
-  export type puzzlesUpsertArgs = {
+  export type PuzzleUpsertArgs = {
     /**
-     * Select specific fields to fetch from the puzzles
+     * Select specific fields to fetch from the Puzzle
      * 
     **/
-    select?: puzzlesSelect | null
+    select?: PuzzleSelect | null
     /**
-     * The filter to search for the puzzles to update in case it exists.
+     * The filter to search for the Puzzle to update in case it exists.
      * 
     **/
-    where: puzzlesWhereUniqueInput
+    where: PuzzleWhereUniqueInput
     /**
-     * In case the puzzles found by the `where` argument doesn't exist, create a new puzzles with this data.
+     * In case the Puzzle found by the `where` argument doesn't exist, create a new Puzzle with this data.
      * 
     **/
-    create: XOR<puzzlesCreateInput, puzzlesUncheckedCreateInput>
+    create: XOR<PuzzleCreateInput, PuzzleUncheckedCreateInput>
     /**
-     * In case the puzzles was found with the provided `where` argument, update it with this data.
+     * In case the Puzzle was found with the provided `where` argument, update it with this data.
      * 
     **/
-    update: XOR<puzzlesUpdateInput, puzzlesUncheckedUpdateInput>
+    update: XOR<PuzzleUpdateInput, PuzzleUncheckedUpdateInput>
   }
 
 
   /**
-   * puzzles delete
+   * Puzzle delete
    */
-  export type puzzlesDeleteArgs = {
+  export type PuzzleDeleteArgs = {
     /**
-     * Select specific fields to fetch from the puzzles
+     * Select specific fields to fetch from the Puzzle
      * 
     **/
-    select?: puzzlesSelect | null
+    select?: PuzzleSelect | null
     /**
-     * Filter which puzzles to delete.
+     * Filter which Puzzle to delete.
      * 
     **/
-    where: puzzlesWhereUniqueInput
+    where: PuzzleWhereUniqueInput
   }
 
 
   /**
-   * puzzles deleteMany
+   * Puzzle deleteMany
    */
-  export type puzzlesDeleteManyArgs = {
+  export type PuzzleDeleteManyArgs = {
     /**
-     * Filter which puzzles to delete
+     * Filter which Puzzles to delete
      * 
     **/
-    where?: puzzlesWhereInput
+    where?: PuzzleWhereInput
   }
 
 
   /**
-   * puzzles: findUniqueOrThrow
+   * Puzzle: findUniqueOrThrow
    */
-  export type puzzlesFindUniqueOrThrowArgs = puzzlesFindUniqueArgsBase
+  export type PuzzleFindUniqueOrThrowArgs = PuzzleFindUniqueArgsBase
       
 
   /**
-   * puzzles: findFirstOrThrow
+   * Puzzle: findFirstOrThrow
    */
-  export type puzzlesFindFirstOrThrowArgs = puzzlesFindFirstArgsBase
+  export type PuzzleFindFirstOrThrowArgs = PuzzleFindFirstArgsBase
       
 
   /**
-   * puzzles without action
+   * Puzzle without action
    */
-  export type puzzlesArgs = {
+  export type PuzzleArgs = {
     /**
-     * Select specific fields to fetch from the puzzles
+     * Select specific fields to fetch from the Puzzle
      * 
     **/
-    select?: puzzlesSelect | null
+    select?: PuzzleSelect | null
   }
 
 
@@ -5667,25 +2684,7 @@ export namespace Prisma {
   // Based on
   // https://github.com/microsoft/TypeScript/issues/3192#issuecomment-261720275
 
-  export const AccountScalarFieldEnum: {
-    id: 'id',
-    userId: 'userId',
-    type: 'type',
-    provider: 'provider',
-    providerAccountId: 'providerAccountId',
-    refresh_token: 'refresh_token',
-    access_token: 'access_token',
-    expires_at: 'expires_at',
-    token_type: 'token_type',
-    scope: 'scope',
-    id_token: 'id_token',
-    session_state: 'session_state'
-  };
-
-  export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum]
-
-
-  export const PuzzlesScalarFieldEnum: {
+  export const PuzzleScalarFieldEnum: {
     id: 'id',
     fen: 'fen',
     moves: 'moves',
@@ -5699,17 +2698,7 @@ export namespace Prisma {
     openingVariation: 'openingVariation'
   };
 
-  export type PuzzlesScalarFieldEnum = (typeof PuzzlesScalarFieldEnum)[keyof typeof PuzzlesScalarFieldEnum]
-
-
-  export const SessionScalarFieldEnum: {
-    id: 'id',
-    sessionToken: 'sessionToken',
-    userId: 'userId',
-    expires: 'expires'
-  };
-
-  export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
+  export type PuzzleScalarFieldEnum = (typeof PuzzleScalarFieldEnum)[keyof typeof PuzzleScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -5732,22 +2721,12 @@ export namespace Prisma {
 
   export const UserScalarFieldEnum: {
     id: 'id',
-    name: 'name',
-    email: 'email',
-    emailVerified: 'emailVerified',
-    image: 'image'
+    login: 'login',
+    password: 'password',
+    createdAt: 'createdAt'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
-
-
-  export const VerificationTokenScalarFieldEnum: {
-    identifier: 'identifier',
-    token: 'token',
-    expires: 'expires'
-  };
-
-  export type VerificationTokenScalarFieldEnum = (typeof VerificationTokenScalarFieldEnum)[keyof typeof VerificationTokenScalarFieldEnum]
 
 
   /**
@@ -5755,162 +2734,32 @@ export namespace Prisma {
    */
 
 
-  export type AccountWhereInput = {
-    AND?: Enumerable<AccountWhereInput>
-    OR?: Enumerable<AccountWhereInput>
-    NOT?: Enumerable<AccountWhereInput>
-    id?: StringFilter | string
-    userId?: StringFilter | string
-    type?: StringFilter | string
-    provider?: StringFilter | string
-    providerAccountId?: StringFilter | string
-    refresh_token?: StringNullableFilter | string | null
-    access_token?: StringNullableFilter | string | null
-    expires_at?: IntNullableFilter | number | null
-    token_type?: StringNullableFilter | string | null
-    scope?: StringNullableFilter | string | null
-    id_token?: StringNullableFilter | string | null
-    session_state?: StringNullableFilter | string | null
-    user?: XOR<UserRelationFilter, UserWhereInput>
-  }
-
-  export type AccountOrderByWithRelationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    type?: SortOrder
-    provider?: SortOrder
-    providerAccountId?: SortOrder
-    refresh_token?: SortOrder
-    access_token?: SortOrder
-    expires_at?: SortOrder
-    token_type?: SortOrder
-    scope?: SortOrder
-    id_token?: SortOrder
-    session_state?: SortOrder
-    user?: UserOrderByWithRelationInput
-  }
-
-  export type AccountWhereUniqueInput = {
-    id?: string
-    provider_providerAccountId?: AccountProviderProviderAccountIdCompoundUniqueInput
-  }
-
-  export type AccountOrderByWithAggregationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    type?: SortOrder
-    provider?: SortOrder
-    providerAccountId?: SortOrder
-    refresh_token?: SortOrder
-    access_token?: SortOrder
-    expires_at?: SortOrder
-    token_type?: SortOrder
-    scope?: SortOrder
-    id_token?: SortOrder
-    session_state?: SortOrder
-    _count?: AccountCountOrderByAggregateInput
-    _avg?: AccountAvgOrderByAggregateInput
-    _max?: AccountMaxOrderByAggregateInput
-    _min?: AccountMinOrderByAggregateInput
-    _sum?: AccountSumOrderByAggregateInput
-  }
-
-  export type AccountScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<AccountScalarWhereWithAggregatesInput>
-    OR?: Enumerable<AccountScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<AccountScalarWhereWithAggregatesInput>
-    id?: StringWithAggregatesFilter | string
-    userId?: StringWithAggregatesFilter | string
-    type?: StringWithAggregatesFilter | string
-    provider?: StringWithAggregatesFilter | string
-    providerAccountId?: StringWithAggregatesFilter | string
-    refresh_token?: StringNullableWithAggregatesFilter | string | null
-    access_token?: StringNullableWithAggregatesFilter | string | null
-    expires_at?: IntNullableWithAggregatesFilter | number | null
-    token_type?: StringNullableWithAggregatesFilter | string | null
-    scope?: StringNullableWithAggregatesFilter | string | null
-    id_token?: StringNullableWithAggregatesFilter | string | null
-    session_state?: StringNullableWithAggregatesFilter | string | null
-  }
-
-  export type SessionWhereInput = {
-    AND?: Enumerable<SessionWhereInput>
-    OR?: Enumerable<SessionWhereInput>
-    NOT?: Enumerable<SessionWhereInput>
-    id?: StringFilter | string
-    sessionToken?: StringFilter | string
-    userId?: StringFilter | string
-    expires?: DateTimeFilter | Date | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
-  }
-
-  export type SessionOrderByWithRelationInput = {
-    id?: SortOrder
-    sessionToken?: SortOrder
-    userId?: SortOrder
-    expires?: SortOrder
-    user?: UserOrderByWithRelationInput
-  }
-
-  export type SessionWhereUniqueInput = {
-    id?: string
-    sessionToken?: string
-  }
-
-  export type SessionOrderByWithAggregationInput = {
-    id?: SortOrder
-    sessionToken?: SortOrder
-    userId?: SortOrder
-    expires?: SortOrder
-    _count?: SessionCountOrderByAggregateInput
-    _max?: SessionMaxOrderByAggregateInput
-    _min?: SessionMinOrderByAggregateInput
-  }
-
-  export type SessionScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<SessionScalarWhereWithAggregatesInput>
-    OR?: Enumerable<SessionScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<SessionScalarWhereWithAggregatesInput>
-    id?: StringWithAggregatesFilter | string
-    sessionToken?: StringWithAggregatesFilter | string
-    userId?: StringWithAggregatesFilter | string
-    expires?: DateTimeWithAggregatesFilter | Date | string
-  }
-
   export type UserWhereInput = {
     AND?: Enumerable<UserWhereInput>
     OR?: Enumerable<UserWhereInput>
     NOT?: Enumerable<UserWhereInput>
     id?: StringFilter | string
-    name?: StringNullableFilter | string | null
-    email?: StringNullableFilter | string | null
-    emailVerified?: DateTimeNullableFilter | Date | string | null
-    image?: StringNullableFilter | string | null
-    accounts?: AccountListRelationFilter
-    sessions?: SessionListRelationFilter
+    login?: StringFilter | string
+    password?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
   }
 
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    emailVerified?: SortOrder
-    image?: SortOrder
-    accounts?: AccountOrderByRelationAggregateInput
-    sessions?: SessionOrderByRelationAggregateInput
+    login?: SortOrder
+    password?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type UserWhereUniqueInput = {
     id?: string
-    email?: string
   }
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    emailVerified?: SortOrder
-    image?: SortOrder
+    login?: SortOrder
+    password?: SortOrder
+    createdAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -5921,54 +2770,15 @@ export namespace Prisma {
     OR?: Enumerable<UserScalarWhereWithAggregatesInput>
     NOT?: Enumerable<UserScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
-    name?: StringNullableWithAggregatesFilter | string | null
-    email?: StringNullableWithAggregatesFilter | string | null
-    emailVerified?: DateTimeNullableWithAggregatesFilter | Date | string | null
-    image?: StringNullableWithAggregatesFilter | string | null
+    login?: StringWithAggregatesFilter | string
+    password?: StringWithAggregatesFilter | string
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
   }
 
-  export type VerificationTokenWhereInput = {
-    AND?: Enumerable<VerificationTokenWhereInput>
-    OR?: Enumerable<VerificationTokenWhereInput>
-    NOT?: Enumerable<VerificationTokenWhereInput>
-    identifier?: StringFilter | string
-    token?: StringFilter | string
-    expires?: DateTimeFilter | Date | string
-  }
-
-  export type VerificationTokenOrderByWithRelationInput = {
-    identifier?: SortOrder
-    token?: SortOrder
-    expires?: SortOrder
-  }
-
-  export type VerificationTokenWhereUniqueInput = {
-    token?: string
-    identifier_token?: VerificationTokenIdentifierTokenCompoundUniqueInput
-  }
-
-  export type VerificationTokenOrderByWithAggregationInput = {
-    identifier?: SortOrder
-    token?: SortOrder
-    expires?: SortOrder
-    _count?: VerificationTokenCountOrderByAggregateInput
-    _max?: VerificationTokenMaxOrderByAggregateInput
-    _min?: VerificationTokenMinOrderByAggregateInput
-  }
-
-  export type VerificationTokenScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<VerificationTokenScalarWhereWithAggregatesInput>
-    OR?: Enumerable<VerificationTokenScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<VerificationTokenScalarWhereWithAggregatesInput>
-    identifier?: StringWithAggregatesFilter | string
-    token?: StringWithAggregatesFilter | string
-    expires?: DateTimeWithAggregatesFilter | Date | string
-  }
-
-  export type puzzlesWhereInput = {
-    AND?: Enumerable<puzzlesWhereInput>
-    OR?: Enumerable<puzzlesWhereInput>
-    NOT?: Enumerable<puzzlesWhereInput>
+  export type PuzzleWhereInput = {
+    AND?: Enumerable<PuzzleWhereInput>
+    OR?: Enumerable<PuzzleWhereInput>
+    NOT?: Enumerable<PuzzleWhereInput>
     id?: StringFilter | string
     fen?: StringFilter | string
     moves?: StringFilter | string
@@ -5982,7 +2792,7 @@ export namespace Prisma {
     openingVariation?: StringNullableFilter | string | null
   }
 
-  export type puzzlesOrderByWithRelationInput = {
+  export type PuzzleOrderByWithRelationInput = {
     id?: SortOrder
     fen?: SortOrder
     moves?: SortOrder
@@ -5996,11 +2806,11 @@ export namespace Prisma {
     openingVariation?: SortOrder
   }
 
-  export type puzzlesWhereUniqueInput = {
+  export type PuzzleWhereUniqueInput = {
     id?: string
   }
 
-  export type puzzlesOrderByWithAggregationInput = {
+  export type PuzzleOrderByWithAggregationInput = {
     id?: SortOrder
     fen?: SortOrder
     moves?: SortOrder
@@ -6012,17 +2822,17 @@ export namespace Prisma {
     gameUrl?: SortOrder
     openingFamily?: SortOrder
     openingVariation?: SortOrder
-    _count?: puzzlesCountOrderByAggregateInput
-    _avg?: puzzlesAvgOrderByAggregateInput
-    _max?: puzzlesMaxOrderByAggregateInput
-    _min?: puzzlesMinOrderByAggregateInput
-    _sum?: puzzlesSumOrderByAggregateInput
+    _count?: PuzzleCountOrderByAggregateInput
+    _avg?: PuzzleAvgOrderByAggregateInput
+    _max?: PuzzleMaxOrderByAggregateInput
+    _min?: PuzzleMinOrderByAggregateInput
+    _sum?: PuzzleSumOrderByAggregateInput
   }
 
-  export type puzzlesScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<puzzlesScalarWhereWithAggregatesInput>
-    OR?: Enumerable<puzzlesScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<puzzlesScalarWhereWithAggregatesInput>
+  export type PuzzleScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<PuzzleScalarWhereWithAggregatesInput>
+    OR?: Enumerable<PuzzleScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<PuzzleScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
     fen?: StringWithAggregatesFilter | string
     moves?: StringWithAggregatesFilter | string
@@ -6036,265 +2846,56 @@ export namespace Prisma {
     openingVariation?: StringNullableWithAggregatesFilter | string | null
   }
 
-  export type AccountCreateInput = {
-    id?: string
-    type: string
-    provider: string
-    providerAccountId: string
-    refresh_token?: string | null
-    access_token?: string | null
-    expires_at?: number | null
-    token_type?: string | null
-    scope?: string | null
-    id_token?: string | null
-    session_state?: string | null
-    user: UserCreateNestedOneWithoutAccountsInput
-  }
-
-  export type AccountUncheckedCreateInput = {
-    id?: string
-    userId: string
-    type: string
-    provider: string
-    providerAccountId: string
-    refresh_token?: string | null
-    access_token?: string | null
-    expires_at?: number | null
-    token_type?: string | null
-    scope?: string | null
-    id_token?: string | null
-    session_state?: string | null
-  }
-
-  export type AccountUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    provider?: StringFieldUpdateOperationsInput | string
-    providerAccountId?: StringFieldUpdateOperationsInput | string
-    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
-    access_token?: NullableStringFieldUpdateOperationsInput | string | null
-    expires_at?: NullableIntFieldUpdateOperationsInput | number | null
-    token_type?: NullableStringFieldUpdateOperationsInput | string | null
-    scope?: NullableStringFieldUpdateOperationsInput | string | null
-    id_token?: NullableStringFieldUpdateOperationsInput | string | null
-    session_state?: NullableStringFieldUpdateOperationsInput | string | null
-    user?: UserUpdateOneRequiredWithoutAccountsNestedInput
-  }
-
-  export type AccountUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    provider?: StringFieldUpdateOperationsInput | string
-    providerAccountId?: StringFieldUpdateOperationsInput | string
-    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
-    access_token?: NullableStringFieldUpdateOperationsInput | string | null
-    expires_at?: NullableIntFieldUpdateOperationsInput | number | null
-    token_type?: NullableStringFieldUpdateOperationsInput | string | null
-    scope?: NullableStringFieldUpdateOperationsInput | string | null
-    id_token?: NullableStringFieldUpdateOperationsInput | string | null
-    session_state?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type AccountCreateManyInput = {
-    id?: string
-    userId: string
-    type: string
-    provider: string
-    providerAccountId: string
-    refresh_token?: string | null
-    access_token?: string | null
-    expires_at?: number | null
-    token_type?: string | null
-    scope?: string | null
-    id_token?: string | null
-    session_state?: string | null
-  }
-
-  export type AccountUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    provider?: StringFieldUpdateOperationsInput | string
-    providerAccountId?: StringFieldUpdateOperationsInput | string
-    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
-    access_token?: NullableStringFieldUpdateOperationsInput | string | null
-    expires_at?: NullableIntFieldUpdateOperationsInput | number | null
-    token_type?: NullableStringFieldUpdateOperationsInput | string | null
-    scope?: NullableStringFieldUpdateOperationsInput | string | null
-    id_token?: NullableStringFieldUpdateOperationsInput | string | null
-    session_state?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type AccountUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    provider?: StringFieldUpdateOperationsInput | string
-    providerAccountId?: StringFieldUpdateOperationsInput | string
-    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
-    access_token?: NullableStringFieldUpdateOperationsInput | string | null
-    expires_at?: NullableIntFieldUpdateOperationsInput | number | null
-    token_type?: NullableStringFieldUpdateOperationsInput | string | null
-    scope?: NullableStringFieldUpdateOperationsInput | string | null
-    id_token?: NullableStringFieldUpdateOperationsInput | string | null
-    session_state?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type SessionCreateInput = {
-    id?: string
-    sessionToken: string
-    expires: Date | string
-    user: UserCreateNestedOneWithoutSessionsInput
-  }
-
-  export type SessionUncheckedCreateInput = {
-    id?: string
-    sessionToken: string
-    userId: string
-    expires: Date | string
-  }
-
-  export type SessionUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sessionToken?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutSessionsNestedInput
-  }
-
-  export type SessionUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sessionToken?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SessionCreateManyInput = {
-    id?: string
-    sessionToken: string
-    userId: string
-    expires: Date | string
-  }
-
-  export type SessionUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sessionToken?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SessionUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sessionToken?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type UserCreateInput = {
     id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
+    login: string
+    password: string
+    createdAt?: Date | string
   }
 
   export type UserUncheckedCreateInput = {
     id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    login: string
+    password: string
+    createdAt?: Date | string
   }
 
   export type UserUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
+    login?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    login?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserCreateManyInput = {
     id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
+    login: string
+    password: string
+    createdAt?: Date | string
   }
 
   export type UserUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
+    login?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
+    login?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type VerificationTokenCreateInput = {
-    identifier: string
-    token: string
-    expires: Date | string
-  }
-
-  export type VerificationTokenUncheckedCreateInput = {
-    identifier: string
-    token: string
-    expires: Date | string
-  }
-
-  export type VerificationTokenUpdateInput = {
-    identifier?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type VerificationTokenUncheckedUpdateInput = {
-    identifier?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type VerificationTokenCreateManyInput = {
-    identifier: string
-    token: string
-    expires: Date | string
-  }
-
-  export type VerificationTokenUpdateManyMutationInput = {
-    identifier?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type VerificationTokenUncheckedUpdateManyInput = {
-    identifier?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type puzzlesCreateInput = {
+  export type PuzzleCreateInput = {
     id?: string
     fen: string
     moves: string
@@ -6308,7 +2909,7 @@ export namespace Prisma {
     openingVariation?: string | null
   }
 
-  export type puzzlesUncheckedCreateInput = {
+  export type PuzzleUncheckedCreateInput = {
     id?: string
     fen: string
     moves: string
@@ -6322,7 +2923,7 @@ export namespace Prisma {
     openingVariation?: string | null
   }
 
-  export type puzzlesUpdateInput = {
+  export type PuzzleUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     fen?: StringFieldUpdateOperationsInput | string
     moves?: StringFieldUpdateOperationsInput | string
@@ -6336,7 +2937,7 @@ export namespace Prisma {
     openingVariation?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type puzzlesUncheckedUpdateInput = {
+  export type PuzzleUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     fen?: StringFieldUpdateOperationsInput | string
     moves?: StringFieldUpdateOperationsInput | string
@@ -6350,7 +2951,7 @@ export namespace Prisma {
     openingVariation?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type puzzlesCreateManyInput = {
+  export type PuzzleCreateManyInput = {
     id?: string
     fen: string
     moves: string
@@ -6364,7 +2965,7 @@ export namespace Prisma {
     openingVariation?: string | null
   }
 
-  export type puzzlesUpdateManyMutationInput = {
+  export type PuzzleUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     fen?: StringFieldUpdateOperationsInput | string
     moves?: StringFieldUpdateOperationsInput | string
@@ -6378,7 +2979,7 @@ export namespace Prisma {
     openingVariation?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type puzzlesUncheckedUpdateManyInput = {
+  export type PuzzleUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     fen?: StringFieldUpdateOperationsInput | string
     moves?: StringFieldUpdateOperationsInput | string
@@ -6406,92 +3007,36 @@ export namespace Prisma {
     not?: NestedStringFilter | string
   }
 
-  export type StringNullableFilter = {
-    equals?: string | null
-    in?: Enumerable<string> | null
-    notIn?: Enumerable<string> | null
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringNullableFilter | string | null
+  export type DateTimeFilter = {
+    equals?: Date | string
+    in?: Enumerable<Date> | Enumerable<string>
+    notIn?: Enumerable<Date> | Enumerable<string>
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeFilter | Date | string
   }
 
-  export type IntNullableFilter = {
-    equals?: number | null
-    in?: Enumerable<number> | null
-    notIn?: Enumerable<number> | null
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntNullableFilter | number | null
-  }
-
-  export type UserRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
-  }
-
-  export type AccountProviderProviderAccountIdCompoundUniqueInput = {
-    provider: string
-    providerAccountId: string
-  }
-
-  export type AccountCountOrderByAggregateInput = {
+  export type UserCountOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
-    type?: SortOrder
-    provider?: SortOrder
-    providerAccountId?: SortOrder
-    refresh_token?: SortOrder
-    access_token?: SortOrder
-    expires_at?: SortOrder
-    token_type?: SortOrder
-    scope?: SortOrder
-    id_token?: SortOrder
-    session_state?: SortOrder
+    login?: SortOrder
+    password?: SortOrder
+    createdAt?: SortOrder
   }
 
-  export type AccountAvgOrderByAggregateInput = {
-    expires_at?: SortOrder
-  }
-
-  export type AccountMaxOrderByAggregateInput = {
+  export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
-    type?: SortOrder
-    provider?: SortOrder
-    providerAccountId?: SortOrder
-    refresh_token?: SortOrder
-    access_token?: SortOrder
-    expires_at?: SortOrder
-    token_type?: SortOrder
-    scope?: SortOrder
-    id_token?: SortOrder
-    session_state?: SortOrder
+    login?: SortOrder
+    password?: SortOrder
+    createdAt?: SortOrder
   }
 
-  export type AccountMinOrderByAggregateInput = {
+  export type UserMinOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
-    type?: SortOrder
-    provider?: SortOrder
-    providerAccountId?: SortOrder
-    refresh_token?: SortOrder
-    access_token?: SortOrder
-    expires_at?: SortOrder
-    token_type?: SortOrder
-    scope?: SortOrder
-    id_token?: SortOrder
-    session_state?: SortOrder
-  }
-
-  export type AccountSumOrderByAggregateInput = {
-    expires_at?: SortOrder
+    login?: SortOrder
+    password?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type StringWithAggregatesFilter = {
@@ -6511,71 +3056,6 @@ export namespace Prisma {
     _max?: NestedStringFilter
   }
 
-  export type StringNullableWithAggregatesFilter = {
-    equals?: string | null
-    in?: Enumerable<string> | null
-    notIn?: Enumerable<string> | null
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringNullableWithAggregatesFilter | string | null
-    _count?: NestedIntNullableFilter
-    _min?: NestedStringNullableFilter
-    _max?: NestedStringNullableFilter
-  }
-
-  export type IntNullableWithAggregatesFilter = {
-    equals?: number | null
-    in?: Enumerable<number> | null
-    notIn?: Enumerable<number> | null
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntNullableWithAggregatesFilter | number | null
-    _count?: NestedIntNullableFilter
-    _avg?: NestedFloatNullableFilter
-    _sum?: NestedIntNullableFilter
-    _min?: NestedIntNullableFilter
-    _max?: NestedIntNullableFilter
-  }
-
-  export type DateTimeFilter = {
-    equals?: Date | string
-    in?: Enumerable<Date> | Enumerable<string>
-    notIn?: Enumerable<Date> | Enumerable<string>
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeFilter | Date | string
-  }
-
-  export type SessionCountOrderByAggregateInput = {
-    id?: SortOrder
-    sessionToken?: SortOrder
-    userId?: SortOrder
-    expires?: SortOrder
-  }
-
-  export type SessionMaxOrderByAggregateInput = {
-    id?: SortOrder
-    sessionToken?: SortOrder
-    userId?: SortOrder
-    expires?: SortOrder
-  }
-
-  export type SessionMinOrderByAggregateInput = {
-    id?: SortOrder
-    sessionToken?: SortOrder
-    userId?: SortOrder
-    expires?: SortOrder
-  }
-
   export type DateTimeWithAggregatesFilter = {
     equals?: Date | string
     in?: Enumerable<Date> | Enumerable<string>
@@ -6590,98 +3070,6 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter
   }
 
-  export type DateTimeNullableFilter = {
-    equals?: Date | string | null
-    in?: Enumerable<Date> | Enumerable<string> | null
-    notIn?: Enumerable<Date> | Enumerable<string> | null
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeNullableFilter | Date | string | null
-  }
-
-  export type AccountListRelationFilter = {
-    every?: AccountWhereInput
-    some?: AccountWhereInput
-    none?: AccountWhereInput
-  }
-
-  export type SessionListRelationFilter = {
-    every?: SessionWhereInput
-    some?: SessionWhereInput
-    none?: SessionWhereInput
-  }
-
-  export type AccountOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type SessionOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type UserCountOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    emailVerified?: SortOrder
-    image?: SortOrder
-  }
-
-  export type UserMaxOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    emailVerified?: SortOrder
-    image?: SortOrder
-  }
-
-  export type UserMinOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    email?: SortOrder
-    emailVerified?: SortOrder
-    image?: SortOrder
-  }
-
-  export type DateTimeNullableWithAggregatesFilter = {
-    equals?: Date | string | null
-    in?: Enumerable<Date> | Enumerable<string> | null
-    notIn?: Enumerable<Date> | Enumerable<string> | null
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeNullableWithAggregatesFilter | Date | string | null
-    _count?: NestedIntNullableFilter
-    _min?: NestedDateTimeNullableFilter
-    _max?: NestedDateTimeNullableFilter
-  }
-
-  export type VerificationTokenIdentifierTokenCompoundUniqueInput = {
-    identifier: string
-    token: string
-  }
-
-  export type VerificationTokenCountOrderByAggregateInput = {
-    identifier?: SortOrder
-    token?: SortOrder
-    expires?: SortOrder
-  }
-
-  export type VerificationTokenMaxOrderByAggregateInput = {
-    identifier?: SortOrder
-    token?: SortOrder
-    expires?: SortOrder
-  }
-
-  export type VerificationTokenMinOrderByAggregateInput = {
-    identifier?: SortOrder
-    token?: SortOrder
-    expires?: SortOrder
-  }
-
   export type IntFilter = {
     equals?: number
     in?: Enumerable<number>
@@ -6693,7 +3081,21 @@ export namespace Prisma {
     not?: NestedIntFilter | number
   }
 
-  export type puzzlesCountOrderByAggregateInput = {
+  export type StringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableFilter | string | null
+  }
+
+  export type PuzzleCountOrderByAggregateInput = {
     id?: SortOrder
     fen?: SortOrder
     moves?: SortOrder
@@ -6707,14 +3109,14 @@ export namespace Prisma {
     openingVariation?: SortOrder
   }
 
-  export type puzzlesAvgOrderByAggregateInput = {
+  export type PuzzleAvgOrderByAggregateInput = {
     rating?: SortOrder
     ratingDeviation?: SortOrder
     popularity?: SortOrder
     nbPlays?: SortOrder
   }
 
-  export type puzzlesMaxOrderByAggregateInput = {
+  export type PuzzleMaxOrderByAggregateInput = {
     id?: SortOrder
     fen?: SortOrder
     moves?: SortOrder
@@ -6728,7 +3130,7 @@ export namespace Prisma {
     openingVariation?: SortOrder
   }
 
-  export type puzzlesMinOrderByAggregateInput = {
+  export type PuzzleMinOrderByAggregateInput = {
     id?: SortOrder
     fen?: SortOrder
     moves?: SortOrder
@@ -6742,7 +3144,7 @@ export namespace Prisma {
     openingVariation?: SortOrder
   }
 
-  export type puzzlesSumOrderByAggregateInput = {
+  export type PuzzleSumOrderByAggregateInput = {
     rating?: SortOrder
     ratingDeviation?: SortOrder
     popularity?: SortOrder
@@ -6765,140 +3167,29 @@ export namespace Prisma {
     _max?: NestedIntFilter
   }
 
-  export type UserCreateNestedOneWithoutAccountsInput = {
-    create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
-    connect?: UserWhereUniqueInput
+  export type StringNullableWithAggregatesFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableWithAggregatesFilter | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedStringNullableFilter
+    _max?: NestedStringNullableFilter
   }
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
 
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-  }
-
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
-    create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
-    upsert?: UserUpsertWithoutAccountsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<UserUpdateWithoutAccountsInput, UserUncheckedUpdateWithoutAccountsInput>
-  }
-
-  export type UserCreateNestedOneWithoutSessionsInput = {
-    create?: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutSessionsInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
-  }
-
-  export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
-    create?: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutSessionsInput
-    upsert?: UserUpsertWithoutSessionsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<UserUpdateWithoutSessionsInput, UserUncheckedUpdateWithoutSessionsInput>
-  }
-
-  export type AccountCreateNestedManyWithoutUserInput = {
-    create?: XOR<Enumerable<AccountCreateWithoutUserInput>, Enumerable<AccountUncheckedCreateWithoutUserInput>>
-    connectOrCreate?: Enumerable<AccountCreateOrConnectWithoutUserInput>
-    createMany?: AccountCreateManyUserInputEnvelope
-    connect?: Enumerable<AccountWhereUniqueInput>
-  }
-
-  export type SessionCreateNestedManyWithoutUserInput = {
-    create?: XOR<Enumerable<SessionCreateWithoutUserInput>, Enumerable<SessionUncheckedCreateWithoutUserInput>>
-    connectOrCreate?: Enumerable<SessionCreateOrConnectWithoutUserInput>
-    createMany?: SessionCreateManyUserInputEnvelope
-    connect?: Enumerable<SessionWhereUniqueInput>
-  }
-
-  export type AccountUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<Enumerable<AccountCreateWithoutUserInput>, Enumerable<AccountUncheckedCreateWithoutUserInput>>
-    connectOrCreate?: Enumerable<AccountCreateOrConnectWithoutUserInput>
-    createMany?: AccountCreateManyUserInputEnvelope
-    connect?: Enumerable<AccountWhereUniqueInput>
-  }
-
-  export type SessionUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<Enumerable<SessionCreateWithoutUserInput>, Enumerable<SessionUncheckedCreateWithoutUserInput>>
-    connectOrCreate?: Enumerable<SessionCreateOrConnectWithoutUserInput>
-    createMany?: SessionCreateManyUserInputEnvelope
-    connect?: Enumerable<SessionWhereUniqueInput>
-  }
-
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-  }
-
-  export type AccountUpdateManyWithoutUserNestedInput = {
-    create?: XOR<Enumerable<AccountCreateWithoutUserInput>, Enumerable<AccountUncheckedCreateWithoutUserInput>>
-    connectOrCreate?: Enumerable<AccountCreateOrConnectWithoutUserInput>
-    upsert?: Enumerable<AccountUpsertWithWhereUniqueWithoutUserInput>
-    createMany?: AccountCreateManyUserInputEnvelope
-    set?: Enumerable<AccountWhereUniqueInput>
-    disconnect?: Enumerable<AccountWhereUniqueInput>
-    delete?: Enumerable<AccountWhereUniqueInput>
-    connect?: Enumerable<AccountWhereUniqueInput>
-    update?: Enumerable<AccountUpdateWithWhereUniqueWithoutUserInput>
-    updateMany?: Enumerable<AccountUpdateManyWithWhereWithoutUserInput>
-    deleteMany?: Enumerable<AccountScalarWhereInput>
-  }
-
-  export type SessionUpdateManyWithoutUserNestedInput = {
-    create?: XOR<Enumerable<SessionCreateWithoutUserInput>, Enumerable<SessionUncheckedCreateWithoutUserInput>>
-    connectOrCreate?: Enumerable<SessionCreateOrConnectWithoutUserInput>
-    upsert?: Enumerable<SessionUpsertWithWhereUniqueWithoutUserInput>
-    createMany?: SessionCreateManyUserInputEnvelope
-    set?: Enumerable<SessionWhereUniqueInput>
-    disconnect?: Enumerable<SessionWhereUniqueInput>
-    delete?: Enumerable<SessionWhereUniqueInput>
-    connect?: Enumerable<SessionWhereUniqueInput>
-    update?: Enumerable<SessionUpdateWithWhereUniqueWithoutUserInput>
-    updateMany?: Enumerable<SessionUpdateManyWithWhereWithoutUserInput>
-    deleteMany?: Enumerable<SessionScalarWhereInput>
-  }
-
-  export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<Enumerable<AccountCreateWithoutUserInput>, Enumerable<AccountUncheckedCreateWithoutUserInput>>
-    connectOrCreate?: Enumerable<AccountCreateOrConnectWithoutUserInput>
-    upsert?: Enumerable<AccountUpsertWithWhereUniqueWithoutUserInput>
-    createMany?: AccountCreateManyUserInputEnvelope
-    set?: Enumerable<AccountWhereUniqueInput>
-    disconnect?: Enumerable<AccountWhereUniqueInput>
-    delete?: Enumerable<AccountWhereUniqueInput>
-    connect?: Enumerable<AccountWhereUniqueInput>
-    update?: Enumerable<AccountUpdateWithWhereUniqueWithoutUserInput>
-    updateMany?: Enumerable<AccountUpdateManyWithWhereWithoutUserInput>
-    deleteMany?: Enumerable<AccountScalarWhereInput>
-  }
-
-  export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<Enumerable<SessionCreateWithoutUserInput>, Enumerable<SessionUncheckedCreateWithoutUserInput>>
-    connectOrCreate?: Enumerable<SessionCreateOrConnectWithoutUserInput>
-    upsert?: Enumerable<SessionUpsertWithWhereUniqueWithoutUserInput>
-    createMany?: SessionCreateManyUserInputEnvelope
-    set?: Enumerable<SessionWhereUniqueInput>
-    disconnect?: Enumerable<SessionWhereUniqueInput>
-    delete?: Enumerable<SessionWhereUniqueInput>
-    connect?: Enumerable<SessionWhereUniqueInput>
-    update?: Enumerable<SessionUpdateWithWhereUniqueWithoutUserInput>
-    updateMany?: Enumerable<SessionUpdateManyWithWhereWithoutUserInput>
-    deleteMany?: Enumerable<SessionScalarWhereInput>
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -6907,6 +3198,10 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type NestedStringFilter = {
@@ -6923,29 +3218,15 @@ export namespace Prisma {
     not?: NestedStringFilter | string
   }
 
-  export type NestedStringNullableFilter = {
-    equals?: string | null
-    in?: Enumerable<string> | null
-    notIn?: Enumerable<string> | null
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringNullableFilter | string | null
-  }
-
-  export type NestedIntNullableFilter = {
-    equals?: number | null
-    in?: Enumerable<number> | null
-    notIn?: Enumerable<number> | null
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntNullableFilter | number | null
+  export type NestedDateTimeFilter = {
+    equals?: Date | string
+    in?: Enumerable<Date> | Enumerable<string>
+    notIn?: Enumerable<Date> | Enumerable<string>
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeFilter | Date | string
   }
 
   export type NestedStringWithAggregatesFilter = {
@@ -6976,61 +3257,6 @@ export namespace Prisma {
     not?: NestedIntFilter | number
   }
 
-  export type NestedStringNullableWithAggregatesFilter = {
-    equals?: string | null
-    in?: Enumerable<string> | null
-    notIn?: Enumerable<string> | null
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringNullableWithAggregatesFilter | string | null
-    _count?: NestedIntNullableFilter
-    _min?: NestedStringNullableFilter
-    _max?: NestedStringNullableFilter
-  }
-
-  export type NestedIntNullableWithAggregatesFilter = {
-    equals?: number | null
-    in?: Enumerable<number> | null
-    notIn?: Enumerable<number> | null
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntNullableWithAggregatesFilter | number | null
-    _count?: NestedIntNullableFilter
-    _avg?: NestedFloatNullableFilter
-    _sum?: NestedIntNullableFilter
-    _min?: NestedIntNullableFilter
-    _max?: NestedIntNullableFilter
-  }
-
-  export type NestedFloatNullableFilter = {
-    equals?: number | null
-    in?: Enumerable<number> | null
-    notIn?: Enumerable<number> | null
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedFloatNullableFilter | number | null
-  }
-
-  export type NestedDateTimeFilter = {
-    equals?: Date | string
-    in?: Enumerable<Date> | Enumerable<string>
-    notIn?: Enumerable<Date> | Enumerable<string>
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeFilter | Date | string
-  }
-
   export type NestedDateTimeWithAggregatesFilter = {
     equals?: Date | string
     in?: Enumerable<Date> | Enumerable<string>
@@ -7045,29 +3271,18 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter
   }
 
-  export type NestedDateTimeNullableFilter = {
-    equals?: Date | string | null
-    in?: Enumerable<Date> | Enumerable<string> | null
-    notIn?: Enumerable<Date> | Enumerable<string> | null
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeNullableFilter | Date | string | null
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter = {
-    equals?: Date | string | null
-    in?: Enumerable<Date> | Enumerable<string> | null
-    notIn?: Enumerable<Date> | Enumerable<string> | null
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeNullableWithAggregatesFilter | Date | string | null
-    _count?: NestedIntNullableFilter
-    _min?: NestedDateTimeNullableFilter
-    _max?: NestedDateTimeNullableFilter
+  export type NestedStringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableFilter | string | null
   }
 
   export type NestedIntWithAggregatesFilter = {
@@ -7097,296 +3312,32 @@ export namespace Prisma {
     not?: NestedFloatFilter | number
   }
 
-  export type UserCreateWithoutAccountsInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    sessions?: SessionCreateNestedManyWithoutUserInput
+  export type NestedStringNullableWithAggregatesFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableWithAggregatesFilter | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedStringNullableFilter
+    _max?: NestedStringNullableFilter
   }
 
-  export type UserUncheckedCreateWithoutAccountsInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutAccountsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
-  }
-
-  export type UserUpsertWithoutAccountsInput = {
-    update: XOR<UserUpdateWithoutAccountsInput, UserUncheckedUpdateWithoutAccountsInput>
-    create: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
-  }
-
-  export type UserUpdateWithoutAccountsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutAccountsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserCreateWithoutSessionsInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    accounts?: AccountCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutSessionsInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutSessionsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
-  }
-
-  export type UserUpsertWithoutSessionsInput = {
-    update: XOR<UserUpdateWithoutSessionsInput, UserUncheckedUpdateWithoutSessionsInput>
-    create: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
-  }
-
-  export type UserUpdateWithoutSessionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutSessionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type AccountCreateWithoutUserInput = {
-    id?: string
-    type: string
-    provider: string
-    providerAccountId: string
-    refresh_token?: string | null
-    access_token?: string | null
-    expires_at?: number | null
-    token_type?: string | null
-    scope?: string | null
-    id_token?: string | null
-    session_state?: string | null
-  }
-
-  export type AccountUncheckedCreateWithoutUserInput = {
-    id?: string
-    type: string
-    provider: string
-    providerAccountId: string
-    refresh_token?: string | null
-    access_token?: string | null
-    expires_at?: number | null
-    token_type?: string | null
-    scope?: string | null
-    id_token?: string | null
-    session_state?: string | null
-  }
-
-  export type AccountCreateOrConnectWithoutUserInput = {
-    where: AccountWhereUniqueInput
-    create: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput>
-  }
-
-  export type AccountCreateManyUserInputEnvelope = {
-    data: Enumerable<AccountCreateManyUserInput>
-    skipDuplicates?: boolean
-  }
-
-  export type SessionCreateWithoutUserInput = {
-    id?: string
-    sessionToken: string
-    expires: Date | string
-  }
-
-  export type SessionUncheckedCreateWithoutUserInput = {
-    id?: string
-    sessionToken: string
-    expires: Date | string
-  }
-
-  export type SessionCreateOrConnectWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
-  }
-
-  export type SessionCreateManyUserInputEnvelope = {
-    data: Enumerable<SessionCreateManyUserInput>
-    skipDuplicates?: boolean
-  }
-
-  export type AccountUpsertWithWhereUniqueWithoutUserInput = {
-    where: AccountWhereUniqueInput
-    update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
-    create: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput>
-  }
-
-  export type AccountUpdateWithWhereUniqueWithoutUserInput = {
-    where: AccountWhereUniqueInput
-    data: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
-  }
-
-  export type AccountUpdateManyWithWhereWithoutUserInput = {
-    where: AccountScalarWhereInput
-    data: XOR<AccountUpdateManyMutationInput, AccountUncheckedUpdateManyWithoutAccountsInput>
-  }
-
-  export type AccountScalarWhereInput = {
-    AND?: Enumerable<AccountScalarWhereInput>
-    OR?: Enumerable<AccountScalarWhereInput>
-    NOT?: Enumerable<AccountScalarWhereInput>
-    id?: StringFilter | string
-    userId?: StringFilter | string
-    type?: StringFilter | string
-    provider?: StringFilter | string
-    providerAccountId?: StringFilter | string
-    refresh_token?: StringNullableFilter | string | null
-    access_token?: StringNullableFilter | string | null
-    expires_at?: IntNullableFilter | number | null
-    token_type?: StringNullableFilter | string | null
-    scope?: StringNullableFilter | string | null
-    id_token?: StringNullableFilter | string | null
-    session_state?: StringNullableFilter | string | null
-  }
-
-  export type SessionUpsertWithWhereUniqueWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
-    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
-  }
-
-  export type SessionUpdateWithWhereUniqueWithoutUserInput = {
-    where: SessionWhereUniqueInput
-    data: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
-  }
-
-  export type SessionUpdateManyWithWhereWithoutUserInput = {
-    where: SessionScalarWhereInput
-    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutSessionsInput>
-  }
-
-  export type SessionScalarWhereInput = {
-    AND?: Enumerable<SessionScalarWhereInput>
-    OR?: Enumerable<SessionScalarWhereInput>
-    NOT?: Enumerable<SessionScalarWhereInput>
-    id?: StringFilter | string
-    sessionToken?: StringFilter | string
-    userId?: StringFilter | string
-    expires?: DateTimeFilter | Date | string
-  }
-
-  export type AccountCreateManyUserInput = {
-    id?: string
-    type: string
-    provider: string
-    providerAccountId: string
-    refresh_token?: string | null
-    access_token?: string | null
-    expires_at?: number | null
-    token_type?: string | null
-    scope?: string | null
-    id_token?: string | null
-    session_state?: string | null
-  }
-
-  export type SessionCreateManyUserInput = {
-    id?: string
-    sessionToken: string
-    expires: Date | string
-  }
-
-  export type AccountUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    provider?: StringFieldUpdateOperationsInput | string
-    providerAccountId?: StringFieldUpdateOperationsInput | string
-    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
-    access_token?: NullableStringFieldUpdateOperationsInput | string | null
-    expires_at?: NullableIntFieldUpdateOperationsInput | number | null
-    token_type?: NullableStringFieldUpdateOperationsInput | string | null
-    scope?: NullableStringFieldUpdateOperationsInput | string | null
-    id_token?: NullableStringFieldUpdateOperationsInput | string | null
-    session_state?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type AccountUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    provider?: StringFieldUpdateOperationsInput | string
-    providerAccountId?: StringFieldUpdateOperationsInput | string
-    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
-    access_token?: NullableStringFieldUpdateOperationsInput | string | null
-    expires_at?: NullableIntFieldUpdateOperationsInput | number | null
-    token_type?: NullableStringFieldUpdateOperationsInput | string | null
-    scope?: NullableStringFieldUpdateOperationsInput | string | null
-    id_token?: NullableStringFieldUpdateOperationsInput | string | null
-    session_state?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type AccountUncheckedUpdateManyWithoutAccountsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: StringFieldUpdateOperationsInput | string
-    provider?: StringFieldUpdateOperationsInput | string
-    providerAccountId?: StringFieldUpdateOperationsInput | string
-    refresh_token?: NullableStringFieldUpdateOperationsInput | string | null
-    access_token?: NullableStringFieldUpdateOperationsInput | string | null
-    expires_at?: NullableIntFieldUpdateOperationsInput | number | null
-    token_type?: NullableStringFieldUpdateOperationsInput | string | null
-    scope?: NullableStringFieldUpdateOperationsInput | string | null
-    id_token?: NullableStringFieldUpdateOperationsInput | string | null
-    session_state?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type SessionUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sessionToken?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SessionUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sessionToken?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type SessionUncheckedUpdateManyWithoutSessionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sessionToken?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type NestedIntNullableFilter = {
+    equals?: number | null
+    in?: Enumerable<number> | null
+    notIn?: Enumerable<number> | null
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntNullableFilter | number | null
   }
 
 

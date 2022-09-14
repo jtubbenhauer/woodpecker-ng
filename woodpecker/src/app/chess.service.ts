@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Chessground } from 'chessground';
 import { Chess, SQUARES } from 'chess.js';
 import { HttpClient } from '@angular/common/http';
-import { puzzles } from 'prismaclient';
+import { Puzzle } from 'prismaclient';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Api } from 'chessground/api';
 import { Color, Key } from 'chessground/types';
@@ -11,7 +11,7 @@ import { Color, Key } from 'chessground/types';
   providedIn: 'root',
 })
 export class ChessService {
-  puzzle!: puzzles;
+  puzzle!: Puzzle;
   cg!: Api;
   chess!: Chess;
   moves!: Key[];
@@ -20,8 +20,8 @@ export class ChessService {
 
   constructor(private http: HttpClient) {}
 
-  getRandomPuzzle(): Observable<puzzles> {
-    return this.http.get<puzzles>('http://localhost:3000/puzzle/random');
+  getRandomPuzzle(): Observable<Puzzle> {
+    return this.http.get<Puzzle>('http://localhost:3000/puzzle/random');
   }
 
   initChessground(el: HTMLElement): any {
@@ -29,7 +29,6 @@ export class ChessService {
     this.getRandomPuzzle().subscribe({
       next: (puzzle) => {
         this.puzzle = puzzle;
-        console.log(this.puzzle.moves);
         this.chess = new Chess(puzzle.fen);
         this.cg = Chessground(el, {
           fen: this.chess.fen(),
@@ -125,6 +124,11 @@ export class ChessService {
 
   getFeedbackMessage() {
     return this.feedbackMessage;
+  }
+
+  getHint() {
+    let move = this.convertSingleMove(this.moves[this.currentMove]);
+    this.cg.selectSquare(move.from as Key);
   }
 
   isCorrect(orig: Key, dest: Key) {

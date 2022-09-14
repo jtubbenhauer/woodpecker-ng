@@ -88,22 +88,7 @@ Prisma.NullTypes = {
 // https://github.com/microsoft/TypeScript/issues/3192#issuecomment-261720275
 function makeEnum(x) { return x; }
 
-exports.Prisma.AccountScalarFieldEnum = makeEnum({
-  id: 'id',
-  userId: 'userId',
-  type: 'type',
-  provider: 'provider',
-  providerAccountId: 'providerAccountId',
-  refresh_token: 'refresh_token',
-  access_token: 'access_token',
-  expires_at: 'expires_at',
-  token_type: 'token_type',
-  scope: 'scope',
-  id_token: 'id_token',
-  session_state: 'session_state'
-});
-
-exports.Prisma.PuzzlesScalarFieldEnum = makeEnum({
+exports.Prisma.PuzzleScalarFieldEnum = makeEnum({
   id: 'id',
   fen: 'fen',
   moves: 'moves',
@@ -115,13 +100,6 @@ exports.Prisma.PuzzlesScalarFieldEnum = makeEnum({
   gameUrl: 'gameUrl',
   openingFamily: 'openingFamily',
   openingVariation: 'openingVariation'
-});
-
-exports.Prisma.SessionScalarFieldEnum = makeEnum({
-  id: 'id',
-  sessionToken: 'sessionToken',
-  userId: 'userId',
-  expires: 'expires'
 });
 
 exports.Prisma.SortOrder = makeEnum({
@@ -138,25 +116,15 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.UserScalarFieldEnum = makeEnum({
   id: 'id',
-  name: 'name',
-  email: 'email',
-  emailVerified: 'emailVerified',
-  image: 'image'
-});
-
-exports.Prisma.VerificationTokenScalarFieldEnum = makeEnum({
-  identifier: 'identifier',
-  token: 'token',
-  expires: 'expires'
+  login: 'login',
+  password: 'password',
+  createdAt: 'createdAt'
 });
 
 
 exports.Prisma.ModelName = makeEnum({
-  Account: 'Account',
-  Session: 'Session',
   User: 'User',
-  VerificationToken: 'VerificationToken',
-  puzzles: 'puzzles'
+  Puzzle: 'Puzzle'
 });
 
 /**

@@ -31,4 +31,8 @@ export class PuzzleComponent implements OnInit, AfterViewInit {
   handleReset() {
     this.service.resetPuzzle();
   }
+
+  handleGetHint() {
+    this.service.getHint();
+  }
 }
