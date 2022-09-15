@@ -16,9 +16,11 @@ export class ChessService {
   chess!: Chess;
   moves!: Key[];
   currentMove!: number;
-  feedbackMessage = new BehaviorSubject<string>('Make a move');
+  feedbackMessage = new BehaviorSubject('Make a move');
   currentColour = new BehaviorSubject('');
-  lastMoveCorrect = new BehaviorSubject<boolean>(true);
+  lastMoveCorrect = new BehaviorSubject(true);
+  puzzleComplete = new BehaviorSubject(false);
+  audio = new Audio();
 
   svgs = {
     right: `<g transform="translate(60 2)" >
@@ -38,11 +40,8 @@ export class ChessService {
 
   constructor(private http: HttpClient) {}
 
-  getRandomPuzzle(): Observable<Puzzle> {
-    return this.http.get<Puzzle>('http://localhost:3000/puzzle/random');
-  }
-
-  initChessground(el: HTMLElement): any {
+  public initChessground(el: HTMLElement): any {
+    this.puzzleComplete.next(false);
     this.currentMove = 0;
     this.getRandomPuzzle().subscribe({
       next: (puzzle) => {
@@ -54,11 +53,27 @@ export class ChessService {
             free: false,
             color: this.toColour(),
             showDests: false,
-            events: { after: (orig, dest) => this.onMove(orig, dest) },
+            events: {
+              after: (orig, dest) => {
+                this.onMove(orig, dest);
+              },
+            },
             dests: this.getLegalMoves(),
+          },
+          events: {
+            move: (orig, dest, capturedPiece) => {
+              if (this.chess.inCheck()) {
+                this.playAudio('check');
+              } else if (capturedPiece) {
+                this.playAudio('capture');
+              } else {
+                this.playAudio('move');
+              }
+            },
           },
           turnColor: this.toColour(),
           orientation: this.getOrientation(),
+          check: this.chess.isCheck(),
         });
         this.moves = this.movesToArr();
         this.makeFirstMove();
@@ -67,27 +82,39 @@ export class ChessService {
     });
   }
 
-  resetPuzzle() {
+  public resetPuzzle() {
+    this.puzzleComplete.next(false);
     this.cg.setAutoShapes([]);
     this.currentMove = 0;
     this.chess = new Chess(this.puzzle.fen);
     this.cg.set({
       fen: this.chess.fen(),
-      movable: {
-        free: false,
-        color: this.toColour(),
-        showDests: false,
-        events: { after: (orig, dest) => this.onMove(orig, dest) },
-        dests: this.getLegalMoves(),
-      },
-      turnColor: this.toColour(),
-      orientation: this.getOrientation(),
     });
     this.moves = this.movesToArr();
     this.makeFirstMove();
   }
 
-  makeMove(from: Key, to: Key) {
+  public backOne() {
+    this.chess.undo();
+    this.cg.set({
+      movable: { dests: this.getLegalMoves(), color: this.toColour() },
+      turnColor: this.toColour(),
+      fen: this.chess.fen(),
+    });
+    this.cg.setAutoShapes([]);
+    this.lastMoveCorrect.next(true);
+  }
+
+  public getHint() {
+    let move = this.convertSingleMove(this.moves[this.currentMove]);
+    this.cg.selectSquare(move.from as Key);
+  }
+
+  private getRandomPuzzle(): Observable<Puzzle> {
+    return this.http.get<Puzzle>('http://localhost:3000/puzzle/random');
+  }
+
+  private makeMove(from: Key, to: Key) {
     this.chess.move({ from: from, to: to });
     this.cg.set({
       turnColor: this.toColour(),
@@ -95,11 +122,12 @@ export class ChessService {
         color: this.toColour(),
         dests: this.getLegalMoves(),
       },
+      check: this.chess.isCheck(),
     });
     this.cg.move(from, to);
   }
 
-  onMove(orig: Key, dest: Key) {
+  private onMove(orig: Key, dest: Key) {
     this.cg.setAutoShapes([]);
     // If there's moves remaining in the puzzle
     if (this.currentMove < this.moves.length - 1) {
@@ -116,13 +144,14 @@ export class ChessService {
         this.cg.setAutoShapes([{ orig: dest, customSvg: this.svgs.right }]);
         this.makeMove(orig, dest);
         this.cg.stop();
+        this.puzzleComplete.next(true);
       } else {
         this.onWrongMove(orig, dest);
       }
     }
   }
 
-  onRightMove(orig: Key, dest: Key) {
+  private onRightMove(orig: Key, dest: Key) {
     this.feedbackMessage.next('Correct! Keep going');
     this.lastMoveCorrect.next(true);
     this.currentMove++;
@@ -137,63 +166,44 @@ export class ChessService {
     }, 500);
   }
 
-  onWrongMove(orig: Key, dest: Key) {
+  private onWrongMove(orig: Key, dest: Key) {
     this.lastMoveCorrect.next(false);
     this.feedbackMessage.next('Incorrect!');
+    this.chess.move({ from: orig, to: dest });
+    this.cg.set({ check: this.chess.isCheck() });
     this.cg.setAutoShapes([{ orig: dest, customSvg: this.svgs.wrong }]);
     this.cg.stop();
   }
 
-  backOne() {
-    this.cg.set({
-      movable: { dests: this.getLegalMoves(), color: this.toColour() },
-      turnColor: this.toColour(),
-    });
-    this.cg.setAutoShapes([]);
-    if (this.cg.state.lastMove) {
-      this.cg.move(this.cg.state.lastMove[1], this.cg.state.lastMove[0]);
-    }
-    this.lastMoveCorrect.next(true);
-  }
-
-  getFeedbackMessage() {
-    return this.feedbackMessage;
-  }
-
-  getHint() {
-    let move = this.convertSingleMove(this.moves[this.currentMove]);
-    this.cg.selectSquare(move.from as Key);
-  }
-
-  isCorrect(orig: Key, dest: Key) {
+  private isCorrect(orig: Key, dest: Key) {
     let move = '';
     move = move.concat(orig, dest);
     return move === this.moves[this.currentMove];
   }
 
-  toColour(): Color {
+  private toColour(): Color {
     return this.chess.turn() == 'w' ? 'white' : 'black';
   }
 
-  getOrientation(): Color {
+  private getOrientation(): Color {
     return this.chess.turn() == 'w' ? 'black' : 'white';
   }
 
-  makeFirstMove() {
+  private makeFirstMove() {
     let move = this.convertSingleMove(this.moves[0]);
     this.makeMove(move.from as Key, move.to as Key);
     this.currentMove = 1;
   }
 
   // Convert move to object
-  convertSingleMove(move: Key) {
+  private convertSingleMove(move: Key) {
     return {
       from: move.substring(0, 2),
       to: move.substring(2, 4),
     };
   }
 
-  movesToArr() {
+  private movesToArr() {
     let arr: Key[] = [];
     this.puzzle.moves.split(' ').map((move) => {
       arr.push(move as Key);
@@ -201,7 +211,7 @@ export class ChessService {
     return arr;
   }
 
-  getLegalMoves(): Map<Key, Key[]> {
+  private getLegalMoves(): Map<Key, Key[]> {
     const legalMoves = new Map();
     SQUARES.forEach((square) => {
       const moves = this.chess.moves({ square: square, verbose: true });
@@ -213,5 +223,11 @@ export class ChessService {
       }
     });
     return legalMoves;
+  }
+
+  private playAudio(type: 'capture' | 'move' | 'check') {
+    this.audio.src = `../assets/${type}.mp3`;
+    this.audio.load();
+    this.audio.play();
   }
 }

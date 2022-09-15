@@ -1,5 +1,4 @@
 <div class="flex flex-col items-center">
   <div class="max-w-[600px] max-h-[600px]" #chessboard (window:resize)="handleWindowResize($event)"
        [ngStyle]="{'width': boardWidth, 'height': boardHeight}"></div>
-  <p class="text-xl font-bold pt-4">{{toMove | uppercase}} TO MOVE</p>
 </div>

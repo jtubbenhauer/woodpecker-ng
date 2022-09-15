@@ -1,6 +1,6 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {ChessService} from '../chess.service';
-import {BoardComponent} from './board/board.component';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { ChessService } from '../chess.service';
+import { BoardComponent } from './board/board.component';
 
 @Component({
   selector: 'app-puzzle',
@@ -9,39 +9,41 @@ import {BoardComponent} from './board/board.component';
 })
 export class PuzzleComponent implements OnInit, AfterViewInit {
   @ViewChild(BoardComponent) boardChild!: BoardComponent;
-  feedbackMessage: string = '';
   showBackButton!: boolean;
+  puzzleComplete!: boolean;
+  toMove = '';
 
-  constructor(private service: ChessService) {
-  }
+  constructor(private service: ChessService) {}
 
   ngOnInit(): void {
-    const messageObs = this.service.getFeedbackMessage();
-    messageObs.subscribe((message) => {
-      this.feedbackMessage = message;
-    });
     this.service.lastMoveCorrect.subscribe(
-      (obs) => (this.showBackButton = obs)
+      (next) => (this.showBackButton = next)
+    );
+    this.service.puzzleComplete.subscribe(
+      (next) => (this.puzzleComplete = next)
     );
   }
 
   ngAfterViewInit(): void {
     this.service.initChessground(this.boardChild.el.nativeElement);
+    this.service.currentColour.subscribe((value) => {
+      this.toMove = value;
+    });
   }
 
-  handleRandomPuzzle() {
+  randomPuzzle() {
     this.service.initChessground(this.boardChild.el.nativeElement);
   }
 
-  handleReset() {
+  resetPuzzle() {
     this.service.resetPuzzle();
   }
 
-  handleGetHint() {
+  getHint() {
     this.service.getHint();
   }
 
-  handleBackOne() {
-    this.service.backOne()
+  backOneMove() {
+    this.service.backOne();
   }
 }
