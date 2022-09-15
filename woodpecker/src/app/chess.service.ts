@@ -3,7 +3,7 @@ import { Chessground } from 'chessground';
 import { Chess, SQUARES } from 'chess.js';
 import { HttpClient } from '@angular/common/http';
 import { Puzzle } from 'prismaclient';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Api } from 'chessground/api';
 import { Color, Key } from 'chessground/types';
 
@@ -18,6 +18,23 @@ export class ChessService {
   currentMove!: number;
   feedbackMessage = new BehaviorSubject<string>('Make a move');
   currentColour = new BehaviorSubject('');
+  lastMoveCorrect = new BehaviorSubject<boolean>(true);
+
+  svgs = {
+    right: `<g transform="translate(60 2)" >
+            <svg id="Layer_1" enable-background="new 0 0 512 512" height="40" viewBox="0 0 512 512" width="40"
+                xmlns="http://www.w3.org/2000/svg">
+                <path clip-rule="evenodd" d="m256 0c-141.2 0-256 114.8-256 256s114.8 256 256 256 256-114.8 256-256-114.8-256-256-256z"
+                fill="#4bae4f" fill-rule="evenodd"/>
+                <path
+                  d="m206.7 373.1c-32.7-32.7-65.2-65.7-98-98.4-3.6-3.6-3.6-9.6 0-13.2l37.7-37.7c3.6-3.6 9.6-3.6 13.2 0l53.9 53.9 138.6-138.7c3.7-3.6 9.6-3.6 13.3 0l37.8 37.8c3.7 3.7 3.7 9.6 0 13.2l-183.3 183.1c-3.6 3.7-9.5 3.7-13.2 0z"
+                fill="#fff"/>
+                </svg>
+            </g>`,
+    wrong: `<g transform="translate(60 2)">
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="40" height="40" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path xmlns="http://www.w3.org/2000/svg" d="m256 0c-141.164062 0-256 114.835938-256 256s114.835938 256 256 256 256-114.835938 256-256-114.835938-256-256-256zm0 0" fill="#f44336" data-original="#f44336" class=""/><path xmlns="http://www.w3.org/2000/svg" d="m350.273438 320.105469c8.339843 8.34375 8.339843 21.824219 0 30.167969-4.160157 4.160156-9.621094 6.25-15.085938 6.25-5.460938 0-10.921875-2.089844-15.082031-6.25l-64.105469-64.109376-64.105469 64.109376c-4.160156 4.160156-9.621093 6.25-15.082031 6.25-5.464844 0-10.925781-2.089844-15.085938-6.25-8.339843-8.34375-8.339843-21.824219 0-30.167969l64.109376-64.105469-64.109376-64.105469c-8.339843-8.34375-8.339843-21.824219 0-30.167969 8.34375-8.339843 21.824219-8.339843 30.167969 0l64.105469 64.109376 64.105469-64.109376c8.34375-8.339843 21.824219-8.339843 30.167969 0 8.339843 8.34375 8.339843 21.824219 0 30.167969l-64.109376 64.105469zm0 0" fill="#fafafa" data-original="#fafafa" class=""/></g></svg>
+            </g>`,
+  };
 
   constructor(private http: HttpClient) {}
 
@@ -51,6 +68,7 @@ export class ChessService {
   }
 
   resetPuzzle() {
+    this.cg.setAutoShapes([]);
     this.currentMove = 0;
     this.chess = new Chess(this.puzzle.fen);
     this.cg.set({
@@ -82,6 +100,7 @@ export class ChessService {
   }
 
   onMove(orig: Key, dest: Key) {
+    this.cg.setAutoShapes([]);
     // If there's moves remaining in the puzzle
     if (this.currentMove < this.moves.length - 1) {
       // If player's move is correct
@@ -94,6 +113,7 @@ export class ChessService {
       // If final move
       if (this.isCorrect(orig, dest)) {
         this.feedbackMessage.next('Puzzle complete');
+        this.cg.setAutoShapes([{ orig: dest, customSvg: this.svgs.right }]);
         this.makeMove(orig, dest);
         this.cg.stop();
       } else {
@@ -104,26 +124,36 @@ export class ChessService {
 
   onRightMove(orig: Key, dest: Key) {
     this.feedbackMessage.next('Correct! Keep going');
+    this.lastMoveCorrect.next(true);
     this.currentMove++;
     this.makeMove(orig, dest);
+    this.cg.setAutoShapes([{ orig: dest, customSvg: this.svgs.right }]);
     // Make computers next move after delay
     setTimeout(() => {
       let { from, to } = this.convertSingleMove(this.moves[this.currentMove]);
+      this.cg.setAutoShapes([]);
       this.makeMove(from as Key, to as Key);
       this.currentMove++;
-    }, 300);
+    }, 500);
   }
 
   onWrongMove(orig: Key, dest: Key) {
-    this.feedbackMessage.next('Wrong move! Try again');
-    setTimeout(() => {
-      this.cg.move(dest, orig);
-      this.cg.set({
-        fen: this.chess.fen(),
-        turnColor: this.toColour(),
-        movable: { color: this.toColour(), dests: this.getLegalMoves() },
-      });
-    }, 300);
+    this.lastMoveCorrect.next(false);
+    this.feedbackMessage.next('Incorrect!');
+    this.cg.setAutoShapes([{ orig: dest, customSvg: this.svgs.wrong }]);
+    this.cg.stop();
+  }
+
+  backOne() {
+    this.cg.set({
+      movable: { dests: this.getLegalMoves(), color: this.toColour() },
+      turnColor: this.toColour(),
+    });
+    this.cg.setAutoShapes([]);
+    if (this.cg.state.lastMove) {
+      this.cg.move(this.cg.state.lastMove[1], this.cg.state.lastMove[0]);
+    }
+    this.lastMoveCorrect.next(true);
   }
 
   getFeedbackMessage() {
