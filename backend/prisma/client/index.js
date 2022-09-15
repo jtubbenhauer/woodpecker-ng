@@ -145,7 +145,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "D:\\Dev\\woodpecker-ng\\backend\\prisma\\client",
+      "value": "C:\\Users\\jackt\\Desktop\\Coding\\woodpecker-ng\\backend\\prisma\\client",
       "fromEnvVar": null
     },
     "config": {

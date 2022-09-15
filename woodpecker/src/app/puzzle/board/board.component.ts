@@ -5,6 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { ChessService } from '../../chess.service';
 
 @Component({
   selector: 'app-board',
@@ -13,9 +14,21 @@ import {
 })
 export class BoardComponent implements OnInit, AfterViewInit {
   @ViewChild('chessboard') el!: ElementRef<HTMLElement>;
+  toMove = '';
+  boardWidth = '540px';
+  boardHeight = '540px';
+
+  constructor(private service: ChessService) {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit() {
+    this.service.currentColour.subscribe((value) => {
+      this.toMove = value;
+    });
+  }
+
+  handleWindowResize(event: UIEvent) {
+    console.log(event);
   }
 }

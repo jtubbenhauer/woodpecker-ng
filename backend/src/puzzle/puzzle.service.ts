@@ -7,6 +7,6 @@ export class PuzzleService {
 
   getRandom() {
     const skip = Math.floor(Math.random() * 1000);
-    return this.prisma.puzzles.findFirst({ skip: skip });
+    return this.prisma.puzzle.findFirst({ skip: skip });
   }
 }

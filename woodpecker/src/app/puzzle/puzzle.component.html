@@ -1,14 +1,15 @@
-<div class="grid grid-cols-3">
+<div class="grid grid-cols-[1fr_2fr] mt-8">
   <div class="flex flex-col items-center">
-    <p>{{feedbackMessage}}</p>
-    <div class="flex gap-4">
-
-    <button class="btn btn-primary" (click)="handleReset()">Reset</button>
-    <button class="btn btn-primary" (click)="handleRandomPuzzle()">Random</button>
-    <button class="btn btn-primary" (click)="handleGetHint()">Get Hint</button>
-
+    <p class="text-lg">{{feedbackMessage}}</p>
+    <div class="flex flex gap-4 mt-4">
+      <button class="btn btn-primary btn-outline" (click)="handleReset()">Reset</button>
+      <button class="btn btn-primary btn-outline" (click)="handleRandomPuzzle()">Random</button>
+      <button class="btn btn-primary btn-outline" (click)="handleGetHint()">Get Hint</button>
     </div>
+
   </div>
-  <app-board></app-board>
-  <div></div>
+  <div>
+    <app-board></app-board>
+  </div>
+
 </div>

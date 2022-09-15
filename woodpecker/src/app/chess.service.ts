@@ -17,6 +17,7 @@ export class ChessService {
   moves!: Key[];
   currentMove!: number;
   feedbackMessage = new BehaviorSubject<string>('Make a move');
+  currentColour = new BehaviorSubject('');
 
   constructor(private http: HttpClient) {}
 
@@ -44,6 +45,7 @@ export class ChessService {
         });
         this.moves = this.movesToArr();
         this.makeFirstMove();
+        this.currentColour.next(this.toColour());
       },
     });
   }
@@ -114,12 +116,14 @@ export class ChessService {
 
   onWrongMove(orig: Key, dest: Key) {
     this.feedbackMessage.next('Wrong move! Try again');
-    this.cg.move(dest, orig);
-    this.cg.set({
-      fen: this.chess.fen(),
-      turnColor: this.toColour(),
-      movable: { color: this.toColour(), dests: this.getLegalMoves() },
-    });
+    setTimeout(() => {
+      this.cg.move(dest, orig);
+      this.cg.set({
+        fen: this.chess.fen(),
+        turnColor: this.toColour(),
+        movable: { color: this.toColour(), dests: this.getLegalMoves() },
+      });
+    }, 300);
   }
 
   getFeedbackMessage() {
