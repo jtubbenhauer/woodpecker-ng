@@ -2,6 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-[data-theme="dracula"] .btn {
-  padding: 1rem 1.5rem;
-}
+/*[data-theme="dracula"] .btn {*/
+/*  padding: 1rem 1.5rem;*/
+/*}*/

@@ -89,6 +89,7 @@ export class ChessService {
     this.chess = new Chess(this.puzzle.fen);
     this.cg.set({
       fen: this.chess.fen(),
+      check: this.chess.isCheck(),
     });
     this.moves = this.movesToArr();
     this.makeFirstMove();
@@ -100,6 +101,7 @@ export class ChessService {
       movable: { dests: this.getLegalMoves(), color: this.toColour() },
       turnColor: this.toColour(),
       fen: this.chess.fen(),
+      check: this.chess.isCheck(),
     });
     this.cg.setAutoShapes([]);
     this.lastMoveCorrect.next(true);
