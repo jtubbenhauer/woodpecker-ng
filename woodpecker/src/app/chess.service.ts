@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Chessground } from 'chessground';
-import { Chess, SQUARES } from 'chess.js';
+import { Chess, Square, SQUARES } from 'chess.js';
 import { HttpClient } from '@angular/common/http';
 import { Puzzle } from 'prismaclient';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -59,6 +59,9 @@ export class ChessService {
             events: {
               after: (orig, dest) => {
                 this.onMove(orig, dest);
+              },
+              afterNewPiece: (role, key, metadata) => {
+                console.log(role, key, metadata);
               },
             },
             dests: this.getLegalMoves(),
@@ -120,8 +123,28 @@ export class ChessService {
     return this.http.get<Puzzle>('http://localhost:3000/puzzle/random');
   }
 
+  private getPieceTypeAtOrig(orig: Key) {
+    return this.chess.get(orig as Square);
+  }
+
+  private isPromotion(orig: Key) {
+    let pieceData = this.getPieceTypeAtOrig(orig);
+    if (pieceData.type == 'p') {
+      if (pieceData.color == 'b' && orig.substring(1, 2) == '2') {
+        return true;
+      } else if (pieceData.color == 'w' && orig.substring(1, 2) == '7') {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
   private makeMove(from: Key, to: Key) {
     this.chess.move({ from: from, to: to });
+    // console.log(this.chess.move({ from: from, to: to }.flag));
     this.cg.set({
       turnColor: this.toColour(),
       movable: {
@@ -134,6 +157,8 @@ export class ChessService {
   }
 
   private onMove(orig: Key, dest: Key) {
+    console.log(this.getPieceTypeAtOrig(orig));
+
     this.cg.setAutoShapes([]);
     // If there's moves remaining in the puzzle
     if (this.currentMove < this.moves.length - 1) {
