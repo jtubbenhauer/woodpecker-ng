@@ -49,6 +49,9 @@ export class ChessService {
         this.chess = new Chess(puzzle.fen);
         this.cg = Chessground(el, {
           fen: this.chess.fen(),
+          selectable: {
+            enabled: false,
+          },
           movable: {
             free: false,
             color: this.toColour(),
@@ -60,6 +63,7 @@ export class ChessService {
             },
             dests: this.getLegalMoves(),
           },
+          draggable: { showGhost: false },
           events: {
             move: (orig, dest, capturedPiece) => {
               if (this.chess.inCheck()) {
@@ -158,14 +162,11 @@ export class ChessService {
     this.lastMoveCorrect.next(true);
     this.currentMove++;
     this.makeMove(orig, dest);
-    this.cg.setAutoShapes([{ orig: dest, customSvg: this.svgs.right }]);
     // Make computers next move after delay
-    setTimeout(() => {
-      let { from, to } = this.convertSingleMove(this.moves[this.currentMove]);
-      this.cg.setAutoShapes([]);
-      this.makeMove(from as Key, to as Key);
-      this.currentMove++;
-    }, 500);
+    let { from, to } = this.convertSingleMove(this.moves[this.currentMove]);
+    this.makeMove(from as Key, to as Key);
+    this.cg.setAutoShapes([{ orig: dest, customSvg: this.svgs.right }]);
+    this.currentMove++;
   }
 
   private onWrongMove(orig: Key, dest: Key) {
