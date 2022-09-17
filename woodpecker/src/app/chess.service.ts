@@ -40,55 +40,6 @@ export class ChessService {
 
   constructor(private http: HttpClient) {}
 
-  public initChessground(el: HTMLElement): any {
-    this.puzzleComplete.next(false);
-    this.currentMove = 0;
-    this.getRandomPuzzle().subscribe({
-      next: (puzzle) => {
-        this.puzzle = puzzle;
-        this.chess = new Chess(puzzle.fen);
-        this.cg = Chessground(el, {
-          fen: this.chess.fen(),
-          selectable: {
-            enabled: false,
-          },
-          movable: {
-            free: false,
-            color: this.toColour(),
-            showDests: false,
-            events: {
-              after: (orig, dest) => {
-                this.onMove(orig, dest);
-              },
-              afterNewPiece: (role, key, metadata) => {
-                console.log(role, key, metadata);
-              },
-            },
-            dests: this.getLegalMoves(),
-          },
-          draggable: { showGhost: false },
-          events: {
-            move: (orig, dest, capturedPiece) => {
-              if (this.chess.inCheck()) {
-                this.playAudio('check');
-              } else if (capturedPiece) {
-                this.playAudio('capture');
-              } else {
-                this.playAudio('move');
-              }
-            },
-          },
-          turnColor: this.toColour(),
-          orientation: this.getOrientation(),
-          check: this.chess.isCheck(),
-        });
-        this.moves = this.movesToArr();
-        this.makeFirstMove();
-        this.currentColour.next(this.toColour());
-      },
-    });
-  }
-
   public resetPuzzle() {
     this.puzzleComplete.next(false);
     this.cg.setAutoShapes([]);
@@ -119,8 +70,65 @@ export class ChessService {
     this.cg.selectSquare(move.from as Key);
   }
 
-  private getRandomPuzzle(): Observable<Puzzle> {
-    return this.http.get<Puzzle>('http://localhost:3000/puzzle/random');
+  public getPromPuzzle(el: HTMLElement) {
+    this.http
+      .get<Puzzle>('http://localhost:3000/puzzle/promotion')
+      .subscribe((next) => {
+        this.initChessground(next, el);
+      });
+  }
+
+  public getRandomPuzzle(el: HTMLElement) {
+    this.http
+      .get<Puzzle>('http://localhost:3000/puzzle/random')
+      .subscribe((next) => {
+        this.initChessground(next, el);
+      });
+  }
+
+  private initChessground(puzzle: Puzzle, el: HTMLElement): any {
+    this.puzzleComplete.next(false);
+    this.currentMove = 0;
+    this.puzzle = puzzle;
+    this.chess = new Chess(puzzle.fen);
+    this.cg = Chessground(el, {
+      fen: this.chess.fen(),
+      selectable: {
+        enabled: false,
+      },
+      movable: {
+        free: false,
+        color: this.toColour(),
+        showDests: false,
+        events: {
+          after: (orig, dest) => {
+            this.onMove(orig, dest);
+          },
+          afterNewPiece: (role, key, metadata) => {
+            console.log(role, key, metadata);
+          },
+        },
+        dests: this.getLegalMoves(),
+      },
+      draggable: { showGhost: false },
+      events: {
+        move: (orig, dest, capturedPiece) => {
+          if (this.chess.inCheck()) {
+            this.playAudio('check');
+          } else if (capturedPiece) {
+            this.playAudio('capture');
+          } else {
+            this.playAudio('move');
+          }
+        },
+      },
+      turnColor: this.toColour(),
+      orientation: this.getOrientation(),
+      check: this.chess.isCheck(),
+    });
+    this.moves = this.movesToArr();
+    this.makeFirstMove();
+    this.currentColour.next(this.toColour());
   }
 
   private getPieceTypeAtOrig(orig: Key) {
@@ -132,11 +140,7 @@ export class ChessService {
     if (pieceData.type == 'p') {
       if (pieceData.color == 'b' && orig.substring(1, 2) == '2') {
         return true;
-      } else if (pieceData.color == 'w' && orig.substring(1, 2) == '7') {
-        return true;
-      } else {
-        return false;
-      }
+      } else return pieceData.color == 'w' && orig.substring(1, 2) == '7';
     } else {
       return false;
     }

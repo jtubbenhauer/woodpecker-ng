@@ -9,4 +9,12 @@ export class PuzzleService {
     const skip = Math.floor(Math.random() * 1000);
     return this.prisma.puzzle.findFirst({ skip: skip });
   }
+
+  getPromotion() {
+    const skip = Math.floor(Math.random() * 10);
+    return this.prisma.puzzle.findFirst({
+      where: { themes: { contains: 'promotion' } },
+      skip: skip,
+    });
+  }
 }

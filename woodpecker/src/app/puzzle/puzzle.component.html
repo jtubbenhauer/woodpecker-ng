@@ -3,23 +3,24 @@
     <app-board></app-board>
   </div>
   <div class="flex flex-col items-center gap-8">
-    <h2 class="text-xl" [hidden]="!toMove">{{toMove | uppercase}} TO MOVE</h2>
+    <h2 [hidden]="!toMove" class="text-xl">{{toMove | uppercase}} TO MOVE</h2>
     <div class="flex flex gap-4 flex-grow">
-      <button class="btn btn-primary btn-outline" (click)="resetPuzzle()">Reset</button>
-      <button class="btn btn-primary btn-outline" (click)="randomPuzzle()">Random</button>
-      <button class="btn btn-primary btn-outline" (click)="getHint()">Get Hint</button>
+      <button (click)="resetPuzzle()" class="btn">Reset</button>
+      <button (click)="randomPuzzle()" class="btn">Random</button>
+      <button (click)="getHint()" class="btn">Get Hint</button>
+      <button (click)="getPromotion()" class="btn">Promotion</button>
     </div>
     <div class="w-full">
       <div [hidden]="showBackButton">
         <button (click)="backOneMove()"
                 class="btn btn-square btn-error flex items-center justify-center w-full h-fit">
-          <img src="../../assets/reload.svg" width="32px" height="32px" alt="">
+          <img alt="" height="32px" src="../../assets/reload.svg" width="32px">
         </button>
       </div>
       <div [hidden]="!puzzleComplete">
         <button (click)="randomPuzzle()"
                 class="btn btn-square btn-success flex items-center justify-center w-full h-fit">
-          <img src="../../assets/check.svg" width="32px" height="32px" alt="">
+          <img alt="" height="32px" src="../../assets/check.svg" width="32px">
         </button>
       </div>
     </div>

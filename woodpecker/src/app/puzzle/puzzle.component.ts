@@ -25,14 +25,15 @@ export class PuzzleComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.service.initChessground(this.boardChild.el.nativeElement);
+    // this.service.initChessground(this.boardChild.el.nativeElement);
+    this.service.getRandomPuzzle(this.boardChild.el.nativeElement);
     this.service.currentColour.subscribe((value) => {
       this.toMove = value;
     });
   }
 
   randomPuzzle() {
-    this.service.initChessground(this.boardChild.el.nativeElement);
+    this.service.getRandomPuzzle(this.boardChild.el.nativeElement);
   }
 
   resetPuzzle() {
@@ -41,6 +42,10 @@ export class PuzzleComponent implements OnInit, AfterViewInit {
 
   getHint() {
     this.service.getHint();
+  }
+
+  getPromotion() {
+    this.service.getPromPuzzle(this.boardChild.el.nativeElement);
   }
 
   backOneMove() {
