@@ -75,6 +75,7 @@ export class ChessService {
       .get<Puzzle>('http://localhost:3000/puzzle/promotion')
       .subscribe((next) => {
         this.initChessground(next, el);
+        console.log(next.moves);
       });
   }
 
@@ -103,9 +104,6 @@ export class ChessService {
         events: {
           after: (orig, dest) => {
             this.onMove(orig, dest);
-          },
-          afterNewPiece: (role, key, metadata) => {
-            console.log(role, key, metadata);
           },
         },
         dests: this.getLegalMoves(),
@@ -228,11 +226,20 @@ export class ChessService {
   }
 
   // Convert move to object
-  private convertSingleMove(move: Key) {
-    return {
-      from: move.substring(0, 2),
-      to: move.substring(2, 4),
-    };
+  private convertSingleMove(move: string) {
+    console.log(move);
+    if (move.length == 4) {
+      return {
+        from: move.substring(0, 2),
+        to: move.substring(2, 4),
+      };
+    } else {
+      return {
+        from: move.substring(0, 2),
+        to: move.substring(2, 4),
+        promotion: move.substring(4, 5),
+      };
+    }
   }
 
   private movesToArr() {

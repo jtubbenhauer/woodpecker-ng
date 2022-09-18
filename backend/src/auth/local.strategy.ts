@@ -6,7 +6,7 @@ import { AuthService } from './auth.service';
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private authService: AuthService) {
-    // options object can be passed to parent class via super - eg differently named vars
+    // options object can be passed to parent class via super - eg renamed vars
     super();
   }
 
