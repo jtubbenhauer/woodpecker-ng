@@ -4,6 +4,7 @@ import { BoardComponent } from './board/board.component';
 import firebase from 'firebase/compat';
 import User = firebase.User;
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { FirestoreService } from '../services/firestore.service';
 
 @Component({
   selector: 'app-puzzle',
@@ -15,15 +16,19 @@ export class PuzzleComponent implements OnInit, AfterViewInit {
   showBackButton!: boolean;
   puzzleComplete!: boolean;
   toMove = '';
-  user?: User | null;
+  user!: User | null;
 
-  constructor(private service: ChessService, private auth: AngularFireAuth) {}
+  constructor(
+    private chessService: ChessService,
+    private auth: AngularFireAuth,
+    private firestoreService: FirestoreService
+  ) {}
 
   ngOnInit(): void {
-    this.service.lastMoveCorrect.subscribe(
+    this.chessService.lastMoveCorrect$.subscribe(
       (next) => (this.showBackButton = next)
     );
-    this.service.puzzleComplete.subscribe(
+    this.chessService.puzzleComplete$.subscribe(
       (next) => (this.puzzleComplete = next)
     );
     this.auth.user.subscribe((next) => (this.user = next));
@@ -31,29 +36,33 @@ export class PuzzleComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     // this.service.initChessground(this.boardChild.el.nativeElement);
-    this.service.getRandomPuzzle(this.boardChild.el.nativeElement);
-    this.service.currentColour.subscribe((value) => {
+    this.chessService.getRandomPuzzle(this.boardChild.el.nativeElement);
+    this.chessService.currentColour$.subscribe((value) => {
       this.toMove = value;
     });
   }
 
   randomPuzzle() {
-    this.service.getRandomPuzzle(this.boardChild.el.nativeElement);
+    this.chessService.getRandomPuzzle(this.boardChild.el.nativeElement);
+  }
+
+  newSet() {
+    this.firestoreService.newSet(this.user);
   }
 
   resetPuzzle() {
-    this.service.resetPuzzle();
+    this.chessService.resetPuzzle();
   }
 
   getHint() {
-    this.service.getHint();
+    this.chessService.getHint();
   }
 
   getPromotion() {
-    this.service.getPromPuzzle(this.boardChild.el.nativeElement);
+    this.chessService.getPromPuzzle(this.boardChild.el.nativeElement);
   }
 
   backOneMove() {
-    this.service.backOne();
+    this.chessService.backOne();
   }
 }

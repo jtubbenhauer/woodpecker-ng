@@ -18,10 +18,10 @@ export class ChessService {
   chess!: Chess;
   moves!: Key[];
   currentMove!: number;
-  feedbackMessage = new BehaviorSubject('Make a move');
-  currentColour = new BehaviorSubject('');
-  lastMoveCorrect = new BehaviorSubject(true);
-  puzzleComplete = new BehaviorSubject(false);
+  feedbackMessage$ = new BehaviorSubject('Make a move');
+  currentColour$ = new BehaviorSubject('');
+  lastMoveCorrect$ = new BehaviorSubject(true);
+  puzzleComplete$ = new BehaviorSubject(false);
   audio = new Audio();
   apiHeaders = new HttpHeaders({
     'X-RapidAPI-Key': env.chessApiKey,
@@ -47,7 +47,7 @@ export class ChessService {
   constructor(private http: HttpClient, private firestore: AngularFirestore) {}
 
   public resetPuzzle() {
-    this.puzzleComplete.next(false);
+    this.puzzleComplete$.next(false);
     this.cg.setAutoShapes([]);
     this.currentMove = 0;
     this.chess = new Chess(this.puzzle.fen);
@@ -68,7 +68,7 @@ export class ChessService {
       check: this.chess.isCheck(),
     });
     this.cg.setAutoShapes([]);
-    this.lastMoveCorrect.next(true);
+    this.lastMoveCorrect$.next(true);
   }
 
   public getHint() {
@@ -101,7 +101,7 @@ export class ChessService {
   }
 
   private initChessground(puzzle: any, el: HTMLElement): any {
-    this.puzzleComplete.next(false);
+    this.puzzleComplete$.next(false);
     this.currentMove = 0;
     this.puzzle = puzzle;
     this.chess = new Chess(puzzle.fen);
@@ -140,7 +140,7 @@ export class ChessService {
     // this.moves = this.movesToArr();
     this.moves = this.puzzle.moves as Key[];
     this.makeFirstMove();
-    this.currentColour.next(this.toColour());
+    this.currentColour$.next(this.toColour());
   }
 
   private getPieceTypeAtOrig(orig: Key) {
@@ -187,11 +187,11 @@ export class ChessService {
     } else {
       // If final move
       if (this.isCorrect(orig, dest)) {
-        this.feedbackMessage.next('Puzzle complete');
+        this.feedbackMessage$.next('Puzzle complete');
         this.cg.setAutoShapes([{ orig: dest, customSvg: this.svgs.right }]);
         this.makeMove(orig, dest);
         this.cg.stop();
-        this.puzzleComplete.next(true);
+        this.puzzleComplete$.next(true);
       } else {
         this.onWrongMove(orig, dest);
       }
@@ -199,8 +199,8 @@ export class ChessService {
   }
 
   private onRightMove(orig: Key, dest: Key) {
-    this.feedbackMessage.next('Correct! Keep going');
-    this.lastMoveCorrect.next(true);
+    this.feedbackMessage$.next('Correct! Keep going');
+    this.lastMoveCorrect$.next(true);
     this.currentMove++;
     this.makeMove(orig, dest);
     // Make computers next move after delay
@@ -211,8 +211,8 @@ export class ChessService {
   }
 
   private onWrongMove(orig: Key, dest: Key) {
-    this.lastMoveCorrect.next(false);
-    this.feedbackMessage.next('Incorrect!');
+    this.lastMoveCorrect$.next(false);
+    this.feedbackMessage$.next('Incorrect!');
     this.chess.move({ from: orig, to: dest });
     this.cg.set({ check: this.chess.isCheck() });
     this.cg.setAutoShapes([{ orig: dest, customSvg: this.svgs.wrong }]);
@@ -255,14 +255,6 @@ export class ChessService {
       };
     }
   }
-
-  // private movesToArr() {
-  //   let arr: Key[] = [];
-  //   this.puzzle.moves.split(' ').map((move: any) => {
-  //     arr.push(move as Key);
-  //   });
-  //   return arr;
-  // }
 
   private getLegalMoves(): Map<Key, Key[]> {
     const legalMoves = new Map();
