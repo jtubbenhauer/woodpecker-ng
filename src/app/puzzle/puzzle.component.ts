@@ -1,6 +1,9 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ChessService } from '../services/chess.service';
 import { BoardComponent } from './board/board.component';
+import firebase from 'firebase/compat';
+import User = firebase.User;
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-puzzle',
@@ -12,8 +15,9 @@ export class PuzzleComponent implements OnInit, AfterViewInit {
   showBackButton!: boolean;
   puzzleComplete!: boolean;
   toMove = '';
+  user?: User | null;
 
-  constructor(private service: ChessService) {}
+  constructor(private service: ChessService, private auth: AngularFireAuth) {}
 
   ngOnInit(): void {
     this.service.lastMoveCorrect.subscribe(
@@ -22,6 +26,7 @@ export class PuzzleComponent implements OnInit, AfterViewInit {
     this.service.puzzleComplete.subscribe(
       (next) => (this.puzzleComplete = next)
     );
+    this.auth.user.subscribe((next) => (this.user = next));
   }
 
   ngAfterViewInit(): void {

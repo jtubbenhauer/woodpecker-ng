@@ -4,11 +4,14 @@
   </div>
   <div class="flex flex-col items-center gap-8">
     <h2 [hidden]="!toMove" class="text-xl">{{toMove | uppercase}} TO MOVE</h2>
-    <div class="flex flex gap-4 flex-grow">
+    <div *ngIf="user" class="flex flex gap-4 flex-grow">
       <button (click)="resetPuzzle()" class="btn">Reset</button>
       <button (click)="randomPuzzle()" class="btn">Random</button>
       <button (click)="getHint()" class="btn">Get Hint</button>
       <button (click)="getPromotion()" class="btn">Promotion</button>
+    </div>
+    <div *ngIf="!user" class="flex items-center justify-center">
+      <p>Please sign in</p>
     </div>
     <div class="w-full">
       <div [hidden]="showBackButton">

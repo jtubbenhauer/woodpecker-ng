@@ -17,7 +17,8 @@
           </a>
         </li>
         <li><a>Settings</a></li>
-        <li><a>Logout</a></li>
+        <li *ngIf="user"><a (click)="logout()">Logout</a></li>
+        <li *ngIf="!user"><a (click)="login()">Login</a></li>
       </ul>
     </div>
   </div>
