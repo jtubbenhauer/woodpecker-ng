@@ -9,7 +9,7 @@
       <button (click)="randomPuzzle()" class="btn">Random</button>
       <button (click)="getHint()" class="btn">Get Hint</button>
       <button (click)="getPromotion()" class="btn">Promotion</button>
-      <button (click)="newSet()">New Set</button>
+      <button (click)="newSet()" class="btn">New Set</button>
     </div>
     <div *ngIf="!user" class="flex items-center justify-center">
       <p>Please sign in</p>
@@ -18,13 +18,13 @@
       <div [hidden]="showBackButton">
         <button (click)="backOneMove()"
                 class="btn btn-square btn-error flex items-center justify-center w-full h-fit">
-          <img alt="" height="32px" src="../../assets/reload.svg" width="32px">
+          <img alt="" height="32px" src="../../../assets/reload.svg" width="32px">
         </button>
       </div>
       <div [hidden]="!puzzleComplete">
         <button (click)="randomPuzzle()"
                 class="btn btn-square btn-success flex items-center justify-center w-full h-fit">
-          <img alt="" height="32px" src="../../assets/check.svg" width="32px">
+          <img alt="" height="32px" src="../../../assets/check.svg" width="32px">
         </button>
       </div>
     </div>

@@ -176,7 +176,7 @@ export class ChessService {
     console.log(this.getPieceTypeAtOrig(orig));
 
     this.cg.setAutoShapes([]);
-    // If there's moves remaining in the puzzle
+    // If there's moves remaining in the home
     if (this.currentMove < this.moves.length - 1) {
       // If player's move is correct
       if (this.isCorrect(orig, dest)) {
