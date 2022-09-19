@@ -44,3 +44,4 @@ Thumbs.db
 .env
 
 src/environments/env-private.ts
+src/app/firebase.ts

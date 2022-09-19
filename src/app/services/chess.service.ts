@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Chessground } from 'chessground';
 import { Chess, Square, SQUARES } from 'chess.js';
-import { HttpClient } from '@angular/common/http';
-import { Puzzle } from './models/puzzle';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { Puzzle } from '../models/puzzle';
+import { BehaviorSubject } from 'rxjs';
 import { Api } from 'chessground/api';
 import { Color, Key } from 'chessground/types';
-import { envPrivate as env } from '../environments/env-private';
+import { envPrivate as env } from '../../environments/env-private';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +22,10 @@ export class ChessService {
   lastMoveCorrect = new BehaviorSubject(true);
   puzzleComplete = new BehaviorSubject(false);
   audio = new Audio();
-  apiHeaders: any;
+  apiHeaders = new HttpHeaders({
+  'X-RapidAPI-Key': env.chessApiKey,
+  'X-RapidAPI-Host': env.chessApiHost,
+})
 
   svgs = {
     right: `<g transform="translate(60 2)" >
@@ -41,10 +44,6 @@ export class ChessService {
   };
 
   constructor(private http: HttpClient) {
-    this.apiHeaders = {
-      'X-RapidAPI-Key': env.chessApiKey,
-      'X-RapidAPI-Host': env.chessApiHost,
-    };
   }
 
   public resetPuzzle() {
@@ -79,7 +78,7 @@ export class ChessService {
 
   public getPromPuzzle(el: HTMLElement) {
     this.http
-      .get<any>(env.chessApiHost, {
+      .get<any>(env.chessApiUrl, {
         headers: this.apiHeaders,
         params: { themes: '["promotion"]', count: '1' },
       })
@@ -88,12 +87,17 @@ export class ChessService {
       });
   }
 
+  public createSet() {
+
+  }
+
   public getRandomPuzzle(el: HTMLElement) {
     this.http
-      .get(env.chessApiHost, {
+      .get(env.chessApiUrl, {
         headers: this.apiHeaders,
       })
       .subscribe((next: any) => {
+        console.log(next)
         this.initChessground(next.puzzles[0], el);
       });
   }

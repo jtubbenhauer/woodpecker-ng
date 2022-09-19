@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { ChessService } from '../../chess.service';
+import { ChessService } from '../../services/chess.service';
 
 @Component({
   selector: 'app-board',

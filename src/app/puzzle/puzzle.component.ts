@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { ChessService } from '../chess.service';
+import { ChessService } from '../services/chess.service';
 import { BoardComponent } from './board/board.component';
 
 @Component({
