@@ -6,7 +6,7 @@ import { Puzzle } from './models/puzzle';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Api } from 'chessground/api';
 import { Color, Key } from 'chessground/types';
-import { environment } from '../environment/environment';
+import { envPrivate as env } from '../environments/env-private';
 
 @Injectable({
   providedIn: 'root',
@@ -42,8 +42,8 @@ export class ChessService {
 
   constructor(private http: HttpClient) {
     this.apiHeaders = {
-      'X-RapidAPI-Key': environment.chessApiKey,
-      'X-RapidAPI-Host': environment.chessApiHost,
+      'X-RapidAPI-Key': env.chessApiKey,
+      'X-RapidAPI-Host': env.chessApiHost,
     };
   }
 
@@ -79,7 +79,7 @@ export class ChessService {
 
   public getPromPuzzle(el: HTMLElement) {
     this.http
-      .get<any>(environment.chessApiUrl, {
+      .get<any>(env.chessApiHost, {
         headers: this.apiHeaders,
         params: { themes: '["promotion"]', count: '1' },
       })
@@ -90,7 +90,7 @@ export class ChessService {
 
   public getRandomPuzzle(el: HTMLElement) {
     this.http
-      .get(environment.chessApiUrl, {
+      .get(env.chessApiHost, {
         headers: this.apiHeaders,
       })
       .subscribe((next: any) => {

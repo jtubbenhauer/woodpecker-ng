@@ -43,4 +43,4 @@ Thumbs.db
 
 .env
 
-src/environment
+src/environments/env-private.ts
