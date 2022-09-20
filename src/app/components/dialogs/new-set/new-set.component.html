@@ -1,0 +1,27 @@
+<input type="checkbox" id="new-set-dialog" class="modal-toggle"/>
+<label for="new-set-dialog" class="modal cursor-pointer">
+  <label class="modal-box relative" for="">
+    <label for="new-set-dialog" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+    <div class="flex flex-col gap-8">
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text">Min rating</span>
+        </label>
+        <div class="flex items-center gap-4">
+          <input type="range" min="0" max="100" value="40" class="range"/>
+          <input type="text" placeholder="Rating" class="input input-bordered max-w-[5rem]"/>
+        </div>
+      </div>
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text">Max rating</span>
+        </label>
+        <div class="flex items-center gap-4">
+          <input type="range" min="0" max="100" value="40" class="range"/>
+          <input type="text" placeholder="Rating" class="input input-bordered max-w-[5rem]"/>
+        </div>
+      </div>
+      <button class="btn">Create Set</button>
+    </div>
+  </label>
+</label>

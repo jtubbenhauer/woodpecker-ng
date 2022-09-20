@@ -10,6 +10,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { firebaseConfig } from './firebase';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { NewSetComponent } from './components/dialogs/new-set/new-set.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
     NavbarComponent,
     HomeComponent,
     BoardComponent,
+    NewSetComponent,
   ],
   imports: [
     BrowserModule,

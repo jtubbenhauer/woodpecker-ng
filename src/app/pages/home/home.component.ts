@@ -5,6 +5,7 @@ import firebase from 'firebase/compat';
 import User = firebase.User;
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FirestoreService } from '../../services/firestore.service';
+import { NewSetComponent } from '../../components/dialogs/new-set/new-set.component';
 
 @Component({
   selector: 'app-home',
@@ -35,7 +36,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // this.service.initChessground(this.boardChild.el.nativeElement);
     this.chessService.getRandomPuzzle(this.boardChild.el.nativeElement);
     this.chessService.currentColour$.subscribe((value) => {
       this.toMove = value;

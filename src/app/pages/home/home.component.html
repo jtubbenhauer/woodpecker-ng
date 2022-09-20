@@ -4,16 +4,17 @@
   </div>
   <div class="flex flex-col items-center gap-8">
     <h2 [hidden]="!toMove" class="text-xl">{{toMove | uppercase}} TO MOVE</h2>
-    <div *ngIf="user" class="flex flex gap-4 flex-grow">
+    <div *ngIf="user" class="flex flex gap-4">
       <button (click)="resetPuzzle()" class="btn">Reset</button>
       <button (click)="randomPuzzle()" class="btn">Random</button>
       <button (click)="getHint()" class="btn">Get Hint</button>
       <button (click)="getPromotion()" class="btn">Promotion</button>
-      <button (click)="newSet()" class="btn">New Set</button>
+      <label (click)="newSet()" for="new-set-dialog" class="btn modal-button">New Set</label>
     </div>
     <div *ngIf="!user" class="flex items-center justify-center">
       <p>Please sign in</p>
     </div>
+
     <div class="w-full">
       <div [hidden]="showBackButton">
         <button (click)="backOneMove()"
@@ -32,3 +33,5 @@
   </div>
 
 </div>
+<app-new-set></app-new-set>
+<input type="checkbox" id="new-set-dialog" class="modal-toggle"/>
