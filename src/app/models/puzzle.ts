@@ -3,6 +3,6 @@ export interface Puzzle {
   fen: string;
   moves: string[];
   rating: number;
-  ratingDeviation: number;
+  ratingdeviation: number;
   themes: string[];
 }

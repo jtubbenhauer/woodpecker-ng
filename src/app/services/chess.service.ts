@@ -27,6 +27,14 @@ export class ChessService {
     'X-RapidAPI-Key': env.chessApiKey,
     'X-RapidAPI-Host': env.chessApiHost,
   });
+  tempPuzzle: Puzzle = {
+    puzzleId: 'HxxIU',
+    fen: '2r2rk1/3nqp1p/p3p1p1/np1p4/3P4/P1NBP3/1PQ2PPP/2R2RK1 w - - 0 18',
+    rating: 1683,
+    ratingdeviation: 74,
+    moves: ['c3d5', 'e6d5', 'c2c8', 'f8c8'],
+    themes: ['advantage', 'hangingPiece', 'middlegame', 'short'],
+  };
 
   svgs = {
     right: `<g transform="translate(60 2)" >
@@ -87,17 +95,16 @@ export class ChessService {
       });
   }
 
-  public createSet() {}
-
   public getRandomPuzzle(el: HTMLElement) {
-    this.http
-      .get(env.chessApiUrl, {
-        headers: this.apiHeaders,
-      })
-      .subscribe((next: any) => {
-        console.log(next);
-        this.initChessground(next.puzzles[0], el);
-      });
+    // this.http
+    //   .get(env.chessApiUrl, {
+    //     headers: this.apiHeaders,
+    //   })
+    //   .subscribe((next: any) => {
+    //     console.log(next);
+    //     this.initChessground(next.puzzles[0], el);
+    //   });
+    this.initChessground(this.tempPuzzle, el);
   }
 
   private initChessground(puzzle: any, el: HTMLElement): any {

@@ -1,11 +1,16 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterContentInit,
+  AfterViewInit,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ChessService } from '../../services/chess.service';
 import { BoardComponent } from '../../components/board/board.component';
 import firebase from 'firebase/compat';
 import User = firebase.User;
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { FirestoreService } from '../../services/firestore.service';
-import { NewSetComponent } from '../../components/dialogs/new-set/new-set.component';
+import { UserDataService } from '../../services/user-data.service';
 
 @Component({
   selector: 'app-home',
@@ -16,13 +21,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild(BoardComponent) boardChild!: BoardComponent;
   showBackButton!: boolean;
   puzzleComplete!: boolean;
-  toMove = '';
-  user!: User | null;
+  toMove?: string;
+  user?: User | null;
 
   constructor(
     private chessService: ChessService,
     private auth: AngularFireAuth,
-    private firestoreService: FirestoreService
+    private userDataService: UserDataService
   ) {}
 
   ngOnInit(): void {
@@ -33,13 +38,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
       (next) => (this.puzzleComplete = next)
     );
     this.auth.user.subscribe((next) => (this.user = next));
+    this.chessService.currentColour$.subscribe((value) => {
+      this.toMove = value;
+    });
   }
 
   ngAfterViewInit(): void {
     this.chessService.getRandomPuzzle(this.boardChild.el.nativeElement);
-    this.chessService.currentColour$.subscribe((value) => {
-      this.toMove = value;
-    });
   }
 
   randomPuzzle() {
@@ -47,7 +52,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   newSet() {
-    this.firestoreService.newSet(this.user);
+    this.userDataService.newSet();
   }
 
   resetPuzzle() {

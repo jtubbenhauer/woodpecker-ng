@@ -8,8 +8,10 @@
           <span class="label-text">Min rating</span>
         </label>
         <div class="flex items-center gap-4">
-          <input type="range" min="0" max="100" value="40" class="range"/>
-          <input type="text" placeholder="Rating" class="input input-bordered max-w-[5rem]"/>
+          <input #minRatingRange type="range" min="0" max="3000" [value]="minRating" class="range range-primary"
+                 (input)="setMinRating(minRatingRange.value)"/>
+          <input #minRatingInput type="text" class="input input-bordered max-w-[5rem]" [value]="minRating"
+                 (input)="setMinRating(minRatingInput.value)"/>
         </div>
       </div>
       <div class="form-control">
@@ -17,11 +19,19 @@
           <span class="label-text">Max rating</span>
         </label>
         <div class="flex items-center gap-4">
-          <input type="range" min="0" max="100" value="40" class="range"/>
-          <input type="text" placeholder="Rating" class="input input-bordered max-w-[5rem]"/>
+          <input #maxRatingRange type="range" min="0" max="3000" [value]="maxRating" class="range range-primary"
+                 (input)="setMaxRating(maxRatingRange.value)"
+          />
+          <input #maxRatingInput type="text" [value]="maxRating" class="input input-bordered max-w-[5rem]"
+                 (input)="setMaxRating(maxRatingInput.value)"
+          />
         </div>
       </div>
-      <button class="btn">Create Set</button>
+
+      <button class="btn" (click)="createSet()">Create Set</button>
+      <div *ngIf="!isValidRange" class="alert alert-error shadow-lg flex items-center justify-center">
+        <span class="font-bold">Error! Please set a valid rating range.</span>
+      </div>
     </div>
   </label>
 </label>
