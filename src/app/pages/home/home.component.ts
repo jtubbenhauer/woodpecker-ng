@@ -1,16 +1,9 @@
-import {
-  AfterContentInit,
-  AfterViewInit,
-  Component,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ChessService } from '../../services/chess.service';
 import { BoardComponent } from '../../components/board/board.component';
 import firebase from 'firebase/compat';
 import User = firebase.User;
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { UserDataService } from '../../services/user-data.service';
 
 @Component({
   selector: 'app-home',
@@ -19,15 +12,14 @@ import { UserDataService } from '../../services/user-data.service';
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild(BoardComponent) boardChild!: BoardComponent;
-  showBackButton!: boolean;
+  showBackButton = false;
   puzzleComplete!: boolean;
   toMove?: string;
   user?: User | null;
 
   constructor(
     private chessService: ChessService,
-    private auth: AngularFireAuth,
-    private userDataService: UserDataService
+    private auth: AngularFireAuth
   ) {}
 
   ngOnInit(): void {
@@ -49,10 +41,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   randomPuzzle() {
     this.chessService.getRandomPuzzle(this.boardChild.el.nativeElement);
-  }
-
-  newSet() {
-    this.userDataService.newSet();
   }
 
   resetPuzzle() {

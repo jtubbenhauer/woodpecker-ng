@@ -1,37 +1,35 @@
-<div class="flex justify-center gap-8 mt-8">
-  <div>
+<div class="grid grid-cols-2 mt-8">
+  <div class="justify-items-end">
     <app-board></app-board>
   </div>
   <div class="flex flex-col items-center gap-8">
-    <h2 [hidden]="!toMove" class="text-xl">{{toMove | uppercase}} TO MOVE</h2>
+    <h2 *ngIf="toMove" class="text-xl">{{toMove | uppercase}} TO MOVE</h2>
     <div *ngIf="user" class="flex flex gap-4">
       <button (click)="resetPuzzle()" class="btn">Reset</button>
       <button (click)="randomPuzzle()" class="btn">Random</button>
       <button (click)="getHint()" class="btn">Get Hint</button>
       <button (click)="getPromotion()" class="btn">Promotion</button>
-      <label (click)="newSet()" for="new-set-dialog" class="btn modal-button">New Set</label>
+      <label for="new-set-dialog" class="btn modal-button">New Set</label>
     </div>
     <div *ngIf="!user" class="flex items-center justify-center">
       <p>Please sign in</p>
     </div>
 
-    <div class="w-full">
-      <div [hidden]="showBackButton">
+    <div class="flex items-center justify-center w-full gap-8">
+      <div *ngIf="!showBackButton || puzzleComplete">
         <button (click)="backOneMove()"
-                class="btn btn-square btn-error flex items-center justify-center w-full h-fit">
+                class="btn btn-square btn-error flex items-center justify-center w-44 h-fit">
           <img alt="" height="32px" src="../../../assets/reload.svg" width="32px">
         </button>
       </div>
-      <div [hidden]="!puzzleComplete">
+      <div *ngIf="puzzleComplete">
         <button (click)="randomPuzzle()"
-                class="btn btn-square btn-success flex items-center justify-center w-full h-fit">
+                class="btn btn-square btn-success flex items-center justify-center w-44 h-fit">
           <img alt="" height="32px" src="../../../assets/check.svg" width="32px">
         </button>
       </div>
     </div>
-
   </div>
-
 </div>
 <app-new-set></app-new-set>
 <input type="checkbox" id="new-set-dialog" class="modal-toggle"/>
