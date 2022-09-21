@@ -1,0 +1,42 @@
+<div class="flex flex-col gap-4 items-center justify-center bg-base-200 p-8 rounded-2xl shadow-xl">
+  <div class="stats text-white/90 shadow bg-base-300/90">
+    <div class="stat">
+      <div class="stat-title">
+        Size
+      </div>
+      <div class="stat-value">
+        {{data.puzzleCount}}
+      </div>
+      <div class="stat-desc">
+        Number of puzzles in set
+      </div>
+    </div>
+    <div class="stat">
+      <div class="stat-title">
+        Completed
+      </div>
+      <div class="stat-value">
+        {{data.timesCompleted}}
+      </div>
+      <div class="stat-desc">
+        Times set has been completed
+      </div>
+
+    </div>
+  </div>
+  <div class="flex gap-8 items-center justify-evenly w-full">
+    <div class="flex flex-col gap-4 items-center justify-center">
+      <div class="flex flex-col gap-4 items-center justify-center">
+        <p>Current</p>
+        <div class="radial-progress text-white/90"
+             [style]="currentRadial">{{(this.data.completed / this.data.puzzleCount) * 100}}%
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col gap-4 items-center justify-center">
+      <p>Best</p>
+      <div class="radial-progress text-success" [style]="bestRadial">{{data.best * 100}}%</div>
+    </div>
+  </div>
+  <button class="btn btn-success text-black mt-2">Continue set</button>
+</div>

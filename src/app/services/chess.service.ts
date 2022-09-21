@@ -28,12 +28,13 @@ export class ChessService {
     'X-RapidAPI-Host': env.chessApiHost,
   });
   tempPuzzle: Puzzle = {
-    puzzleId: 'HxxIU',
+    puzzleid: 'HxxIU',
     fen: '2r2rk1/3nqp1p/p3p1p1/np1p4/3P4/P1NBP3/1PQ2PPP/2R2RK1 w - - 0 18',
     rating: 1683,
     ratingdeviation: 74,
     moves: ['c3d5', 'e6d5', 'c2c8', 'f8c8'],
     themes: ['advantage', 'hangingPiece', 'middlegame', 'short'],
+    completed: false,
   };
 
   svgs = {
@@ -183,7 +184,7 @@ export class ChessService {
     console.log(this.getPieceTypeAtOrig(orig));
 
     this.cg.setAutoShapes([]);
-    // If there's moves remaining in the home
+    // If there's moves remaining in the set
     if (this.currentMove < this.moves.length - 1) {
       // If player's move is correct
       if (this.isCorrect(orig, dest)) {

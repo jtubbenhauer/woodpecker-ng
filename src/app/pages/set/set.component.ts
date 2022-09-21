@@ -6,11 +6,11 @@ import User = firebase.User;
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
+  selector: 'app-set',
+  templateUrl: './set.component.html',
+  styleUrls: ['./set.component.css'],
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class SetComponent implements OnInit, AfterViewInit {
   @ViewChild(BoardComponent) boardChild!: BoardComponent;
   showBackButton = false;
   puzzleComplete!: boolean;

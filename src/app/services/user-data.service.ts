@@ -9,7 +9,6 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { SetDoc, UserDoc } from '../models/userData';
-import { v4 as uuid } from 'uuid';
 
 @Injectable({
   providedIn: 'root',
@@ -53,14 +52,21 @@ export class UserDataService {
         .subscribe((next) => {
           this.userDoc
             ?.collection('sets')
-            .add({})
+            .add({
+              createdAt: new Date(),
+              rating: rating,
+              puzzleCount: next.puzzles.length,
+              timesCompleted: 0,
+              currentPuzzleId: next.puzzles[0].puzzleid,
+              completed: 0,
+            })
             .then((doc) =>
               next.puzzles.map((puzzle) =>
                 this.userDoc
                   ?.collection('sets')
                   .doc(`${doc.id}`)
                   .collection('puzzles')
-                  .add(puzzle)
+                  .add({ ...puzzle, completed: false })
               )
             );
         });
