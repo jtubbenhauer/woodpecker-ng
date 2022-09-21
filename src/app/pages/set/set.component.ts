@@ -4,6 +4,7 @@ import { BoardComponent } from '../../components/board/board.component';
 import firebase from 'firebase/compat';
 import User = firebase.User;
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-set',
@@ -16,13 +17,19 @@ export class SetComponent implements OnInit, AfterViewInit {
   puzzleComplete!: boolean;
   toMove?: string;
   user?: User | null;
+  setId?: string;
 
   constructor(
     private chessService: ChessService,
-    private auth: AngularFireAuth
+    private auth: AngularFireAuth,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      this.setId = params['id'];
+      console.log(params);
+    });
     this.chessService.lastMoveCorrect$.subscribe(
       (next) => (this.showBackButton = next)
     );

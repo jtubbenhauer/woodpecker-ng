@@ -9,7 +9,7 @@ const routes: Routes = [
     component: HomeComponent,
   },
   {
-    path: 'set',
+    path: 'set/:id',
     component: SetComponent,
   },
 ];
