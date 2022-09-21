@@ -9,8 +9,7 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { SetDoc, UserDoc } from '../models/userData';
-import { Puzzle } from '../models/puzzle';
-import { map } from 'rxjs';
+import { v4 as uuid } from 'uuid';
 
 @Injectable({
   providedIn: 'root',
@@ -41,9 +40,9 @@ export class UserDataService {
     }
   }
 
-  async newSet(rating: string) {
+  newSet(rating: string) {
     if (this.user) {
-      await this.http
+      this.http
         .get<SetDoc>(env.chessApiUrl, {
           headers: this.apiHeaders,
           params: {
@@ -52,9 +51,18 @@ export class UserDataService {
           },
         })
         .subscribe((next) => {
-          next.puzzles.map((puzzle) =>
-            this.afs.collection(`users/${this.user?.uid}/sets`).add(puzzle)
-          );
+          this.userDoc
+            ?.collection('sets')
+            .add({})
+            .then((doc) =>
+              next.puzzles.map((puzzle) =>
+                this.userDoc
+                  ?.collection('sets')
+                  .doc(`${doc.id}`)
+                  .collection('puzzles')
+                  .add(puzzle)
+              )
+            );
         });
     }
   }
