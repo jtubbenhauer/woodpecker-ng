@@ -26,7 +26,8 @@
               "src/styles.css",
               "src/app/styles/chessground.base.css",
               "src/app/styles/chessground.board.css",
-              "src/app/styles/chessground.pieces.css"
+              "src/app/styles/chessground.pieces.css",
+              "node_modules/ngx-spinner/animations/ball-scale-multiple.css"
             ],
             "scripts": []
           },

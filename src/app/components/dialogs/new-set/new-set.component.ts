@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserDataService } from '../../../services/user-data.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-new-set',
@@ -10,7 +11,10 @@ export class NewSetComponent implements OnInit {
   setRating = '1000';
   isValidRange = true;
 
-  constructor(private userDataService: UserDataService) {}
+  constructor(
+    private userDataService: UserDataService,
+    private spinner: NgxSpinnerService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -18,7 +22,9 @@ export class NewSetComponent implements OnInit {
     this.setRating = value;
   }
 
-  createSet() {
-    this.userDataService.newSet(this.setRating);
+  async createSet() {
+    this.spinner.show();
+    await this.userDataService.newSet(this.setRating);
+    this.spinner.hide();
   }
 }

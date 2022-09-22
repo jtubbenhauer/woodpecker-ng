@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { Set } from '../../../models/set';
 
 @Component({
   selector: 'app-set-card',
@@ -6,15 +7,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
   styleUrls: ['./set-card.component.css'],
 })
 export class SetCardComponent implements OnInit, AfterViewInit {
-  data = {
-    createdAt: new Date(),
-    rating: '1000',
-    puzzleCount: 100,
-    timesCompleted: 3,
-    currentPuzzleId: '001',
-    completed: 50,
-    best: 0.68,
-  };
+  @Input() set!: Set;
 
   bestRadial?: string;
   currentRadial?: string;
@@ -24,9 +17,9 @@ export class SetCardComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {}
 
   ngAfterViewInit() {
-    this.bestRadial = `--value:${this.data.best * 100}`;
+    this.bestRadial = `--value:${this.set.best ? this.set.best * 100 : 0}`;
     this.currentRadial = `--value:${
-      (this.data.completed / this.data.puzzleCount) * 100
+      (this.set.completed / this.set.puzzleCount) * 100
     }`;
   }
 }

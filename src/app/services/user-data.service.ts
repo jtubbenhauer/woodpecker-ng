@@ -9,6 +9,8 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { SetDoc, UserDoc } from '../models/userData';
+import { Observable } from 'rxjs';
+import { Set } from '../models/set';
 
 @Injectable({
   providedIn: 'root',
@@ -37,6 +39,10 @@ export class UserDataService {
     if (user) {
       this.afs.doc(`users/${user.uid}`).set({ email: user.email });
     }
+  }
+
+  getSets(uid: string | undefined): Observable<Set[]> {
+    return this.afs.collection<Set>(`users/${uid}/sets`).valueChanges();
   }
 
   newSet(rating: string) {

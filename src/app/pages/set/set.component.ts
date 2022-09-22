@@ -5,6 +5,7 @@ import firebase from 'firebase/compat';
 import User = firebase.User;
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { ActivatedRoute } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-set',
@@ -22,13 +23,13 @@ export class SetComponent implements OnInit, AfterViewInit {
   constructor(
     private chessService: ChessService,
     private auth: AngularFireAuth,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.setId = params['id'];
-      console.log(params);
     });
     this.chessService.lastMoveCorrect$.subscribe(
       (next) => (this.showBackButton = next)

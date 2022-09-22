@@ -6,7 +6,13 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private afAuth: AngularFireAuth, private router: Router) {}
+  authState: any = null;
+
+  constructor(private afAuth: AngularFireAuth, private router: Router) {
+    this.afAuth.authState.subscribe(
+      (authState) => (this.authState = authState)
+    );
+  }
 
   emailLogin(email: string, password: string) {
     this.afAuth

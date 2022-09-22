@@ -1,5 +1,6 @@
 import firebase from 'firebase/compat';
 import Timestamp = firebase.firestore.Timestamp;
+import { Puzzle } from './puzzle';
 
 export interface Set {
   createdAt: Timestamp;
@@ -9,4 +10,5 @@ export interface Set {
   currentPuzzleId: string;
   completed: number;
   best?: number;
+  puzzles: Puzzle[];
 }

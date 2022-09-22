@@ -1,3 +1,4 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
 <input type="checkbox" id="new-set-dialog" class="modal-toggle"/>
 <label for="new-set-dialog" class="modal cursor-pointer">
   <label class="modal-box relative" for="">
@@ -15,7 +16,8 @@
         </div>
       </div>
 
-      <button class="btn" (click)="createSet()">Create Set</button>
+      <!--      <button for="new-set-dialog" class="btn" (click)="createSet()">Create Set</button>-->
+      <label for="new-set-dialog" class="btn" (click)="createSet()">Create Set</label>
       <div *ngIf="!isValidRange" class="alert alert-error shadow-lg flex items-center justify-center">
         <span class="font-bold">Error! Please set a valid rating range.</span>
       </div>

@@ -1,4 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { UserDataService } from '../../../services/user-data.service';
+import { Observable } from 'rxjs';
+import { AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import firebase from 'firebase/compat';
+import User = firebase.User;
+import { Set } from '../../../models/set';
 
 @Component({
   selector: 'app-home',
@@ -6,7 +13,18 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  constructor() {}
+  collection?: AngularFirestoreCollection<unknown> | null;
+  items$?: Observable<Set[]>;
+  user?: User | null;
 
-  ngOnInit(): void {}
+  constructor(
+    private userDataService: UserDataService,
+    private auth: AngularFireAuth
+  ) {
+    this.auth.user.subscribe(
+      (next) => (this.items$ = this.userDataService.getSets(next?.uid))
+    );
+  }
+
+  ngOnInit() {}
 }
