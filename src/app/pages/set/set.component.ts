@@ -9,6 +9,7 @@ import { Set } from '../../models/set';
 import { UserDataService } from '../../services/user-data.service';
 import { Puzzle } from '../../models/puzzle';
 import { randomArrayEl } from '../../utils/utils';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-set',
@@ -20,13 +21,13 @@ export class SetComponent implements OnInit {
   showBackButton = false;
   puzzleComplete!: boolean;
   toMove?: string;
-  user?: User | null;
-  setId?: string;
+  user!: User | null;
+  setId!: string;
   setData!: Set;
   puzzles!: Puzzle[];
   completePuzzles!: Puzzle[];
   incompletePuzzles!: Puzzle[];
-  currentPuzzle?: Puzzle;
+  currentPuzzle!: Puzzle;
 
   constructor(
     private chessService: ChessService,
@@ -43,6 +44,7 @@ export class SetComponent implements OnInit {
         if (this.user && this.setId) {
           this.userDataService
             .getOneSet(this.user, this.setId)
+            .pipe(first())
             .subscribe((next) => {
               this.setData = next;
             });
@@ -61,11 +63,17 @@ export class SetComponent implements OnInit {
       (next) => (this.showBackButton = next)
     );
     this.chessService.puzzleComplete$.subscribe((next) => {
-      console.log('complete');
       this.puzzleComplete = next;
-      this.puzzles
-        .filter((puzzle) => puzzle.puzzleid == this.currentPuzzle?.puzzleid)
-        .forEach((puzzle) => (puzzle.completed = true));
+      if (this.user) {
+        this.userDataService.updateCorrectPuzzle(
+          this.user,
+          this.setId,
+          this.currentPuzzle
+        );
+      }
+      // this.puzzles
+      //   .filter((puzzle) => puzzle.puzzleid == this.currentPuzzle?.puzzleid)
+      //   .forEach((puzzle) => (puzzle.completed = true));
       // Update setPuzzles in one hit here
       this.splitPuzzles();
     });

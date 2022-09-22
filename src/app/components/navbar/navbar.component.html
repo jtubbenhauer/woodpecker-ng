@@ -2,6 +2,7 @@
   <div class="flex-1">
     <a class="btn btn-ghost normal-case text-xl" [routerLink]="['']">Woodpeckr</a>
   </div>
+  <span *ngIf="user" class="mr-4">{{user.email}}</span>
   <div class="flex-none gap-2">
     <div class="dropdown dropdown-end">
       <label tabindex="0" class="btn btn-ghost btn-circle avatar flex items-center justify-center">

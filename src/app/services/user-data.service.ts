@@ -64,6 +64,19 @@ export class UserDataService {
       .pipe(first());
   }
 
+  updateCorrectPuzzle(user: User, setId: string, puzzle: Puzzle) {
+    const path = `users/${user.uid}/sets/${setId}/puzzles`;
+    this.afs
+      .collection(path, (ref) => ref.where('puzzleid', '==', puzzle.puzzleid))
+      .snapshotChanges()
+      .pipe(first())
+      .forEach((value) =>
+        this.afs
+          .doc(`${path}/${value[0].payload.doc.id}`)
+          .update({ ...puzzle, completed: true })
+      );
+  }
+
   newSet(rating: string) {
     if (this.user) {
       this.http
