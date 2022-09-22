@@ -9,7 +9,8 @@
           <span class="label-text">Puzzle Set Rating</span>
         </label>
         <div class="flex items-center gap-4">
-          <input #setRatingRange type="range" min="0" max="3000" [value]="setRating" class="range range-primary"
+          <input #setRatingRange type="range" min="0" max="3000" step="50" [value]="setRating"
+                 class="range range-primary"
                  (input)="changeRating(setRatingRange.value)"/>
           <input #setRatingInput type="text" class="input input-bordered max-w-[5rem]" [value]="setRating"
                  (input)="changeRating(setRatingInput.value)"/>

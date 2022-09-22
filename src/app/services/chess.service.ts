@@ -27,15 +27,6 @@ export class ChessService {
     'X-RapidAPI-Key': env.chessApiKey,
     'X-RapidAPI-Host': env.chessApiHost,
   });
-  tempPuzzle: Puzzle = {
-    puzzleid: 'HxxIU',
-    fen: '2r2rk1/3nqp1p/p3p1p1/np1p4/3P4/P1NBP3/1PQ2PPP/2R2RK1 w - - 0 18',
-    rating: 1683,
-    ratingdeviation: 74,
-    moves: ['c3d5', 'e6d5', 'c2c8', 'f8c8'],
-    themes: ['advantage', 'hangingPiece', 'middlegame', 'short'],
-    completed: false,
-  };
 
   svgs = {
     right: `<g transform="translate(60 2)" >
@@ -53,7 +44,7 @@ export class ChessService {
             </g>`,
   };
 
-  constructor(private http: HttpClient, private firestore: AngularFirestore) {}
+  constructor(private http: HttpClient) {}
 
   public resetPuzzle() {
     this.puzzleComplete$.next(false);
@@ -96,19 +87,7 @@ export class ChessService {
       });
   }
 
-  public getRandomPuzzle(el: HTMLElement) {
-    // this.http
-    //   .get(env.chessApiUrl, {
-    //     headers: this.apiHeaders,
-    //   })
-    //   .subscribe((next: any) => {
-    //     console.log(next);
-    //     this.initChessground(next.puzzles[0], el);
-    //   });
-    this.initChessground(this.tempPuzzle, el);
-  }
-
-  private initChessground(puzzle: any, el: HTMLElement): any {
+  public initChessground(puzzle: any, el: HTMLElement): any {
     this.puzzleComplete$.next(false);
     this.currentMove = 0;
     this.puzzle = puzzle;

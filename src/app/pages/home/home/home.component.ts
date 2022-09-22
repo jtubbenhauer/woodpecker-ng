@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UserDataService } from '../../../services/user-data.service';
-import { Observable } from 'rxjs';
+import { first, Observable } from 'rxjs';
 import { AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat';
 import User = firebase.User;
-import { Set } from '../../../models/set';
 import { SetWithId } from '../../../components/setCard/set-card/set-card.component';
 
 @Component({
@@ -22,9 +21,11 @@ export class HomeComponent implements OnInit {
     private userDataService: UserDataService,
     private auth: AngularFireAuth
   ) {
-    this.auth.user.subscribe(
-      (next) => (this.items$ = this.userDataService.getSets(next?.uid))
-    );
+    this.auth.user
+      .pipe(first())
+      .subscribe(
+        (next) => (this.items$ = this.userDataService.getSets(next?.uid))
+      );
   }
 
   ngOnInit() {}

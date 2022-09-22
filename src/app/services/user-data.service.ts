@@ -6,12 +6,14 @@ import { envPrivate as env } from '../../environments/env-private';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFirestore,
+  AngularFirestoreCollection,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { SetDoc, UserDoc } from '../models/userData';
-import { Observable } from 'rxjs';
+import { first, Observable } from 'rxjs';
 import { Set } from '../models/set';
 import { SetWithId } from '../components/setCard/set-card/set-card.component';
+import { Puzzle } from '../models/puzzle';
 
 @Injectable({
   providedIn: 'root',
@@ -49,7 +51,17 @@ export class UserDataService {
   }
 
   getOneSet(user: User, uid: string): Observable<any> {
-    return this.afs.doc(`users/${user.uid}/sets/${uid}`).valueChanges();
+    return this.afs
+      .doc(`users/${user.uid}/sets/${uid}`)
+      .valueChanges()
+      .pipe(first());
+  }
+
+  getSetPuzzles(user: User, uid: string): Observable<any> {
+    return this.afs
+      .collection(`users/${user.uid}/sets/${uid}/puzzles`)
+      .valueChanges()
+      .pipe(first());
   }
 
   newSet(rating: string) {

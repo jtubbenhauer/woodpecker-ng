@@ -6,11 +6,14 @@
     <h2 *ngIf="toMove" class="text-xl">{{toMove | uppercase}} TO MOVE</h2>
     <div *ngIf="user" class="flex flex gap-4">
       <button (click)="resetPuzzle()" class="btn">Reset</button>
-      <button (click)="randomPuzzle()" class="btn">Random</button>
+      <button (click)="getNextPuzzle()" class="btn">Random</button>
       <button (click)="getHint()" class="btn">Get Hint</button>
       <button (click)="getPromotion()" class="btn">Promotion</button>
       <label for="new-set-dialog" class="btn modal-button">New Set</label>
     </div>
+    <p *ngIf="puzzles">Total: {{puzzles.length}}</p>
+    <p *ngIf="completePuzzles">Completed: {{completePuzzles.length}}</p>
+    <p *ngIf="incompletePuzzles">Remaining: {{incompletePuzzles.length}}</p>
     <div *ngIf="!user" class="flex items-center justify-center">
       <p>Please sign in</p>
     </div>
@@ -22,7 +25,7 @@
         </button>
       </div>
       <div *ngIf="puzzleComplete">
-        <button (click)="randomPuzzle()"
+        <button (click)="getNextPuzzle()"
                 class="btn btn-square btn-success flex items-center justify-center w-44 h-fit">
           <img alt="" height="32px" src="../../../assets/check.svg" width="32px">
         </button>
@@ -30,6 +33,5 @@
     </div>
   </div>
 </div>
-<div>howdy {{setData.rating}}</div>
 <app-new-set></app-new-set>
 <input type="checkbox" id="new-set-dialog" class="modal-toggle"/>
