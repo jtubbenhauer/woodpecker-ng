@@ -12,6 +12,10 @@ const routes: Routes = [
     path: 'set/:id',
     component: SetComponent,
   },
+  {
+    path: 'set',
+    component: SetComponent,
+  },
 ];
 
 @NgModule({

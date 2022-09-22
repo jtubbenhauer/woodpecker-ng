@@ -11,6 +11,7 @@ import {
 import { SetDoc, UserDoc } from '../models/userData';
 import { Observable } from 'rxjs';
 import { Set } from '../models/set';
+import { SetWithId } from '../components/setCard/set-card/set-card.component';
 
 @Injectable({
   providedIn: 'root',
@@ -41,8 +42,14 @@ export class UserDataService {
     }
   }
 
-  getSets(uid: string | undefined): Observable<Set[]> {
-    return this.afs.collection<Set>(`users/${uid}/sets`).valueChanges();
+  getSets(uid: string | undefined): Observable<SetWithId[]> {
+    return this.afs
+      .collection<Set>(`users/${uid}/sets`)
+      .valueChanges({ idField: 'id' });
+  }
+
+  getOneSet(user: User, uid: string): Observable<any> {
+    return this.afs.doc(`users/${user.uid}/sets/${uid}`).valueChanges();
   }
 
   newSet(rating: string) {

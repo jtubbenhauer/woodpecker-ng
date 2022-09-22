@@ -40,5 +40,7 @@
       <div class="radial-progress text-success" [style]="bestRadial">{{set.best ? set.best * 100 : 0}}%</div>
     </div>
   </div>
-  <button class="btn btn-success text-black mt-2">Continue set</button>
+  <button class="btn btn-success text-black mt-2" [routerLink]="['/set']" [queryParams]="{id: set.id}">
+    Continue set
+  </button>
 </div>

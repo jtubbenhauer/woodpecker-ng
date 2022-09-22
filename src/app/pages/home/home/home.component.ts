@@ -6,6 +6,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat';
 import User = firebase.User;
 import { Set } from '../../../models/set';
+import { SetWithId } from '../../../components/setCard/set-card/set-card.component';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +15,7 @@ import { Set } from '../../../models/set';
 })
 export class HomeComponent implements OnInit {
   collection?: AngularFirestoreCollection<unknown> | null;
-  items$?: Observable<Set[]>;
+  items$?: Observable<SetWithId[]>;
   user?: User | null;
 
   constructor(
