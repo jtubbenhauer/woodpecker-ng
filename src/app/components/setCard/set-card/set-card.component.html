@@ -26,6 +26,7 @@
 
     </div>
   </div>
+  <h4 class="text-xl font-bold">test</h4>
   <div class="flex gap-8 items-center justify-evenly w-full">
     <div class="flex flex-col gap-4 items-center justify-center">
       <div class="flex flex-col gap-4 items-center justify-center">
@@ -40,7 +41,11 @@
       <div class="radial-progress text-success" [style]="bestRadial">{{set.best ? set.best * 100 : 0}}%</div>
     </div>
   </div>
-  <button class="btn btn-success text-black mt-2" [routerLink]="['/set']" [queryParams]="{id: set.id}">
-    Continue set
-  </button>
+  <div class="flex gap-8 mt-2">
+
+    <button class="btn btn-success text-black" [routerLink]="['/set']" [queryParams]="{id: set.id}">
+      Continue
+    </button>
+    <button class="btn btn-error" (click)="deleteSet()">Delete</button>
+  </div>
 </div>

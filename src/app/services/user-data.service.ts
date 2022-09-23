@@ -90,6 +90,10 @@ export class UserDataService {
       );
   }
 
+  deleteSet(setId: string) {
+    this.afs.doc(`users/${this.user?.uid}/sets/${setId}`).delete();
+  }
+
   newSet(rating: string) {
     if (this.user) {
       this.http

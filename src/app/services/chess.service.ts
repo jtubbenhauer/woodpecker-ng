@@ -88,7 +88,6 @@ export class ChessService {
   }
 
   public initChessground(puzzle: any, el: HTMLElement): any {
-    this.puzzleComplete$.next(false);
     this.currentMove = 0;
     this.puzzle = puzzle;
     this.chess = new Chess(puzzle.fen);

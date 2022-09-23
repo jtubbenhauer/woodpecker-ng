@@ -1,15 +1,14 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {ChessService} from '../../services/chess.service';
-import {BoardComponent} from '../../components/board/board.component';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChessService } from '../../services/chess.service';
+import { BoardComponent } from '../../components/board/board.component';
 import firebase from 'firebase/compat';
 import User = firebase.User;
-import {AngularFireAuth} from '@angular/fire/compat/auth';
-import {ActivatedRoute} from '@angular/router';
-import {Set} from '../../models/set';
-import {UserDataService} from '../../services/user-data.service';
-import {Puzzle} from '../../models/puzzle';
-import {randomArrayEl} from '../../utils/utils';
-import {first, Observable} from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { ActivatedRoute } from '@angular/router';
+import { UserDataService } from '../../services/user-data.service';
+import { Puzzle } from '../../models/puzzle';
+import { randomArrayEl } from '../../utils/utils';
+import { first, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-set',
@@ -23,11 +22,11 @@ export class SetComponent implements OnInit {
   toMove?: string;
   user!: User | null;
   setId!: string;
-  setData!: Set;
   puzzles!: Puzzle[];
   currentPuzzle!: Puzzle;
-  numCompleted?: number;
-  numIncomplete?: number;
+  totalPuzzles?: number;
+  numCompleted!: number;
+  numIncomplete!: number;
   incompletePuzzles$!: Observable<Puzzle[]>;
   completedPuzzles$!: Observable<Puzzle[]>;
 
@@ -36,8 +35,7 @@ export class SetComponent implements OnInit {
     private auth: AngularFireAuth,
     private route: ActivatedRoute,
     private userDataService: UserDataService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.auth.user.subscribe((next) => {
@@ -45,18 +43,6 @@ export class SetComponent implements OnInit {
       this.route.queryParams.subscribe((params) => {
         this.setId = params['id'];
         if (this.user && this.setId) {
-          this.userDataService
-            .getOneSet(this.user, this.setId)
-            .subscribe((next) => {
-              this.setData = next;
-            });
-          this.userDataService
-            .getSetPuzzles(this.user, this.setId)
-            .subscribe((next) => {
-              this.puzzles = next;
-              this.getNextPuzzle();
-            });
-
           this.completedPuzzles$ = this.userDataService.getCompletePuzzles(
             this.user,
             this.setId
@@ -65,8 +51,15 @@ export class SetComponent implements OnInit {
             this.user,
             this.setId
           );
-          this.completedPuzzles$.subscribe(next => this.numCompleted = next.length)
-          this.incompletePuzzles$.subscribe(next => this.numIncomplete = next.length)
+          this.completedPuzzles$.subscribe(
+            (next) => (this.numCompleted = next.length)
+          );
+          this.incompletePuzzles$.subscribe((next) => {
+            this.numIncomplete = next.length;
+            this.totalPuzzles = this.numCompleted + this.numIncomplete;
+          });
+
+          this.getNextPuzzle();
         }
       });
     });
@@ -75,6 +68,7 @@ export class SetComponent implements OnInit {
       (next) => (this.showBackButton = next)
     );
     this.chessService.puzzleComplete$.subscribe((next) => {
+      console.log('update');
       this.puzzleComplete = next;
       if (this.user) {
         this.userDataService.updateCorrectPuzzle(
@@ -87,17 +81,6 @@ export class SetComponent implements OnInit {
     this.chessService.currentColour$.subscribe((value) => {
       this.toMove = value;
     });
-  }
-
-  getSetPuzzles() {
-    if (this.user) {
-      this.userDataService
-        .getSetPuzzles(this.user, this.setId)
-        .subscribe((next) => {
-          this.puzzles = next;
-          this.getNextPuzzle();
-        });
-    }
   }
 
   getNextPuzzle() {

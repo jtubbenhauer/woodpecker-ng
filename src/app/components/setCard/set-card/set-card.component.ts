@@ -1,6 +1,7 @@
-import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
-import {Set} from '../../../models/set';
-import {RouterModule} from "@angular/router";
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { Set } from '../../../models/set';
+import { RouterModule } from '@angular/router';
+import { UserDataService } from '../../../services/user-data.service';
 
 export interface SetWithId extends Set {
   id: string;
@@ -17,11 +18,12 @@ export class SetCardComponent implements OnInit, AfterViewInit {
   bestRadial?: string;
   currentRadial?: string;
 
-  constructor(private router: RouterModule) {
-  }
+  constructor(
+    private router: RouterModule,
+    private userDataService: UserDataService
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
     this.bestRadial = `--value:${this.set.best ? this.set.best * 100 : 0}`;
@@ -30,4 +32,7 @@ export class SetCardComponent implements OnInit, AfterViewInit {
     }`;
   }
 
+  deleteSet() {
+    this.userDataService.deleteSet(this.set.id);
+  }
 }

@@ -10,7 +10,7 @@
       <button (click)="getHint()" class="btn">Get Hint</button>
       <button (click)="getPromotion()" class="btn">Promotion</button>
     </div>
-    <p *ngIf="puzzles">Total: {{puzzles.length}}</p>
+    <p *ngIf="totalPuzzles">Total: {{totalPuzzles}}</p>
     <p *ngIf="numCompleted">Completed: {{numCompleted}}</p>
     <p *ngIf="numIncomplete">Remaining: {{numIncomplete}}</p>
     <div *ngIf="!user" class="flex items-center justify-center">
