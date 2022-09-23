@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ChessService } from '../../services/chess.service';
 import { BoardComponent } from '../../components/board/board.component';
 import firebase from 'firebase/compat';
@@ -8,14 +8,14 @@ import { ActivatedRoute } from '@angular/router';
 import { UserDataService } from '../../services/user-data.service';
 import { Puzzle } from '../../models/puzzle';
 import { randomArrayEl } from '../../utils/utils';
-import { first, Observable } from 'rxjs';
+import { first, Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-set',
   templateUrl: './set.component.html',
   styleUrls: ['./set.component.css'],
 })
-export class SetComponent implements OnInit {
+export class SetComponent implements OnInit, OnDestroy {
   @ViewChild(BoardComponent) boardChild!: BoardComponent;
   showBackButton = false;
   puzzleComplete!: boolean;
@@ -29,6 +29,7 @@ export class SetComponent implements OnInit {
   numIncomplete!: number;
   incompletePuzzles$!: Observable<Puzzle[]>;
   completedPuzzles$!: Observable<Puzzle[]>;
+  completeSub?: Subscription;
 
   constructor(
     private chessService: ChessService,
@@ -67,10 +68,9 @@ export class SetComponent implements OnInit {
     this.chessService.lastMoveCorrect$.subscribe(
       (next) => (this.showBackButton = next)
     );
-    this.chessService.puzzleComplete$.subscribe((next) => {
-      console.log('update');
-      this.puzzleComplete = next;
-      if (this.user) {
+    this.completeSub = this.chessService.puzzleComplete$.subscribe((next) => {
+      if (this.user && next) {
+        this.puzzleComplete = next;
         this.userDataService.updateCorrectPuzzle(
           this.user,
           this.setId,
@@ -81,6 +81,14 @@ export class SetComponent implements OnInit {
     this.chessService.currentColour$.subscribe((value) => {
       this.toMove = value;
     });
+
+    this.chessService.currentColour$.subscribe((value) => {
+      this.toMove = value;
+    });
+  }
+
+  ngOnDestroy() {
+    this.completeSub?.unsubscribe();
   }
 
   getNextPuzzle() {

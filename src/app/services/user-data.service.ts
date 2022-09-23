@@ -8,6 +8,7 @@ import {
   AngularFirestore,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
+import { increment } from '@angular/fire/firestore';
 import { SetDoc, UserDoc } from '../models/userData';
 import { first, Observable } from 'rxjs';
 import { Set } from '../models/set';
@@ -78,16 +79,21 @@ export class UserDataService {
   }
 
   updateCorrectPuzzle(user: User, setId: string, puzzle: Puzzle) {
-    const path = `users/${user.uid}/sets/${setId}/puzzles`;
+    const path = `users/${user.uid}/sets/${setId}`;
     this.afs
-      .collection(path, (ref) => ref.where('puzzleid', '==', puzzle.puzzleid))
+      .collection(`${path}/puzzles`, (ref) =>
+        ref.where('puzzleid', '==', puzzle.puzzleid)
+      )
       .snapshotChanges()
       .pipe(first())
       .forEach((value) =>
         this.afs
-          .doc(`${path}/${value[0].payload.doc.id}`)
+          .doc(`${path}/puzzles/${value[0].payload.doc.id}`)
           .update({ ...puzzle, completed: true })
       );
+    this.afs
+      .doc(`${path}`)
+      .update({ attempts: increment(1), completed: increment(1) });
   }
 
   deleteSet(setId: string) {
@@ -95,6 +101,7 @@ export class UserDataService {
   }
 
   newSet(rating: string) {
+    //Want a spinner for this request
     if (this.user) {
       this.http
         .get<SetDoc>(env.chessApiUrl, {
@@ -114,6 +121,7 @@ export class UserDataService {
               timesCompleted: 0,
               currentPuzzleId: next.puzzles[0].puzzleid,
               completed: 0,
+              attempts: 0,
             })
             .then((doc) =>
               next.puzzles.map((puzzle) =>

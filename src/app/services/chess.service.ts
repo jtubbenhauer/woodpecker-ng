@@ -3,7 +3,7 @@ import { Chessground } from 'chessground';
 import { Chess, Square, SQUARES } from 'chess.js';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Puzzle } from '../models/puzzle';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Api } from 'chessground/api';
 import { Color, Key } from 'chessground/types';
 import { envPrivate as env } from '../../environments/env-private';
@@ -18,10 +18,9 @@ export class ChessService {
   chess!: Chess;
   moves!: Key[];
   currentMove!: number;
-  feedbackMessage$ = new BehaviorSubject('Make a move');
   currentColour$ = new BehaviorSubject('');
   lastMoveCorrect$ = new BehaviorSubject(true);
-  puzzleComplete$ = new BehaviorSubject(false);
+  puzzleComplete$ = new Subject<boolean>();
   audio = new Audio();
   apiHeaders = new HttpHeaders({
     'X-RapidAPI-Key': env.chessApiKey,
@@ -88,6 +87,7 @@ export class ChessService {
   }
 
   public initChessground(puzzle: any, el: HTMLElement): any {
+    this.puzzleComplete$.next(false);
     this.currentMove = 0;
     this.puzzle = puzzle;
     this.chess = new Chess(puzzle.fen);
@@ -173,7 +173,6 @@ export class ChessService {
     } else {
       // If final move
       if (this.isCorrect(orig, dest)) {
-        this.feedbackMessage$.next('Puzzle complete');
         this.cg.setAutoShapes([{ orig: dest, customSvg: this.svgs.right }]);
         this.makeMove(orig, dest);
         this.cg.stop();
@@ -185,7 +184,6 @@ export class ChessService {
   }
 
   private onRightMove(orig: Key, dest: Key) {
-    this.feedbackMessage$.next('Correct! Keep going');
     this.lastMoveCorrect$.next(true);
     this.currentMove++;
     this.makeMove(orig, dest);
@@ -198,7 +196,6 @@ export class ChessService {
 
   private onWrongMove(orig: Key, dest: Key) {
     this.lastMoveCorrect$.next(false);
-    this.feedbackMessage$.next('Incorrect!');
     this.chess.move({ from: orig, to: dest });
     this.cg.set({ check: this.chess.isCheck() });
     this.cg.setAutoShapes([{ orig: dest, customSvg: this.svgs.wrong }]);
