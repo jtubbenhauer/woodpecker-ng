@@ -6,7 +6,6 @@ import { envPrivate as env } from '../../environments/env-private';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFirestore,
-  AngularFirestoreCollection,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { SetDoc, UserDoc } from '../models/userData';
@@ -62,6 +61,20 @@ export class UserDataService {
       .collection(`users/${user.uid}/sets/${uid}/puzzles`)
       .valueChanges()
       .pipe(first());
+  }
+
+  getCompletePuzzles(user: User, setId: string): Observable<Puzzle[]> {
+    const path = `users/${user.uid}/sets/${setId}/puzzles`;
+    return this.afs
+      .collection<Puzzle>(path, (ref) => ref.where('completed', '==', true))
+      .valueChanges();
+  }
+
+  getIncompletePuzzles(user: User, setId: string): Observable<Puzzle[]> {
+    const path = `users/${user.uid}/sets/${setId}/puzzles`;
+    return this.afs
+      .collection<Puzzle>(path, (ref) => ref.where('completed', '==', false))
+      .valueChanges();
   }
 
   updateCorrectPuzzle(user: User, setId: string, puzzle: Puzzle) {

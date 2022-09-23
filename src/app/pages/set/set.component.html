@@ -9,11 +9,10 @@
       <button (click)="getNextPuzzle()" class="btn">Random</button>
       <button (click)="getHint()" class="btn">Get Hint</button>
       <button (click)="getPromotion()" class="btn">Promotion</button>
-      <label for="new-set-dialog" class="btn modal-button">New Set</label>
     </div>
     <p *ngIf="puzzles">Total: {{puzzles.length}}</p>
-    <p *ngIf="completePuzzles">Completed: {{completePuzzles.length}}</p>
-    <p *ngIf="incompletePuzzles">Remaining: {{incompletePuzzles.length}}</p>
+    <p *ngIf="numCompleted">Completed: {{numCompleted}}</p>
+    <p *ngIf="numIncomplete">Remaining: {{numIncomplete}}</p>
     <div *ngIf="!user" class="flex items-center justify-center">
       <p>Please sign in</p>
     </div>
@@ -33,5 +32,3 @@
     </div>
   </div>
 </div>
-<app-new-set></app-new-set>
-<input type="checkbox" id="new-set-dialog" class="modal-toggle"/>
