@@ -59,8 +59,12 @@ export class SetComponent implements OnInit, OnDestroy {
           );
           this.incompletePuzzles$.subscribe((next) => {
             this.numIncomplete = next.length;
-            if (this.numIncomplete == 0) {
-              console.log('set finished');
+            if (this.numIncomplete == 0 && this.user) {
+              this.userDataService.onSetCompletion(
+                this.user,
+                this.setId,
+                this.currentPuzzle
+              );
             }
             this.totalPuzzles = this.numCompleted + this.numIncomplete;
           });
