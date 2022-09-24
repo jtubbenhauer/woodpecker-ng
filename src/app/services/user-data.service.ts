@@ -1,19 +1,19 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import firebase from 'firebase/compat';
 import User = firebase.User;
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {envPrivate as env} from '../../environments/env-private';
-import {AngularFireAuth} from '@angular/fire/compat/auth';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { envPrivate as env } from '../../environments/env-private';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFirestore,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
-import {increment} from '@angular/fire/firestore';
-import {SetDoc, UserDoc} from '../models/userData';
-import {first, Observable} from 'rxjs';
-import {Set} from '../models/set';
-import {SetWithId} from '../components/setCard/set-card/set-card.component';
-import {Puzzle} from '../models/puzzle';
+import { increment } from '@angular/fire/firestore';
+import { SetDoc, UserDoc } from '../models/userData';
+import { first, Observable } from 'rxjs';
+import { Set } from '../models/set';
+import { SetWithId } from '../components/setCard/set-card/set-card.component';
+import { Puzzle } from '../models/puzzle';
 
 @Injectable({
   providedIn: 'root',
@@ -40,14 +40,14 @@ export class UserDataService {
 
   createUserDoc(user: User | null) {
     if (user) {
-      this.afs.doc(`users/${user.uid}`).set({email: user.email});
+      this.afs.doc(`users/${user.uid}`).set({ email: user.email });
     }
   }
 
   getSets(uid: string | undefined): Observable<SetWithId[]> {
     return this.afs
       .collection<Set>(`users/${uid}/sets`)
-      .valueChanges({idField: 'id'});
+      .valueChanges({ idField: 'id' });
   }
 
   getOneSet(user: User, uid: string): Observable<any> {
@@ -89,17 +89,17 @@ export class UserDataService {
       .forEach((value) =>
         this.afs
           .doc(`${path}/puzzles/${value[0].payload.doc.id}`)
-          .update({...puzzle, completed: false})
+          .update({ ...puzzle, completed: true })
       );
     this.afs
       .doc(`${path}`)
-      .update({attempts: increment(1), completed: increment(1)});
+      .update({ attempts: increment(1), completed: increment(1) });
   }
 
   updateIncorrectPuzzle(user: User, setId: string) {
     this.afs
       .doc(`users/${user.uid}/sets/${setId}`)
-      .update({attempts: increment(1)});
+      .update({ attempts: increment(1) });
   }
 
   deleteSet(setId: string) {
@@ -114,7 +114,6 @@ export class UserDataService {
       let completed = doc.get('completed');
       let attempts = doc.get('attempts');
       let best = doc.get('best');
-
       let newRate = (completed / attempts).toFixed(1);
 
       if (!best || newRate > best) {
@@ -132,6 +131,18 @@ export class UserDataService {
         });
       }
     });
+
+    this.resetPuzzleCompletion(user, setId);
+  }
+
+  resetPuzzleCompletion(user: User, setId: string) {
+    const path = `users/${user.uid}/sets/${setId}/puzzles`;
+    this.afs
+      .collection(path)
+      .get()
+      .forEach((query) => {
+        query.docs.forEach((puzzle) => puzzle.ref.update({ completed: false }));
+      });
   }
 
   newSet(rating: string, size: string) {
@@ -163,7 +174,7 @@ export class UserDataService {
                   ?.collection('sets')
                   .doc(`${doc.id}`)
                   .collection('puzzles')
-                  .add({...puzzle, completed: false})
+                  .add({ ...puzzle, completed: false })
               )
             );
         });
