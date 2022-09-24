@@ -29,7 +29,9 @@ export class SetComponent implements OnInit, OnDestroy {
   numIncomplete!: number;
   incompletePuzzles$!: Observable<Puzzle[]>;
   completedPuzzles$!: Observable<Puzzle[]>;
-  completeSub?: Subscription;
+  completeSub!: Subscription;
+  puzzleFailed!: Subscription;
+  updatedIncorrect = false;
 
   constructor(
     private chessService: ChessService,
@@ -78,6 +80,13 @@ export class SetComponent implements OnInit, OnDestroy {
         );
       }
     });
+
+    this.puzzleFailed = this.chessService.puzzleFailed$.subscribe((next) => {
+      if (next && this.user && !this.updatedIncorrect) {
+        this.updatedIncorrect = true;
+        this.userDataService.updateIncorrectPuzzle(this.user, this.setId);
+      }
+    });
     this.chessService.currentColour$.subscribe((value) => {
       this.toMove = value;
     });
@@ -89,9 +98,12 @@ export class SetComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.completeSub?.unsubscribe();
+    this.puzzleFailed.unsubscribe();
   }
 
   getNextPuzzle() {
+    this.puzzleComplete = false;
+    this.updatedIncorrect = false;
     this.incompletePuzzles$.pipe(first()).subscribe((next) => {
       this.currentPuzzle = randomArrayEl(next);
       this.chessService.initChessground(

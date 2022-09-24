@@ -96,6 +96,12 @@ export class UserDataService {
       .update({ attempts: increment(1), completed: increment(1) });
   }
 
+  updateIncorrectPuzzle(user: User, setId: string) {
+    this.afs
+      .doc(`users/${user.uid}/sets/${setId}`)
+      .update({ attempts: increment(1) });
+  }
+
   deleteSet(setId: string) {
     this.afs.doc(`users/${this.user?.uid}/sets/${setId}`).delete();
   }

@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { Chessground } from 'chessground';
-import { Chess, Square, SQUARES } from 'chess.js';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Puzzle } from '../models/puzzle';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { Api } from 'chessground/api';
-import { Color, Key } from 'chessground/types';
-import { envPrivate as env } from '../../environments/env-private';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import {Injectable} from '@angular/core';
+import {Chessground} from 'chessground';
+import {Chess, Square, SQUARES} from 'chess.js';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Puzzle} from '../models/puzzle';
+import {BehaviorSubject, Subject} from 'rxjs';
+import {Api} from 'chessground/api';
+import {Color, Key} from 'chessground/types';
+import {envPrivate as env} from '../../environments/env-private';
+import {AngularFirestore} from '@angular/fire/compat/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +21,7 @@ export class ChessService {
   currentColour$ = new BehaviorSubject('');
   lastMoveCorrect$ = new BehaviorSubject(true);
   puzzleComplete$ = new Subject<boolean>();
+  puzzleFailed$ = new Subject<boolean>();
   audio = new Audio();
   apiHeaders = new HttpHeaders({
     'X-RapidAPI-Key': env.chessApiKey,
@@ -43,7 +44,8 @@ export class ChessService {
             </g>`,
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   public resetPuzzle() {
     this.puzzleComplete$.next(false);
@@ -61,7 +63,7 @@ export class ChessService {
   public backOne() {
     this.chess.undo();
     this.cg.set({
-      movable: { dests: this.getLegalMoves(), color: this.toColour() },
+      movable: {dests: this.getLegalMoves(), color: this.toColour()},
       turnColor: this.toColour(),
       fen: this.chess.fen(),
       check: this.chess.isCheck(),
@@ -79,7 +81,7 @@ export class ChessService {
     this.http
       .get<any>(env.chessApiUrl, {
         headers: this.apiHeaders,
-        params: { themes: '["promotion"]', count: '1' },
+        params: {themes: '["promotion"]', count: '1'},
       })
       .subscribe((next) => {
         this.initChessground(next.puzzles[0], el);
@@ -87,6 +89,7 @@ export class ChessService {
   }
 
   public initChessground(puzzle: any, el: HTMLElement): any {
+    this.puzzleFailed$.next(false);
     this.puzzleComplete$.next(false);
     this.currentMove = 0;
     this.puzzle = puzzle;
@@ -107,7 +110,7 @@ export class ChessService {
         },
         dests: this.getLegalMoves(),
       },
-      draggable: { showGhost: false },
+      draggable: {showGhost: false},
       events: {
         move: (orig, dest, capturedPiece) => {
           if (this.chess.inCheck()) {
@@ -145,7 +148,7 @@ export class ChessService {
   }
 
   private makeMove(from: Key, to: Key) {
-    this.chess.move({ from: from, to: to });
+    this.chess.move({from: from, to: to});
     // console.log(this.chess.move({ from: from, to: to }.flag));
     this.cg.set({
       turnColor: this.toColour(),
@@ -169,11 +172,12 @@ export class ChessService {
         this.onRightMove(orig, dest);
       } else {
         this.onWrongMove(orig, dest);
+
       }
     } else {
       // If final move
       if (this.isCorrect(orig, dest)) {
-        this.cg.setAutoShapes([{ orig: dest, customSvg: this.svgs.right }]);
+        this.cg.setAutoShapes([{orig: dest, customSvg: this.svgs.right}]);
         this.makeMove(orig, dest);
         this.cg.stop();
         this.puzzleComplete$.next(true);
@@ -188,17 +192,18 @@ export class ChessService {
     this.currentMove++;
     this.makeMove(orig, dest);
     // Make computers next move after delay
-    let { from, to } = this.convertSingleMove(this.moves[this.currentMove]);
+    let {from, to} = this.convertSingleMove(this.moves[this.currentMove]);
     this.makeMove(from as Key, to as Key);
-    this.cg.setAutoShapes([{ orig: dest, customSvg: this.svgs.right }]);
+    this.cg.setAutoShapes([{orig: dest, customSvg: this.svgs.right}]);
     this.currentMove++;
   }
 
   private onWrongMove(orig: Key, dest: Key) {
+    this.puzzleFailed$.next(true);
     this.lastMoveCorrect$.next(false);
-    this.chess.move({ from: orig, to: dest });
-    this.cg.set({ check: this.chess.isCheck() });
-    this.cg.setAutoShapes([{ orig: dest, customSvg: this.svgs.wrong }]);
+    this.chess.move({from: orig, to: dest});
+    this.cg.set({check: this.chess.isCheck()});
+    this.cg.setAutoShapes([{orig: dest, customSvg: this.svgs.wrong}]);
     this.cg.stop();
   }
 
@@ -242,7 +247,7 @@ export class ChessService {
   private getLegalMoves(): Map<Key, Key[]> {
     const legalMoves = new Map();
     SQUARES.forEach((square) => {
-      const moves = this.chess.moves({ square: square, verbose: true });
+      const moves = this.chess.moves({square: square, verbose: true});
       if (moves.length) {
         legalMoves.set(
           square,
