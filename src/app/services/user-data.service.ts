@@ -106,7 +106,7 @@ export class UserDataService {
     this.afs.doc(`users/${this.user?.uid}/sets/${setId}`).delete();
   }
 
-  newSet(rating: string) {
+  newSet(rating: string, size: string) {
     //Want a spinner for this request
     if (this.user) {
       this.http
@@ -114,7 +114,7 @@ export class UserDataService {
           headers: this.apiHeaders,
           params: {
             rating: rating,
-            count: '100',
+            count: size,
           },
         })
         .subscribe((next) => {

@@ -59,6 +59,9 @@ export class SetComponent implements OnInit, OnDestroy {
           );
           this.incompletePuzzles$.subscribe((next) => {
             this.numIncomplete = next.length;
+            if (this.numIncomplete == 0) {
+              console.log('set finished');
+            }
             this.totalPuzzles = this.numCompleted + this.numIncomplete;
           });
 
@@ -70,6 +73,7 @@ export class SetComponent implements OnInit, OnDestroy {
     this.chessService.lastMoveCorrect$.subscribe(
       (next) => (this.showBackButton = next)
     );
+
     this.completeSub = this.chessService.puzzleComplete$.subscribe((next) => {
       if (this.user && next) {
         this.puzzleComplete = next;
@@ -87,10 +91,6 @@ export class SetComponent implements OnInit, OnDestroy {
         this.userDataService.updateIncorrectPuzzle(this.user, this.setId);
       }
     });
-    this.chessService.currentColour$.subscribe((value) => {
-      this.toMove = value;
-    });
-
     this.chessService.currentColour$.subscribe((value) => {
       this.toMove = value;
     });

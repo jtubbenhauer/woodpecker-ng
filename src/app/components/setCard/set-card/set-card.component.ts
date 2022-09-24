@@ -26,11 +26,11 @@ export class SetCardComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {}
 
   ngAfterViewInit() {
-    console.log(this.set);
     this.bestRadial = `--value:${this.set.best ? this.set.best * 100 : 0}`;
-    this.currentRadial = `--value:${
-      (this.set.completed / this.set.attempts) * 100
-    }`;
+    this.currentRadial = `--value:${(
+      (this.set.completed / this.set.attempts) *
+      100
+    ).toFixed(2)}`;
   }
 
   deleteSet() {
