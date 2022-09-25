@@ -34,8 +34,7 @@
       <div class="stat-value text-secondary"><span
         *ngIf="setData">{{(setData.completed / setData.puzzleCount * 100).toFixed(0)}}%</span></div>
     </div>
-
   </div>
-
+  <app-win-rate-radials [setData]="setData"></app-win-rate-radials>
 
 </div>
