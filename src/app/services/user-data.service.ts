@@ -12,7 +12,7 @@ import { increment } from '@angular/fire/firestore';
 import { SetDoc, UserDoc } from '../models/userData';
 import { first, Observable } from 'rxjs';
 import { Set } from '../models/set';
-import { SetWithId } from '../components/setCard/set-card/set-card.component';
+import { SetWithId } from '../components/set-card/set-card.component';
 import { Puzzle } from '../models/puzzle';
 
 @Injectable({
@@ -51,10 +51,7 @@ export class UserDataService {
   }
 
   getOneSet(user: User, uid: string): Observable<any> {
-    return this.afs
-      .doc(`users/${user.uid}/sets/${uid}`)
-      .valueChanges()
-      .pipe(first());
+    return this.afs.doc(`users/${user.uid}/sets/${uid}`).valueChanges();
   }
 
   getSetPuzzles(user: User, uid: string): Observable<any> {

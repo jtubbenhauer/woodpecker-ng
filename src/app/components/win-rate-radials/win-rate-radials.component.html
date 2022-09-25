@@ -1,0 +1,14 @@
+<div class="flex gap-8 items-center justify-evenly w-full">
+  <div class="flex flex-col gap-4 items-center justify-center">
+    <div class="flex flex-col gap-4 items-center justify-center">
+      <p>Current</p>
+      <div class="radial-progress text-white/90"
+           [style]="currentRadial">{{((this.setData.completed / this.setData.attempts) * 100).toFixed(1)}}%
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-col gap-4 items-center justify-center">
+    <p>Best</p>
+    <div class="radial-progress text-success" [style]="bestRadial">{{setData.best ? setData.best * 100 : 0}}%</div>
+  </div>
+</div>

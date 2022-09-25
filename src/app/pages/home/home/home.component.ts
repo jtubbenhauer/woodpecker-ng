@@ -5,7 +5,7 @@ import { AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat';
 import User = firebase.User;
-import { SetWithId } from '../../../components/setCard/set-card/set-card.component';
+import { SetWithId } from '../../../components/set-card/set-card.component';
 
 @Component({
   selector: 'app-home',

@@ -12,9 +12,11 @@ import { firebaseConfig } from './firebase';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { NewSetComponent } from './components/dialogs/new-set/new-set.component';
 import { HomeComponent } from './pages/home/home/home.component';
-import { SetCardComponent } from './components/setCard/set-card/set-card.component';
+import { SetCardComponent } from './components/set-card/set-card.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { SetStatsComponent } from './components/set-stats/set-stats.component';
+import { WinRateRadialsComponent } from './components/win-rate-radials/win-rate-radials.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     NewSetComponent,
     HomeComponent,
     SetCardComponent,
+    SetStatsComponent,
+    WinRateRadialsComponent,
   ],
   imports: [
     BrowserModule,

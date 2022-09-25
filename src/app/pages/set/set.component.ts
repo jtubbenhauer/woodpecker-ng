@@ -1,14 +1,15 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ChessService } from '../../services/chess.service';
-import { BoardComponent } from '../../components/board/board.component';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ChessService} from '../../services/chess.service';
+import {BoardComponent} from '../../components/board/board.component';
 import firebase from 'firebase/compat';
 import User = firebase.User;
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { ActivatedRoute } from '@angular/router';
-import { UserDataService } from '../../services/user-data.service';
-import { Puzzle } from '../../models/puzzle';
-import { randomArrayEl } from '../../utils/utils';
-import { first, Observable, Subscription } from 'rxjs';
+import {AngularFireAuth} from '@angular/fire/compat/auth';
+import {ActivatedRoute} from '@angular/router';
+import {UserDataService} from '../../services/user-data.service';
+import {Set} from '../../models/set';
+import {Puzzle} from '../../models/puzzle';
+import {randomArrayEl} from '../../utils/utils';
+import {first, Observable, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-set',
@@ -22,13 +23,11 @@ export class SetComponent implements OnInit, OnDestroy {
   toMove?: string;
   user!: User | null;
   setId!: string;
+  setData!: Set;
   puzzles!: Puzzle[];
   currentPuzzle!: Puzzle;
-  totalPuzzles?: number;
-  numCompleted!: number;
   numIncomplete!: number;
   incompletePuzzles$!: Observable<Puzzle[]>;
-  completedPuzzles$!: Observable<Puzzle[]>;
   completeSub!: Subscription;
   puzzleFailed!: Subscription;
   updatedIncorrect = false;
@@ -38,7 +37,8 @@ export class SetComponent implements OnInit, OnDestroy {
     private auth: AngularFireAuth,
     private route: ActivatedRoute,
     private userDataService: UserDataService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.auth.user.subscribe((next) => {
@@ -46,17 +46,15 @@ export class SetComponent implements OnInit, OnDestroy {
       this.route.queryParams.subscribe((params) => {
         this.setId = params['id'];
         if (this.user && this.setId) {
-          this.completedPuzzles$ = this.userDataService.getCompletePuzzles(
-            this.user,
-            this.setId
-          );
+          this.userDataService
+            .getOneSet(this.user, this.setId)
+            .forEach((set) => (this.setData = set));
+
           this.incompletePuzzles$ = this.userDataService.getIncompletePuzzles(
             this.user,
             this.setId
           );
-          this.completedPuzzles$.subscribe(
-            (next) => (this.numCompleted = next.length)
-          );
+
           this.incompletePuzzles$.subscribe((next) => {
             this.numIncomplete = next.length;
             if (this.numIncomplete == 0 && this.user) {
@@ -66,7 +64,6 @@ export class SetComponent implements OnInit, OnDestroy {
                 this.currentPuzzle
               );
             }
-            this.totalPuzzles = this.numCompleted + this.numIncomplete;
           });
 
           this.getNextPuzzle();
