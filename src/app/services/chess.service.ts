@@ -8,14 +8,15 @@ import { Api } from 'chessground/api';
 import { Key } from 'chessground/types';
 import { envPrivate as env } from '../../environments/env-private';
 import boardSvgs from '../utils/svg';
-import { moveSound, checkSound, captureSound } from '../utils/sounds';
 import {
   convertSingleMove,
   getLastMove,
   getLegalMoves,
   getOrientation,
+  isPromotion,
   toColour,
 } from '../utils/chess';
+import { Howl } from 'howler';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +31,15 @@ export class ChessService {
   lastMoveCorrect$ = new BehaviorSubject(true);
   puzzleComplete$ = new Subject<boolean>();
   puzzleFailed$ = new Subject<boolean>();
+  moveSound = new Howl({
+    src: ['../assets/move.mp3'],
+  });
+  checkSound = new Howl({
+    src: ['../assets/check.mp3'],
+  });
+  captureSound = new Howl({
+    src: ['../assets/capture.mp3'],
+  });
   apiHeaders = new HttpHeaders({
     'X-RapidAPI-Key': env.chessApiKey,
     'X-RapidAPI-Host': env.chessApiHost,
@@ -115,16 +125,7 @@ export class ChessService {
 
   private makeMove(from: Key, to: Key) {
     this.chess.move({ from: from, to: to });
-    // Refactor this and find strange flag cases
-    const lastMove = getLastMove(this.chess);
-    console.log(lastMove);
-    if (this.chess.inCheck()) {
-      checkSound.play();
-    } else if (lastMove.captured) {
-      captureSound.play();
-    } else {
-      moveSound.play();
-    }
+    this.playSound();
     this.cg.set({
       turnColor: toColour(this.chess),
       movable: {
@@ -162,19 +163,19 @@ export class ChessService {
     this.lastMoveCorrect$.next(true);
     this.currentMove++;
     this.makeMove(orig, dest);
-    // Make computers next move after delay
     setTimeout(() => {
       let { from, to } = convertSingleMove(this.moves[this.currentMove]);
-      this.makeMove(from as Key, to as Key);
       this.cg.setAutoShapes([{ orig: dest, customSvg: boardSvgs.right }]);
+      this.makeMove(from as Key, to as Key);
       this.currentMove++;
-    }, 300);
+    }, 250);
   }
 
   private onWrongMove(orig: Key, dest: Key) {
     this.puzzleFailed$.next(true);
     this.lastMoveCorrect$.next(false);
     this.chess.move({ from: orig, to: dest });
+    this.playSound();
     this.cg.set({ check: this.chess.inCheck() });
     this.cg.setAutoShapes([{ orig: dest, customSvg: boardSvgs.wrong }]);
     this.cg.stop();
@@ -190,5 +191,16 @@ export class ChessService {
     let move = convertSingleMove(this.moves[0]);
     this.makeMove(move.from as Key, move.to as Key);
     this.currentMove = 1;
+  }
+
+  private playSound() {
+    let lastMove = getLastMove(this.chess);
+    if (this.chess.inCheck()) {
+      this.checkSound.play();
+    } else if (lastMove.captured) {
+      this.captureSound.play();
+    } else {
+      this.moveSound.play();
+    }
   }
 }

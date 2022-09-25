@@ -14,8 +14,8 @@ import { ChessService } from '../../services/chess.service';
 })
 export class BoardComponent implements OnInit, AfterViewInit {
   @ViewChild('chessboard') el!: ElementRef<HTMLElement>;
-  boardWidth = '500px';
-  boardHeight = '500px';
+  boardWidth = '580px';
+  boardHeight = '580px';
 
   constructor(private service: ChessService) {}
 
