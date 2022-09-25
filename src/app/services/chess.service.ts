@@ -17,6 +17,7 @@ import {
   toColour,
 } from '../utils/chess';
 import { Howl } from 'howler';
+import { dropNewPiece } from 'chessground/board';
 
 @Injectable({
   providedIn: 'root',
@@ -53,6 +54,7 @@ export class ChessService {
     this.currentMove = 0;
     this.puzzle = puzzle;
     this.chess = new Chess(puzzle.fen);
+    console.log(puzzle);
     this.cg = Chessground(el, {
       fen: this.chess.fen(),
       selectable: {
@@ -64,7 +66,11 @@ export class ChessService {
         showDests: false,
         events: {
           after: (orig, dest) => {
-            this.onMove(orig, dest);
+            if (isPromotion(orig, this.chess)) {
+              this.handlePromotion(orig, dest);
+            } else {
+              this.onMove(orig, dest);
+            }
           },
         },
         dests: getLegalMoves(this.chess),
@@ -202,5 +208,13 @@ export class ChessService {
     } else {
       this.moveSound.play();
     }
+  }
+
+  private handlePromotion(orig: Key, dest: Key) {
+    console.log('promotion');
+    this.cg.newPiece({ role: 'knight', color: toColour(this.chess) }, orig);
+    // this.cg.setPieces();
+    //  setPieces({ a8: { role: 'queen', color: 'white', promoted: true } });
+    //  a7: null
   }
 }
