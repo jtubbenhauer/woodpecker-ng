@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Puzzle } from '../models/puzzle';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Api } from 'chessground/api';
-import { Key } from 'chessground/types';
+import { Key, Piece } from 'chessground/types';
 import { envPrivate as env } from '../../environments/env-private';
 import boardSvgs from '../utils/svg';
 import {
@@ -13,11 +13,11 @@ import {
   getLastMove,
   getLegalMoves,
   getOrientation,
+  getPromotionDisplaySquares,
   isPromotion,
   toColour,
 } from '../utils/chess';
 import { Howl } from 'howler';
-import { dropNewPiece } from 'chessground/board';
 
 @Injectable({
   providedIn: 'root',
@@ -119,14 +119,30 @@ export class ChessService {
   }
 
   public getPromPuzzle(el: HTMLElement) {
-    this.http
-      .get<any>(env.chessApiUrl, {
-        headers: this.apiHeaders,
-        params: { themes: '["promotion"]', count: '1' },
-      })
-      .subscribe((next) => {
-        this.initChessground(next.puzzles[0], el);
-      });
+    const puzzle = {
+      puzzleid: 'FElHP',
+      fen: '8/p3K3/8/3Pk3/5N2/2p5/P7/8 w - - 0 56',
+      rating: 1469,
+      ratingdeviation: 500,
+      moves: ['d5d6', 'e5f4', 'd6d7', 'c3c2', 'd7d8q', 'c2c1q'],
+      themes: [
+        'advancedPawn',
+        'endgame',
+        'equality',
+        'hangingPiece',
+        'long',
+        'promotion',
+      ],
+    };
+    this.initChessground(puzzle, el);
+    // this.http
+    //   .get<any>(env.chessApiUrl, {
+    //     headers: this.apiHeaders,
+    //     params: { themes: '["promotion"]', count: '1' },
+    //   })
+    //   .subscribe((next) => {
+    //     this.initChessground(next.puzzles[0], el);
+    //   });
   }
 
   private makeMove(from: Key, to: Key) {
@@ -211,10 +227,13 @@ export class ChessService {
   }
 
   private handlePromotion(orig: Key, dest: Key) {
-    console.log('promotion');
-    this.cg.newPiece({ role: 'knight', color: toColour(this.chess) }, orig);
-    // this.cg.setPieces();
-    //  setPieces({ a8: { role: 'queen', color: 'white', promoted: true } });
-    //  a7: null
+    this.cg.setAutoShapes([]);
+    this.cg.setPieces(
+      new Map<Key, Piece>(getPromotionDisplaySquares(dest, this.chess))
+    );
+    this.cg.stop();
+    this.cg.set({
+      events: { select: (key) => console.log(key) },
+    });
   }
 }

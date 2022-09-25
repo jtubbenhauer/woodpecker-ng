@@ -1,5 +1,5 @@
 import { Chess, Move, Square, SQUARES } from 'chess.js';
-import { Key } from 'chessground/types';
+import { Key, Piece } from 'chessground/types';
 
 export const toColour = (chess: Chess) => {
   return chess.turn() == 'w' ? 'white' : 'black';
@@ -56,4 +56,50 @@ export const isPromotion = (orig: Key, chess: Chess) => {
 export const getLastMove = (chess: Chess): Move => {
   const arr = chess.history({ verbose: true });
   return arr[arr.length - 1] as Move;
+};
+
+export const getPromotionDisplaySquares = (
+  dest: Key,
+  chess: Chess
+): [Key, Piece][] => {
+  const chars = dest.split('');
+  if (chars[1] == '8') {
+    return [
+      [
+        [chars[0], '8'].join('') as Key,
+        { role: 'queen', color: toColour(chess) },
+      ],
+      [
+        [chars[0], '7'].join('') as Key,
+        { role: 'rook', color: toColour(chess) },
+      ],
+      [
+        [chars[0], '6'].join('') as Key,
+        { role: 'knight', color: toColour(chess) },
+      ],
+      [
+        [chars[0], '5'].join('') as Key,
+        { role: 'bishop', color: toColour(chess) },
+      ],
+    ];
+  } else {
+    return [
+      [
+        [chars[0], '1'].join('') as Key,
+        { role: 'queen', color: toColour(chess) },
+      ],
+      [
+        [chars[0], '2'].join('') as Key,
+        { role: 'rook', color: toColour(chess) },
+      ],
+      [
+        [chars[0], '3'].join('') as Key,
+        { role: 'knight', color: toColour(chess) },
+      ],
+      [
+        [chars[0], '4'].join('') as Key,
+        { role: 'bishop', color: toColour(chess) },
+      ],
+    ];
+  }
 };
