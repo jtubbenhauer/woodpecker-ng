@@ -1,4 +1,4 @@
-import { Chess, Square, SQUARES } from 'chess.js';
+import { Chess, Move, Square, SQUARES } from 'chess.js';
 import { Key } from 'chessground/types';
 
 export const toColour = (chess: Chess) => {
@@ -51,4 +51,9 @@ export const isPromotion = (orig: Key, chess: Chess) => {
   } else {
     return false;
   }
+};
+
+export const getLastMove = (chess: Chess): Move => {
+  const arr = chess.history({ verbose: true });
+  return arr[arr.length - 1] as Move;
 };

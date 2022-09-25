@@ -11,6 +11,7 @@ import boardSvgs from '../utils/svg';
 import { moveSound, checkSound, captureSound } from '../utils/sounds';
 import {
   convertSingleMove,
+  getLastMove,
   getLegalMoves,
   getOrientation,
   toColour,
@@ -61,18 +62,7 @@ export class ChessService {
       draggable: { showGhost: false },
       turnColor: toColour(this.chess),
       orientation: getOrientation(this.chess),
-      check: this.chess.isCheck(),
-      events: {
-        move: (orig, dest, capturedPiece) => {
-          if (capturedPiece) {
-            captureSound.play();
-          } else if (this.chess.isCheck()) {
-            checkSound.play();
-          } else {
-            moveSound.play();
-          }
-        },
-      },
+      check: this.chess.inCheck(),
     });
     this.moves = this.puzzle.moves as Key[];
     this.makeFirstMove();
@@ -86,7 +76,7 @@ export class ChessService {
     this.chess = new Chess(this.puzzle.fen);
     this.cg.set({
       fen: this.chess.fen(),
-      check: this.chess.isCheck(),
+      check: this.chess.inCheck(),
     });
     this.moves = this.puzzle.moves as Key[];
     this.makeFirstMove();
@@ -101,7 +91,7 @@ export class ChessService {
       },
       turnColor: toColour(this.chess),
       fen: this.chess.fen(),
-      check: this.chess.isCheck(),
+      check: this.chess.inCheck(),
     });
     this.cg.setAutoShapes([]);
     this.lastMoveCorrect$.next(true);
@@ -125,19 +115,28 @@ export class ChessService {
 
   private makeMove(from: Key, to: Key) {
     this.chess.move({ from: from, to: to });
+    // Refactor this and find strange flag cases
+    const lastMove = getLastMove(this.chess);
+    console.log(lastMove);
+    if (this.chess.inCheck()) {
+      checkSound.play();
+    } else if (lastMove.captured) {
+      captureSound.play();
+    } else {
+      moveSound.play();
+    }
     this.cg.set({
       turnColor: toColour(this.chess),
       movable: {
         color: toColour(this.chess),
         dests: getLegalMoves(this.chess),
       },
-      check: this.chess.isCheck(),
+      check: this.chess.inCheck(),
     });
     this.cg.move(from, to);
   }
 
   private onMove(orig: Key, dest: Key) {
-    this.chess;
     this.cg.setAutoShapes([]);
     // If there's moves remaining in the set
     if (this.currentMove < this.moves.length - 1) {
@@ -176,7 +175,7 @@ export class ChessService {
     this.puzzleFailed$.next(true);
     this.lastMoveCorrect$.next(false);
     this.chess.move({ from: orig, to: dest });
-    this.cg.set({ check: this.chess.isCheck() });
+    this.cg.set({ check: this.chess.inCheck() });
     this.cg.setAutoShapes([{ orig: dest, customSvg: boardSvgs.wrong }]);
     this.cg.stop();
   }
