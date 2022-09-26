@@ -10,6 +10,6 @@ export interface Set {
   currentPuzzleId: string;
   completed: number;
   best?: number;
-  attempts: number;
+  failed: number;
   puzzles: Puzzle[];
 }

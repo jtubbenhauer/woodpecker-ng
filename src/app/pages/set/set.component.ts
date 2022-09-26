@@ -1,15 +1,15 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ChessService} from '../../services/chess.service';
-import {BoardComponent} from '../../components/board/board.component';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChessService } from '../../services/chess.service';
+import { BoardComponent } from '../../components/board/board.component';
 import firebase from 'firebase/compat';
 import User = firebase.User;
-import {AngularFireAuth} from '@angular/fire/compat/auth';
-import {ActivatedRoute} from '@angular/router';
-import {UserDataService} from '../../services/user-data.service';
-import {Set} from '../../models/set';
-import {Puzzle} from '../../models/puzzle';
-import {randomArrayEl} from '../../utils/utils';
-import {first, Observable, Subscription} from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { ActivatedRoute } from '@angular/router';
+import { UserDataService } from '../../services/user-data.service';
+import { Set } from '../../models/set';
+import { Puzzle } from '../../models/puzzle';
+import { randomArrayEl } from '../../utils/utils';
+import { first, Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-set',
@@ -37,8 +37,7 @@ export class SetComponent implements OnInit, OnDestroy {
     private auth: AngularFireAuth,
     private route: ActivatedRoute,
     private userDataService: UserDataService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.auth.user.subscribe((next) => {
@@ -76,13 +75,15 @@ export class SetComponent implements OnInit, OnDestroy {
     );
 
     this.completeSub = this.chessService.puzzleComplete$.subscribe((next) => {
-      if (this.user && next) {
+      if (this.user && next && !this.updatedIncorrect) {
         this.puzzleComplete = next;
         this.userDataService.updateCorrectPuzzle(
           this.user,
           this.setId,
           this.currentPuzzle
         );
+      } else {
+        this.puzzleComplete = next;
       }
     });
 

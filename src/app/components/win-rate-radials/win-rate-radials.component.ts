@@ -18,9 +18,10 @@ export class WinRateRadialsComponent implements OnInit, OnChanges {
   ngOnInit(): void {}
 
   ngOnChanges() {
-    if (this.setData.attempts && this.setData.completed) {
+    if (this.setData.failed && this.setData.completed) {
       this.current = (
-        (this.setData.completed / this.setData.attempts) *
+        ((this.setData.completed - this.setData.failed) /
+          this.setData.completed) *
         100
       ).toFixed(0);
     } else {

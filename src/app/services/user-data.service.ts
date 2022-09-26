@@ -88,15 +88,13 @@ export class UserDataService {
           .doc(`${path}/puzzles/${value[0].payload.doc.id}`)
           .update({ ...puzzle, completed: true })
       );
-    this.afs
-      .doc(`${path}`)
-      .update({ attempts: increment(1), completed: increment(1) });
+    this.afs.doc(`${path}`).update({ completed: increment(1) });
   }
 
   updateIncorrectPuzzle(user: User, setId: string) {
     this.afs
       .doc(`users/${user.uid}/sets/${setId}`)
-      .update({ attempts: increment(1) });
+      .update({ failed: increment(1) });
   }
 
   deleteSet(setId: string) {
@@ -109,22 +107,22 @@ export class UserDataService {
     );
     setDocRef.get().subscribe((doc) => {
       let completed = doc.get('completed');
-      let attempts = doc.get('attempts');
+      let failed = doc.get('failed');
       let best = doc.get('best');
-      let newRate = (completed / attempts).toFixed(1);
+      let newRate = ((completed - failed) / completed).toFixed(1);
 
       if (!best || newRate > best) {
         setDocRef.update({
           timesCompleted: increment(1) as unknown as number,
           best: parseFloat(newRate),
           completed: 0,
-          attempts: 0,
+          failed: 0,
         });
       } else {
         setDocRef.update({
           timesCompleted: increment(1) as unknown as number,
           completed: 0,
-          attempts: 0,
+          failed: 0,
         });
       }
     });
@@ -163,7 +161,7 @@ export class UserDataService {
               timesCompleted: 0,
               currentPuzzleId: next.puzzles[0].puzzleid,
               completed: 0,
-              attempts: 0,
+              failed: 0,
             })
             .then((doc) =>
               next.puzzles.map((puzzle) =>

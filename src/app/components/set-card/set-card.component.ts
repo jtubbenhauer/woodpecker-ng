@@ -12,11 +12,8 @@ export interface SetWithId extends Set {
   templateUrl: './set-card.component.html',
   styleUrls: ['./set-card.component.css'],
 })
-export class SetCardComponent implements OnInit, AfterViewInit {
+export class SetCardComponent implements OnInit {
   @Input() set!: SetWithId;
-
-  bestRadial?: string;
-  currentRadial?: string;
 
   constructor(
     private router: RouterModule,
@@ -24,14 +21,6 @@ export class SetCardComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {}
-
-  ngAfterViewInit() {
-    this.bestRadial = `--value:${this.set.best ? this.set.best * 100 : 0}`;
-    this.currentRadial = `--value:${(
-      (this.set.completed / this.set.attempts) *
-      100
-    ).toFixed(2)}`;
-  }
 
   deleteSet() {
     this.userDataService.deleteSet(this.set.id);

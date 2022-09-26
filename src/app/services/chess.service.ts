@@ -185,9 +185,9 @@ export class ChessService {
     this.lastMoveCorrect$.next(true);
     this.currentMove++;
     this.makeMove(orig, dest);
+    this.cg.setAutoShapes([{ orig: dest, customSvg: boardSvgs.right }]);
     setTimeout(() => {
       let { from, to } = convertSingleMove(this.moves[this.currentMove]);
-      this.cg.setAutoShapes([{ orig: dest, customSvg: boardSvgs.right }]);
       this.makeMove(from as Key, to as Key);
       this.currentMove++;
     }, 250);
