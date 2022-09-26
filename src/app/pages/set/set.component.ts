@@ -90,7 +90,11 @@ export class SetComponent implements OnInit, OnDestroy {
     this.puzzleFailed = this.chessService.puzzleFailed$.subscribe((next) => {
       if (next && this.user && !this.updatedIncorrect) {
         this.updatedIncorrect = true;
-        this.userDataService.updateIncorrectPuzzle(this.user, this.setId);
+        this.userDataService.updateIncorrectPuzzle(
+          this.user,
+          this.setId,
+          this.currentPuzzle
+        );
       }
     });
     this.chessService.currentColour$.subscribe((value) => {

@@ -91,10 +91,24 @@ export class UserDataService {
     this.afs.doc(`${path}`).update({ completed: increment(1) });
   }
 
-  updateIncorrectPuzzle(user: User, setId: string) {
+  updateIncorrectPuzzle(user: User, setId: string, puzzle: Puzzle) {
+    const path = `users/${user.uid}/sets/${setId}`;
+
     this.afs
-      .doc(`users/${user.uid}/sets/${setId}`)
-      .update({ failed: increment(1) });
+      .doc(path)
+      .update({ completed: increment(1), failed: increment(1) });
+
+    this.afs
+      .collection(`${path}/puzzles`, (ref) =>
+        ref.where('puzzleid', '==', puzzle.puzzleid)
+      )
+      .snapshotChanges()
+      .pipe(first())
+      .forEach((value) =>
+        this.afs
+          .doc(`${path}/puzzles/${value[0].payload.doc.id}`)
+          .update({ ...puzzle, completed: true })
+      );
   }
 
   deleteSet(setId: string) {

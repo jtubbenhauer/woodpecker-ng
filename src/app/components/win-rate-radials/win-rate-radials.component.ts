@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Set } from '../../models/set';
+import { getCurrentWinrate } from '../../utils/utils';
 
 @Component({
   selector: 'app-win-rate-radials',
@@ -18,15 +19,7 @@ export class WinRateRadialsComponent implements OnInit, OnChanges {
   ngOnInit(): void {}
 
   ngOnChanges() {
-    if (this.setData.failed && this.setData.completed) {
-      this.current = (
-        ((this.setData.completed - this.setData.failed) /
-          this.setData.completed) *
-        100
-      ).toFixed(0);
-    } else {
-      this.current = '0';
-    }
+    this.current = getCurrentWinrate(this.setData);
 
     this.best = this.setData.best ? (this.setData.best * 100).toFixed(0) : '0';
 
