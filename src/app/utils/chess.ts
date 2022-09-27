@@ -1,5 +1,5 @@
 import { Chess, Move, Square, SQUARES } from 'chess.js';
-import { Key, Piece } from 'chessground/types';
+import { Key, Piece, PiecesDiff } from 'chessground/types';
 
 export const toColour = (chess: Chess) => {
   return chess.turn() == 'w' ? 'white' : 'black';
@@ -14,6 +14,7 @@ export const convertSingleMove = (move: string) => {
     return {
       from: move.substring(0, 2),
       to: move.substring(2, 4),
+      promotion: undefined,
     };
   } else {
     return {
@@ -58,6 +59,21 @@ export const getLastMove = (chess: Chess): Move => {
   return arr[arr.length - 1] as Move;
 };
 
+export const convertPromotionPiece = (piece: string) => {
+  switch (piece) {
+    case 'q':
+      return 'queen';
+    case 'r':
+      return 'rook';
+    case 'n':
+      return 'knight';
+    case 'b':
+      return 'bishop';
+    default:
+      return 'queen';
+  }
+};
+
 export const getPromotionDisplaySquares = (
   dest: Key,
   chess: Chess
@@ -100,6 +116,21 @@ export const getPromotionDisplaySquares = (
         [chars[0], '4'].join('') as Key,
         { role: 'bishop', color: toColour(chess) },
       ],
+    ];
+  }
+};
+
+export const getWrongPromotionSquares = (dest: Key): any => {
+  let arr = dest.split('');
+  if (arr[1] == '1') {
+    return [
+      [[arr[0], '3'].join('') as Key, undefined],
+      [[arr[0], '4'].join('') as Key, undefined],
+    ];
+  } else {
+    return [
+      [[arr[0], '6'].join('') as Key, undefined],
+      [[arr[0], '5'].join('') as Key, undefined],
     ];
   }
 };

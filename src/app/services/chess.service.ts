@@ -9,11 +9,13 @@ import { Key, Piece } from 'chessground/types';
 import { envPrivate as env } from '../../environments/env-private';
 import boardSvgs from '../utils/svg';
 import {
+  convertPromotionPiece,
   convertSingleMove,
   getLastMove,
   getLegalMoves,
   getOrientation,
   getPromotionDisplaySquares,
+  getWrongPromotionSquares,
   isPromotion,
   toColour,
 } from '../utils/chess';
@@ -145,10 +147,11 @@ export class ChessService {
     //   });
   }
 
-  private makeMove(from: Key, to: Key) {
-    this.chess.move({ from: from, to: to });
+  private makeMove(from: Key, to: Key, promotion?: string) {
+    this.chess.move({ from: from, to: to, promotion: promotion });
     this.playSound();
     this.cg.set({
+      fen: this.chess.fen(),
       turnColor: toColour(this.chess),
       movable: {
         color: toColour(this.chess),
@@ -156,56 +159,83 @@ export class ChessService {
       },
       check: this.chess.inCheck(),
     });
-    this.cg.move(from, to);
   }
 
-  private onMove(orig: Key, dest: Key) {
+  private makeCpuMove(from: Key, to: Key, promotion?: string) {
+    if (promotion) {
+      this.cg.setPieces(
+        new Map<Key, Piece | undefined>([
+          [
+            to,
+            {
+              role: convertPromotionPiece(promotion),
+              color: toColour(this.chess),
+              promoted: true,
+            },
+          ],
+          [from, undefined],
+        ])
+      );
+      this.makeMove(from, to, promotion);
+    } else {
+      this.makeMove(from, to);
+    }
+  }
+
+  private onMove(orig: Key, dest: Key, promotion?: string) {
     this.cg.setAutoShapes([]);
     // If there's moves remaining in the set
     if (this.currentMove < this.moves.length - 1) {
-      if (this.isCorrect(orig, dest)) {
-        this.onRightMove(orig, dest);
+      if (this.isCorrect(orig, dest, promotion)) {
+        this.onRightMove(orig, dest, promotion);
       } else {
         this.onWrongMove(orig, dest);
       }
     } else {
       // If final move
-      if (this.isCorrect(orig, dest)) {
+      if (this.isCorrect(orig, dest, promotion)) {
         this.cg.setAutoShapes([{ orig: dest, customSvg: boardSvgs.right }]);
-        this.makeMove(orig, dest);
+        this.makeMove(orig, dest, promotion);
         this.cg.stop();
         this.puzzleComplete$.next(true);
       } else {
-        this.onWrongMove(orig, dest);
+        this.onWrongMove(orig, dest, promotion);
       }
     }
   }
 
-  private onRightMove(orig: Key, dest: Key) {
+  private onRightMove(orig: Key, dest: Key, promotion?: string) {
     this.lastMoveCorrect$.next(true);
     this.currentMove++;
-    this.makeMove(orig, dest);
+    this.makeMove(orig, dest, promotion);
     this.cg.setAutoShapes([{ orig: dest, customSvg: boardSvgs.right }]);
     setTimeout(() => {
-      let { from, to } = convertSingleMove(this.moves[this.currentMove]);
-      this.makeMove(from as Key, to as Key);
+      let { from, to, promotion } = convertSingleMove(
+        this.moves[this.currentMove]
+      );
+      this.makeCpuMove(from as Key, to as Key, promotion);
       this.currentMove++;
     }, 250);
   }
 
-  private onWrongMove(orig: Key, dest: Key) {
+  private onWrongMove(orig: Key, dest: Key, promotion?: string) {
+    if (promotion) {
+      this.cg.setPieces(getWrongPromotionSquares(dest));
+    }
     this.puzzleFailed$.next(true);
     this.lastMoveCorrect$.next(false);
-    this.chess.move({ from: orig, to: dest });
+    this.chess.move({ from: orig, to: dest, promotion: promotion });
     this.playSound();
     this.cg.set({ check: this.chess.inCheck() });
     this.cg.setAutoShapes([{ orig: dest, customSvg: boardSvgs.wrong }]);
     this.cg.stop();
   }
 
-  private isCorrect(orig: Key, dest: Key) {
+  private isCorrect(orig: Key, dest: Key, promotion?: string) {
     let move = '';
-    move = move.concat(orig, dest);
+    move = promotion
+      ? move.concat(orig, dest, promotion)
+      : move.concat(orig, dest);
     return move === this.moves[this.currentMove];
   }
 
@@ -228,12 +258,48 @@ export class ChessService {
 
   private handlePromotion(orig: Key, dest: Key) {
     this.cg.setAutoShapes([]);
+    // Save any PiecesDiff on ranks 3,4 5,6 to add them back in after promotion
     this.cg.setPieces(
       new Map<Key, Piece>(getPromotionDisplaySquares(dest, this.chess))
     );
-    this.cg.stop();
+    for (const i of getPromotionDisplaySquares(dest, this.chess)) {
+      this.cg.selectSquare(i[0], true);
+    }
+    // this.cg.stop();
     this.cg.set({
-      events: { select: (key) => console.log(key) },
+      events: {
+        select: (key) => this.handlePromotionSelection(key, orig, dest),
+      },
     });
+  }
+
+  private handlePromotionSelection(key: Key, orig: Key, dest: Key) {
+    const selection = key.split('')[1];
+    let piece = '';
+    if (selection == '1' || selection == '8') {
+      piece = 'q';
+    } else if (selection == '2' || selection == '7') {
+      piece = 'r';
+    } else if (selection == '3' || selection == '6') {
+      piece = 'n';
+    } else if (selection == '4' || selection == '5') {
+      piece = 'b';
+    }
+
+    this.cg.set({ events: { select: undefined } });
+    this.cg.setPieces(
+      new Map<Key, Piece | undefined>([
+        [
+          dest,
+          {
+            role: convertPromotionPiece(piece),
+            color: toColour(this.chess),
+            promoted: true,
+          },
+        ],
+        [orig, undefined],
+      ])
+    );
+    this.onMove(orig, dest, piece);
   }
 }
