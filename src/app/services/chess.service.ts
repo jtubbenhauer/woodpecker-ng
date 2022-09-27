@@ -67,7 +67,7 @@ export class ChessService {
       },
       movable: {
         free: false,
-        color: toColour(this.chess),
+        color: 'both',
         showDests: false,
         events: {
           after: (orig, dest) => {
@@ -263,14 +263,12 @@ export class ChessService {
 
   private handlePromotion(orig: Key, dest: Key) {
     this.cg.setAutoShapes([]);
-    // Save any PiecesDiff on ranks 3,4 5,6 to add them back in after promotion
     this.cg.setPieces(
       new Map<Key, Piece>(getPromotionDisplaySquares(dest, this.chess))
     );
     for (const i of getPromotionDisplaySquares(dest, this.chess)) {
       this.cg.selectSquare(i[0], true);
     }
-    // this.cg.stop();
     this.cg.set({
       events: {
         select: (key) => this.handlePromotionSelection(key, orig, dest),

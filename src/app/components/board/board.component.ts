@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  OnChanges,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -14,16 +15,36 @@ import { ChessService } from '../../services/chess.service';
 })
 export class BoardComponent implements OnInit, AfterViewInit {
   @ViewChild('chessboard') el!: ElementRef<HTMLElement>;
-  boardWidth = '580px';
-  boardHeight = '580px';
+  boardSize = '580px';
+  length = 580;
+  mouseDown?: number;
+  mouseUp?: number;
 
   constructor(private service: ChessService) {}
 
   ngOnInit(): void {}
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+    // this.calcDimensions(this.length);
+  }
 
-  handleWindowResize(event: UIEvent) {
-    // console.log(event);
+  calcDimensions(length: number) {
+    this.boardSize = `${length}px`;
+  }
+
+  onMouseDown(event: MouseEvent) {
+    this.mouseDown = event.pageX;
+  }
+
+  onMouseMove(event: MouseEvent) {
+    if (this.mouseDown) {
+      this.length = this.length - (event.pageX - this.mouseDown);
+    }
+    this.calcDimensions(this.length);
+  }
+
+  onMouseUp(event: MouseEvent) {
+    console.log(event.pageX);
+    event.stopPropagation();
   }
 }

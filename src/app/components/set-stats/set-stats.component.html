@@ -2,16 +2,16 @@
   <div class="stats shadow-lg bg-base-300">
     <div class="stat ">
       <div class="stat-title text-white">Set Rating</div>
-      <div class="stat-value text-[2rem] text-green-500"><span *ngIf="setData">{{setData.rating}}</span></div>
+      <div class="stat-value text-[2rem] "><span *ngIf="setData">{{setData.rating}}</span></div>
     </div>
     <div class="stat ">
       <div class="stat-title text-white">Set Size</div>
-      <div class="stat-value text-[2rem] text-green-500"><span *ngIf="setData">{{setData.puzzleCount}}</span></div>
+      <div class="stat-value text-[2rem] "><span *ngIf="setData">{{setData.puzzleCount}}</span></div>
     </div>
 
     <div class="stat">
       <div class="stat-title text-white">Completed</div>
-      <div class="stat-value text-[2rem] text-green-500"><span
+      <div class="stat-value text-[2rem]"><span
         *ngIf="setData">{{(setData.completed / setData.puzzleCount * 100).toFixed(0)}}%</span></div>
     </div>
   </div>
