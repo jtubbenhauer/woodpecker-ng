@@ -1,6 +1,7 @@
 import firebase from 'firebase/compat';
 import Timestamp = firebase.firestore.Timestamp;
 import { Puzzle } from './puzzle';
+import Theme from './theme';
 
 export interface Set {
   createdAt: Timestamp;
@@ -11,5 +12,6 @@ export interface Set {
   completed: number;
   best?: number;
   failed: number;
+  themes: Array<Theme>;
   puzzles: Puzzle[];
 }

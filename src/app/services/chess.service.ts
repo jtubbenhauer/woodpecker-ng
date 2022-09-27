@@ -43,6 +43,9 @@ export class ChessService {
   captureSound = new Howl({
     src: ['../assets/capture.mp3'],
   });
+  promotionSound = new Howl({
+    src: ['../assets/promotion.mp3'],
+  });
   apiHeaders = new HttpHeaders({
     'X-RapidAPI-Key': env.chessApiKey,
     'X-RapidAPI-Host': env.chessApiHost,
@@ -149,7 +152,7 @@ export class ChessService {
 
   private makeMove(from: Key, to: Key, promotion?: string) {
     this.chess.move({ from: from, to: to, promotion: promotion });
-    this.playSound();
+    this.playSound(promotion);
     this.cg.set({
       fen: this.chess.fen(),
       turnColor: toColour(this.chess),
@@ -225,7 +228,7 @@ export class ChessService {
     this.puzzleFailed$.next(true);
     this.lastMoveCorrect$.next(false);
     this.chess.move({ from: orig, to: dest, promotion: promotion });
-    this.playSound();
+    this.playSound(promotion);
     this.cg.set({ check: this.chess.inCheck() });
     this.cg.setAutoShapes([{ orig: dest, customSvg: boardSvgs.wrong }]);
     this.cg.stop();
@@ -240,14 +243,16 @@ export class ChessService {
   }
 
   private makeFirstMove() {
-    let move = convertSingleMove(this.moves[0]);
-    this.makeMove(move.from as Key, move.to as Key);
+    let { from, to, promotion } = convertSingleMove(this.moves[0]);
+    this.makeMove(from, to, promotion);
     this.currentMove = 1;
   }
 
-  private playSound() {
+  private playSound(promotion?: string) {
     let lastMove = getLastMove(this.chess);
-    if (this.chess.inCheck()) {
+    if (promotion) {
+      this.promotionSound.play();
+    } else if (this.chess.inCheck()) {
       this.checkSound.play();
     } else if (lastMove.captured) {
       this.captureSound.play();

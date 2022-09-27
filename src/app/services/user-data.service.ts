@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import firebase from 'firebase/compat';
 import User = firebase.User;
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { envPrivate as env } from '../../environments/env-private';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
@@ -14,6 +14,7 @@ import { first, Observable } from 'rxjs';
 import { Set } from '../models/set';
 import { SetWithId } from '../components/set-card/set-card.component';
 import { Puzzle } from '../models/puzzle';
+import Theme from '../models/theme';
 
 @Injectable({
   providedIn: 'root',
@@ -154,39 +155,45 @@ export class UserDataService {
       });
   }
 
-  newSet(rating: string, size: string) {
+  newSet(rating: string, size: string, themes: Array<Theme>) {
     //Want a spinner for this request
-    if (this.user) {
-      this.http
-        .get<SetDoc>(env.chessApiUrl, {
-          headers: this.apiHeaders,
-          params: {
+    let themeArray = themes.map((theme) => {
+      return theme.slug;
+    });
+
+    this.http
+      .get<SetDoc>(env.chessApiUrl, {
+        headers: this.apiHeaders,
+        params: {
+          rating: rating,
+          count: size,
+          themes: JSON.stringify(themeArray),
+          themesType: 'ONE',
+        },
+      })
+      .pipe(first())
+      .subscribe((next) => {
+        this.userDoc
+          ?.collection('sets')
+          .add({
+            createdAt: new Date(),
             rating: rating,
-            count: size,
-          },
-        })
-        .subscribe((next) => {
-          this.userDoc
-            ?.collection('sets')
-            .add({
-              createdAt: new Date(),
-              rating: rating,
-              puzzleCount: next.puzzles.length,
-              timesCompleted: 0,
-              currentPuzzleId: next.puzzles[0].puzzleid,
-              completed: 0,
-              failed: 0,
-            })
-            .then((doc) =>
-              next.puzzles.map((puzzle) =>
-                this.userDoc
-                  ?.collection('sets')
-                  .doc(`${doc.id}`)
-                  .collection('puzzles')
-                  .add({ ...puzzle, completed: false })
-              )
-            );
-        });
-    }
+            puzzleCount: next.puzzles.length,
+            timesCompleted: 0,
+            currentPuzzleId: next.puzzles[0].puzzleid,
+            completed: 0,
+            failed: 0,
+            themes: themes,
+          })
+          .then((doc) =>
+            next.puzzles.map((puzzle) =>
+              this.userDoc
+                ?.collection('sets')
+                .doc(`${doc.id}`)
+                .collection('puzzles')
+                .add({ ...puzzle, completed: false })
+            )
+          );
+      });
   }
 }

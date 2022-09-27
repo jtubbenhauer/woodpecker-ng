@@ -3,7 +3,14 @@
     <app-board></app-board>
   </div>
   <div class="flex flex-col items-center w-full gap-8">
-    <h2 *ngIf="toMove" class="text-xl font-bold">{{toMove | uppercase}} TO MOVE</h2>
+    <h2 *ngIf="toMove == 'white'"
+        class="rounded-md px-4 py-2 text-lg text-slate-800 font-bold bg-slate-100 tracking-wide">{{toMove | uppercase}}
+      TO
+      MOVE</h2>
+    <h2 *ngIf="toMove == 'black'"
+        class="rounded-md px-4 py-2 text-lg text-slate-100 font-bold bg-black tracking-wide">{{toMove | uppercase}} TO
+      MOVE</h2>
+
     <app-set-stats *ngIf="setData" [setData]="setData"></app-set-stats>
     <div *ngIf="user" class="flex flex gap-4">
       <button (click)="resetPuzzle()" class="btn">Reset</button>

@@ -26,6 +26,9 @@
 
     </div>
   </div>
+  <div class="flex gap-4">
+    <span *ngFor="let theme of set.themes" class="text-sm">{{theme.title}}</span>
+  </div>
   <h4 class="text-xl font-bold mt-2">Correct %</h4>
   <app-win-rate-radials [setData]="set"></app-win-rate-radials>
   <div class="flex gap-8 mt-2">

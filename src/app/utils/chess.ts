@@ -9,17 +9,19 @@ export const getOrientation = (chess: Chess) => {
   return chess.turn() == 'w' ? 'black' : 'white';
 };
 
-export const convertSingleMove = (move: string) => {
+export const convertSingleMove = (
+  move: string
+): { from: Key; to: Key; promotion: string | undefined } => {
   if (move.length == 4) {
     return {
-      from: move.substring(0, 2),
-      to: move.substring(2, 4),
+      from: move.substring(0, 2) as Key,
+      to: move.substring(2, 4) as Key,
       promotion: undefined,
     };
   } else {
     return {
-      from: move.substring(0, 2),
-      to: move.substring(2, 4),
+      from: move.substring(0, 2) as Key,
+      to: move.substring(2, 4) as Key,
       promotion: move.substring(4, 5),
     };
   }
