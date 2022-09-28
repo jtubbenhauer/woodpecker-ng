@@ -59,7 +59,6 @@ export class ChessService {
     this.currentMove = 0;
     this.puzzle = puzzle;
     this.chess = new Chess(puzzle.fen);
-    console.log(puzzle);
     this.cg = Chessground(el, {
       fen: this.chess.fen(),
       selectable: {
@@ -121,33 +120,6 @@ export class ChessService {
   public getHint() {
     let move = convertSingleMove(this.moves[this.currentMove]);
     this.cg.selectSquare(move.from as Key);
-  }
-
-  public getPromPuzzle(el: HTMLElement) {
-    const puzzle = {
-      puzzleid: 'FElHP',
-      fen: '8/p3K3/8/3Pk3/5N2/2p5/P7/8 w - - 0 56',
-      rating: 1469,
-      ratingdeviation: 500,
-      moves: ['d5d6', 'e5f4', 'd6d7', 'c3c2', 'd7d8q', 'c2c1q'],
-      themes: [
-        'advancedPawn',
-        'endgame',
-        'equality',
-        'hangingPiece',
-        'long',
-        'promotion',
-      ],
-    };
-    this.initChessground(puzzle, el);
-    // this.http
-    //   .get<any>(env.chessApiUrl, {
-    //     headers: this.apiHeaders,
-    //     params: { themes: '["promotion"]', count: '1' },
-    //   })
-    //   .subscribe((next) => {
-    //     this.initChessground(next.puzzles[0], el);
-    //   });
   }
 
   private makeMove(from: Key, to: Key, promotion?: string) {
