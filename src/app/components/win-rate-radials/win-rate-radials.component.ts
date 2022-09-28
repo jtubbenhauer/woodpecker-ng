@@ -9,8 +9,8 @@ import { getCurrentWinrate } from '../../utils/utils';
 })
 export class WinRateRadialsComponent implements OnInit, OnChanges {
   @Input() setData!: Set;
-  bestRadial?: string;
-  currentRadial?: string;
+  bestRadial?: any;
+  currentRadial?: any;
   current!: string;
   best!: string;
 
@@ -23,7 +23,9 @@ export class WinRateRadialsComponent implements OnInit, OnChanges {
 
     this.best = this.setData.best ? (this.setData.best * 100).toFixed(0) : '0';
 
-    this.bestRadial = `--value:${this.best}`;
-    this.currentRadial = `--value:${this.current}`;
+    // this.bestRadial = `--value:${this.best}`;
+    this.bestRadial = { '--value': this.best, '--thickness': '5px' };
+
+    this.currentRadial = { '--value': this.current, '--thickness': '5px' };
   }
 }

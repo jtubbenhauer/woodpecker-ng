@@ -1,19 +1,32 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+} from '@angular/core';
 
 @Component({
   selector: 'app-progress-bar',
   templateUrl: './progress-bar.component.html',
   styleUrls: ['./progress-bar.component.css'],
 })
-export class ProgressBarComponent implements OnInit, AfterViewInit {
+export class ProgressBarComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() completed!: number;
   @Input() puzzleCount!: number;
+  barWidth = '';
 
-  constructor() {}
+  constructor() {
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngAfterViewInit() {
-    console.log(this.completed, this.puzzleCount);
+
+  }
+
+  ngOnChanges() {
+    this.barWidth = (this.completed / this.puzzleCount) * 100 + '%';
   }
 }

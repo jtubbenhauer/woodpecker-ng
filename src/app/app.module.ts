@@ -15,7 +15,7 @@ import { HomeComponent } from './pages/home/home/home.component';
 import { SetCardComponent } from './components/set-card/set-card.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { SetStatsComponent } from './components/set-stats/set-stats.component';
+import { SetStatsComponent } from './components/set-stats--/set-stats.component';
 import { WinRateRadialsComponent } from './components/win-rate-radials/win-rate-radials.component';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 

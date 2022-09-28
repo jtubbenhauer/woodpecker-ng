@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Set } from '../../models/set';
 
 @Component({
-  selector: 'app-set-stats',
+  selector: 'app-set-stats--',
   templateUrl: './set-stats.component.html',
   styleUrls: ['./set-stats.component.css'],
 })
