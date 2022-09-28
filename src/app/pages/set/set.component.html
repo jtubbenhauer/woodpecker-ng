@@ -1,8 +1,10 @@
-<div class="grid grid-cols-2 mt-8">
+<div class="grid md:grid-cols-2 mt-8 gap-8">
   <div class="justify-items-end">
     <app-board></app-board>
   </div>
-  <div class="flex flex-col items-center w-full gap-8 select-none">
+  <div class="flex flex-col items-center w-[410px] gap-8 select-none gap-8 bg-[#273140] rounded-2xl py-12">
+    <app-progress-bar *ngIf="setData" [completed]="setData.completed"
+                      [puzzleCount]="setData.puzzleCount"></app-progress-bar>
     <h2 *ngIf="toMove == 'white'"
         class="rounded-md px-4 py-2 text-lg text-slate-800 font-bold bg-slate-100 tracking-wide">{{toMove | uppercase}}
       TO
@@ -14,9 +16,8 @@
     <app-set-stats *ngIf="setData" [setData]="setData"></app-set-stats>
     <div *ngIf="user" class="flex flex gap-4">
       <button (click)="resetPuzzle()" class="btn">Reset</button>
-      <button (click)="getNextPuzzle()" class="btn">Random</button>
+      <button (click)="getNextPuzzle()" class="btn">Skip</button>
       <button (click)="getHint()" class="btn">Get Hint</button>
-      <button (click)="getPromotion()" class="btn">Promotion</button>
     </div>
     <div class="flex gap-8">
       <div *ngIf="!showBackButton || puzzleComplete">

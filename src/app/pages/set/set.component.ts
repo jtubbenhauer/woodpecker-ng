@@ -127,10 +127,6 @@ export class SetComponent implements OnInit, OnDestroy {
     this.chessService.getHint();
   }
 
-  getPromotion() {
-    this.chessService.getPromPuzzle(this.boardChild.el.nativeElement);
-  }
-
   backOneMove() {
     this.chessService.backOne();
   }

@@ -2,11 +2,10 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  OnChanges,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { ChessService } from '../../services/chess.service';
+import {ChessService} from '../../services/chess.service';
 import interact from 'interactjs';
 
 @Component({
@@ -18,17 +17,13 @@ export class BoardComponent implements OnInit, AfterViewInit {
   @ViewChild('chessboard') el!: ElementRef<HTMLElement>;
   @ViewChild('chessDiv') chessDiv!: ElementRef<HTMLElement>;
 
-  boardSize = '580px';
-  length = 580;
-  mouseDown?: number;
-  mouseUp?: number;
+  constructor(private service: ChessService) {
+  }
 
-  constructor(private service: ChessService) {}
-
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngAfterViewInit() {
-    console.log(this.el.nativeElement);
     interact(this.el.nativeElement).resizable({
       edges: {
         right: true,
@@ -36,7 +31,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
       },
       listeners: {
         move: (event) => {
-          let { x, y } = event.target.dataset;
+          let {x, y} = event.target.dataset;
 
           x = (parseFloat(x) || 0) + event.deltaRect.left;
           y = (parseFloat(y) || 0) + event.deltaRect.top;
@@ -47,29 +42,10 @@ export class BoardComponent implements OnInit, AfterViewInit {
             transform: `translate(${x}px, ${y}px)`,
           });
 
-          Object.assign(event.target.dataset, { x, y });
+          Object.assign(event.target.dataset, {x, y});
         },
       },
     });
   }
 
-  calcDimensions(length: number) {
-    this.boardSize = `${length}px`;
-  }
-
-  onMouseDown(event: MouseEvent) {
-    this.mouseDown = event.pageX;
-  }
-
-  onMouseMove(event: MouseEvent) {
-    if (this.mouseDown) {
-      this.length = this.length + (this.mouseDown - event.pageX);
-    }
-    this.calcDimensions(this.length);
-  }
-
-  onMouseUp(event: MouseEvent) {
-    console.log(event.pageX);
-    event.stopPropagation();
-  }
 }

@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { SetStatsComponent } from './components/set-stats/set-stats.component';
 import { WinRateRadialsComponent } from './components/win-rate-radials/win-rate-radials.component';
+import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { WinRateRadialsComponent } from './components/win-rate-radials/win-rate-
     SetCardComponent,
     SetStatsComponent,
     WinRateRadialsComponent,
+    ProgressBarComponent,
   ],
   imports: [
     BrowserModule,
