@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
+import firebase from 'firebase/compat';
+import User = firebase.User;
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  authState: any = null;
+  user: Observable<User | null>;
 
   constructor(private afAuth: AngularFireAuth, private router: Router) {
-    this.afAuth.authState.subscribe(
-      (authState) => (this.authState = authState)
-    );
+    this.user = this.afAuth.user;
   }
 
   emailLogin(email: string, password: string) {

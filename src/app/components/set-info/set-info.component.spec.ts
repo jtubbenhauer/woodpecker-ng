@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SetStatsComponent } from './set-stats.component';
+import { SetInfoComponent } from './set-info.component';
 
-describe('SetStatsComponent', () => {
-  let component: SetStatsComponent;
-  let fixture: ComponentFixture<SetStatsComponent>;
+describe('SetInfoComponent', () => {
+  let component: SetInfoComponent;
+  let fixture: ComponentFixture<SetInfoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SetStatsComponent ]
+      declarations: [ SetInfoComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SetStatsComponent);
+    fixture = TestBed.createComponent(SetInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

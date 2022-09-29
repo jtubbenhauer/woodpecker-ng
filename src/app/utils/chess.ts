@@ -123,14 +123,17 @@ export const getPromotionDisplaySquares = (
 };
 
 export const getWrongPromotionSquares = (dest: Key): any => {
+  console.log(dest);
   let arr = dest.split('');
   if (arr[1] == '1') {
     return [
+      [[arr[0], '2'].join('') as Key, undefined],
       [[arr[0], '3'].join('') as Key, undefined],
       [[arr[0], '4'].join('') as Key, undefined],
     ];
   } else {
     return [
+      [[arr[0], '7'].join('') as Key, undefined],
       [[arr[0], '6'].join('') as Key, undefined],
       [[arr[0], '5'].join('') as Key, undefined],
     ];

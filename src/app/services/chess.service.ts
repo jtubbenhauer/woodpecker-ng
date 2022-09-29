@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Chessground } from 'chessground';
 import { Chess } from 'chess.js';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Puzzle } from '../models/puzzle';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Api } from 'chessground/api';
 import { Key, Piece } from 'chessground/types';
-import { envPrivate as env } from '../../environments/env-private';
 import boardSvgs from '../utils/svg';
 import {
   convertPromotionPiece,
@@ -32,8 +30,8 @@ export class ChessService {
   currentMove!: number;
   currentColour$ = new BehaviorSubject('');
   lastMoveCorrect$ = new BehaviorSubject(true);
-  puzzleComplete$ = new Subject<boolean>();
-  puzzleFailed$ = new Subject<boolean>();
+  puzzleComplete$ = new BehaviorSubject<boolean>(false);
+  puzzleFailed$ = new BehaviorSubject<boolean>(false);
   moveSound = new Howl({
     src: ['../assets/move.mp3'],
   });
@@ -46,16 +44,10 @@ export class ChessService {
   promotionSound = new Howl({
     src: ['../assets/promotion.mp3'],
   });
-  apiHeaders = new HttpHeaders({
-    'X-RapidAPI-Key': env.chessApiKey,
-    'X-RapidAPI-Host': env.chessApiHost,
-  });
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
   public initChessground(puzzle: any, el: HTMLElement): any {
-    this.puzzleFailed$.next(false);
-    this.puzzleComplete$.next(false);
     this.currentMove = 0;
     this.puzzle = puzzle;
     this.chess = new Chess(puzzle.fen);
@@ -164,7 +156,7 @@ export class ChessService {
       if (this.isCorrect(orig, dest, promotion)) {
         this.onRightMove(orig, dest, promotion);
       } else {
-        this.onWrongMove(orig, dest);
+        this.onWrongMove(orig, dest, promotion);
       }
     } else {
       // If final move
@@ -222,7 +214,7 @@ export class ChessService {
 
   private playSound(promotion?: string) {
     let lastMove = getLastMove(this.chess);
-    if (promotion) {
+    if (promotion && !this.chess.inCheck()) {
       this.promotionSound.play();
     } else if (this.chess.inCheck()) {
       this.checkSound.play();
@@ -235,12 +227,14 @@ export class ChessService {
 
   private handlePromotion(orig: Key, dest: Key) {
     this.cg.setAutoShapes([]);
+    console.log(orig, dest);
     this.cg.setPieces(
       new Map<Key, Piece>(getPromotionDisplaySquares(dest, this.chess))
     );
-    for (const i of getPromotionDisplaySquares(dest, this.chess)) {
-      this.cg.selectSquare(i[0], true);
-    }
+    // This is the right idea but looks shit
+    // for (const i of getPromotionDisplaySquares(dest, this.chess)) {
+    //   this.cg.selectSquare(i[0], true);
+    // }
     this.cg.set({
       events: {
         select: (key) => this.handlePromotionSelection(key, orig, dest),
@@ -260,7 +254,6 @@ export class ChessService {
     } else if (selection == '4' || selection == '5') {
       piece = 'b';
     }
-
     this.cg.set({ events: { select: undefined } });
     this.cg.setPieces(
       new Map<Key, Piece | undefined>([

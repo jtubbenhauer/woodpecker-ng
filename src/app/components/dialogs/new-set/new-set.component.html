@@ -2,14 +2,14 @@
 <label for="new-set-dialog" class="modal cursor-pointer">
   <label class="modal-box relative" for="">
     <label for="new-set-dialog" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-2">
       <div class="form-control">
         <label class="label">
           <span class="label-text">Average Puzzle Rating</span>
         </label>
         <div class="flex items-center gap-4">
           <input #setRatingRange type="range" min="100" max="3000" step="50" [value]="setRating"
-                 class="range range-primary"
+                 class="range range-primary range-sm"
                  (input)="changeRating(setRatingRange.value)"/>
           <input #setRatingInput type="text" class="input input-bordered max-w-[5rem]" [value]="setRating"
                  (input)="changeRating(setRatingInput.value)"/>
@@ -21,7 +21,7 @@
         </label>
         <div class="flex items-center gap-4">
           <input #setSizeRange type="range" min="25" max="200" step="25" [value]="setSize"
-                 class="range range-primary"
+                 class="range range-primary range-sm"
                  (input)="changeSize(setSizeRange.value)"/>
           <input #setSizeInput type="text" class="input input-bordered max-w-[5rem]" [value]="setSize"
                  (input)="changeSize(setSizeInput.value)"/>

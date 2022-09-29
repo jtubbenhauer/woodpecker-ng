@@ -1,32 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserDataService } from '../../../services/user-data.service';
-import { first, Observable } from 'rxjs';
-import { AngularFirestoreCollection } from '@angular/fire/compat/firestore';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Observable, Subscription } from 'rxjs';
 import firebase from 'firebase/compat';
 import User = firebase.User;
 import { SetWithId } from '../../../components/set-card/set-card.component';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent implements OnInit {
-  collection?: AngularFirestoreCollection<unknown> | null;
+export class HomeComponent implements OnInit, OnDestroy {
   items$?: Observable<SetWithId[]>;
   user?: User | null;
+  userSub?: Subscription;
 
   constructor(
     private userDataService: UserDataService,
-    private auth: AngularFireAuth
+    private authService: AuthService
   ) {
-    this.auth.user
-      .pipe(first())
-      .subscribe(
-        (next) => (this.items$ = this.userDataService.getSets(next?.uid))
-      );
+    this.userSub = this.authService.user.subscribe(
+      (next) => (this.items$ = this.userDataService.getSets(next?.uid))
+    );
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.userSub?.unsubscribe();
+  }
 }
