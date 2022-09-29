@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import firebase from 'firebase/compat';
 import User = firebase.User;
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { envPrivate as env } from '../../environments/env-private';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
@@ -10,11 +10,12 @@ import {
 } from '@angular/fire/compat/firestore';
 import { increment } from '@angular/fire/firestore';
 import { SetDoc, UserDoc } from '../models/userData';
-import { first, Observable } from 'rxjs';
+import { first, Observable, Subscription } from 'rxjs';
 import { Set } from '../models/set';
 import { SetWithId } from '../components/set-card/set-card.component';
 import { Puzzle } from '../models/puzzle';
 import Theme from '../models/theme';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,15 +28,18 @@ export class UserDataService {
 
   user?: User | null;
   userDoc?: AngularFirestoreDocument<UserDoc>;
+  userSub?: Subscription;
 
   constructor(
     private http: HttpClient,
     private auth: AngularFireAuth,
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
+    private authService: AuthService
   ) {
-    this.auth.user.subscribe((next) => {
+    this.userSub = this.authService.user.subscribe((next) => {
       this.user = next;
       this.userDoc = afs.doc(`users/${next?.uid}`);
+      this.userSub?.unsubscribe();
     });
   }
 
@@ -160,16 +164,25 @@ export class UserDataService {
     let themeArray = themes.map((theme) => {
       return theme.slug;
     });
+    let params;
+
+    params =
+      themes.length !== 0
+        ? {
+            rating: rating,
+            count: size,
+            themes: JSON.stringify(themeArray),
+            themesType: 'ONE',
+          }
+        : {
+            rating: rating,
+            count: size,
+          };
 
     this.http
       .get<SetDoc>(env.chessApiUrl, {
         headers: this.apiHeaders,
-        params: {
-          rating: rating,
-          count: size,
-          themes: JSON.stringify(themeArray),
-          themesType: 'ONE',
-        },
+        params: params,
       })
       .pipe(first())
       .subscribe((next) => {

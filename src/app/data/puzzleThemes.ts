@@ -1,10 +1,7 @@
 export const puzzleThemes = [
   { title: 'Balanced Mix', slug: 'healthyMix' },
   { title: 'Advanced Pawn', slug: 'advancedPawn' },
-  {
-    title: 'Back Rank Mate',
-    slug: 'backRankMate',
-  },
+  { title: 'Back Rank Mate', slug: 'backRankMate' },
   { title: 'Bishop Endgames', slug: 'bishopEndgame' },
   { title: "Boden's Mate", slug: 'bodenMate' },
   { title: 'Castling', slug: 'castling' },

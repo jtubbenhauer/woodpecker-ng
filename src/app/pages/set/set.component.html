@@ -1,11 +1,14 @@
-<div class="flex flex-col md:flex-row gap-8 justify-center">
+<div class="flex flex-col lg:flex-row gap-8 justify-center">
   <div class="flex justify-center">
     <app-board></app-board>
   </div>
   <!--  <app-set-info *ngIf="setData" [setData]="setData"></app-set-info>-->
-  <div
-    class="flex flex-col items-center w-[410px] gap-12 select-none gap-8 bg-[#273140] rounded-2xl py-12 h-[600px]">
-    <app-progress-bar class="w-full" *ngIf="setData" [completed]="setData.completed"
+  <div *ngIf="setData"
+       class="flex flex-col items-center w-[410px] gap-12 select-none gap-8 bg-[#273140] rounded-2xl py-12 h-[600px]">
+    <div class="flex flex-wrap w-full gap-4 justify-center items-center">
+      <span *ngFor="let theme of setData.themes" class="text-xs bg-slate-700 p-2 rounded-lg">{{theme.title}}</span>
+    </div>
+    <app-progress-bar class="w-full" [completed]="setData.completed"
                       [puzzleCount]="setData.puzzleCount"></app-progress-bar>
     <app-win-rate-radials *ngIf="setData" [setData]="setData"></app-win-rate-radials>
     <div *ngIf="user" class="flex flex gap-4">

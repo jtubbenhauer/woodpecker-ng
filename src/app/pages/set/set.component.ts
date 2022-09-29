@@ -115,24 +115,7 @@ export class SetComponent implements OnInit, OnDestroy {
     this.puzzleComplete = false;
     this.updatedIncorrect = false;
     this.incompletePuzzles$.pipe(first()).subscribe((next) => {
-      // this.currentPuzzle = randomArrayEl(next);
-      this.currentPuzzle = {
-        rating: 1079,
-        completed: false,
-        puzzleid: 'YDrWh',
-        themes: [
-          'advancedPawn',
-          'backRankMate',
-          'endgame',
-          'mate',
-          'mateIn2',
-          'promotion',
-          'short',
-        ],
-        fen: '5r1k/p2P2pp/4Q3/2p5/Pp1q4/5B2/4P1KP/8 b - - 6 30',
-        ratingdeviation: 88,
-        moves: ['f8d8', 'e6e8', 'd8e8', 'd7e8q'],
-      };
+      this.currentPuzzle = randomArrayEl(next);
       this.chessService.initChessground(
         this.currentPuzzle,
         this.boardChild.el.nativeElement

@@ -5,7 +5,6 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {ChessService} from '../../services/chess.service';
 import interact from 'interactjs';
 
 @Component({
@@ -17,11 +16,9 @@ export class BoardComponent implements OnInit, AfterViewInit {
   @ViewChild('chessboard') el!: ElementRef<HTMLElement>;
   @ViewChild('chessDiv') chessDiv!: ElementRef<HTMLElement>;
 
-  constructor(private service: ChessService) {
-  }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit() {
     interact(this.el.nativeElement).resizable({
@@ -31,7 +28,7 @@ export class BoardComponent implements OnInit, AfterViewInit {
       },
       listeners: {
         move: (event) => {
-          let {x, y} = event.target.dataset;
+          let { x, y } = event.target.dataset;
 
           x = (parseFloat(x) || 0) + event.deltaRect.left;
           y = (parseFloat(y) || 0) + event.deltaRect.top;
@@ -42,10 +39,18 @@ export class BoardComponent implements OnInit, AfterViewInit {
             transform: `translate(${x}px, ${y}px)`,
           });
 
-          Object.assign(event.target.dataset, {x, y});
+          Object.assign(event.target.dataset, { x, y });
         },
       },
     });
   }
 
+  onWindowResize(window: any) {
+    if (window.innerWidth <= 840) {
+      Object.assign(this.el.nativeElement.style, {
+        width: `${window.innerWidth - 50}px`,
+        height: `${window.innerWidth - 50}px`,
+      });
+    }
+  }
 }
