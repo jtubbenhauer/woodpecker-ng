@@ -82,7 +82,7 @@ export class BoardComponent
     if (this.currentColor == 'white') {
       //@ts-ignore
       this.el.nativeElement.children[0].attributes.item(0).value =
-        'border: 15px solid #F1F1F1; border-radius: 10px; transition: border-color 500ms';
+        'border-color: #F1F1F1;';
       this.el.nativeElement.children[0].children[4].classList.remove('light');
       this.el.nativeElement.children[0].children[5].classList.remove('light');
       this.el.nativeElement.children[0].children[4].classList.add('dark');
@@ -90,7 +90,7 @@ export class BoardComponent
     } else {
       //@ts-ignore
       this.el.nativeElement.children[0].attributes.item(0).value =
-        'border: 15px solid #222222; border-radius: 10px; transition: border-color 500ms';
+        'border-color: #222222;';
       this.el.nativeElement.children[0].children[4].classList.remove('dark');
       this.el.nativeElement.children[0].children[5].classList.remove('dark');
       this.el.nativeElement.children[0].children[4].classList.add('light');

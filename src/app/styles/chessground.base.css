@@ -28,9 +28,9 @@ cg-container {
     height: 800%;
     display: block;
     bottom: 0;
-    /*border: 15px solid #4b5563;*/
-    /*border-radius: 10px;*/
-
+    border: 15px solid;
+    border-radius: 10px;
+    /*transition: border-color 1s ease;*/
 }
 
 cg-board {
