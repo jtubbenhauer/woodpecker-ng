@@ -20,6 +20,7 @@ export class SetComponent implements OnInit, OnDestroy {
   @ViewChild(BoardComponent) boardChild!: BoardComponent;
   showBackButton = false;
   puzzleComplete!: boolean;
+  puzzleTime = 0;
   toMove?: string;
   user!: User | null;
   setId!: string;
@@ -112,6 +113,7 @@ export class SetComponent implements OnInit, OnDestroy {
   }
 
   getNextPuzzle() {
+    this.startTimer();
     this.puzzleComplete = false;
     this.updatedIncorrect = false;
     this.incompletePuzzles$.pipe(first()).subscribe((next) => {
@@ -134,6 +136,8 @@ export class SetComponent implements OnInit, OnDestroy {
   backOneMove() {
     this.chessService.backOne();
   }
+
+  startTimer() {}
 
   //Make Forward one and new buttons for them
 }

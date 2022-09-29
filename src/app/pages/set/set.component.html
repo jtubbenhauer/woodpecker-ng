@@ -6,7 +6,8 @@
   <div *ngIf="setData"
        class="flex flex-col items-center w-[410px] gap-12 select-none gap-8 bg-[#273140] rounded-2xl py-12 h-[600px]">
     <div class="flex flex-wrap w-full gap-4 justify-center items-center">
-      <span *ngFor="let theme of setData.themes" class="text-xs bg-slate-700 p-2 rounded-lg">{{theme.title}}</span>
+      <span *ngIf="setData.themes.length == 0" class="text-sm bg-slate-700 p-2 rounded-lg">All Themes</span>
+      <span *ngFor="let theme of setData.themes" class="text-sm bg-slate-700 p-2 rounded-lg">{{theme.title}}</span>
     </div>
     <app-progress-bar class="w-full" [completed]="setData.completed"
                       [puzzleCount]="setData.puzzleCount"></app-progress-bar>
