@@ -53,19 +53,30 @@ cg-board square.current-premove {
 }
 
 /** Alternating colors in rank/file labels */
-.cg-wrap.orientation-white coords.ranks coord:nth-child(2n),
-.cg-wrap.orientation-white coords.files coord:nth-child(2n),
-.cg-wrap.orientation-black coords.ranks coord:nth-child(2n + 1),
-.cg-wrap.orientation-black coords.files coord:nth-child(2n + 1) {
+/*.cg-wrap.orientation-white coords.ranks coord:nth-child(2n),*/
+/*.cg-wrap.orientation-white coords.files coord:nth-child(2n),*/
+/*.cg-wrap.orientation-black coords.ranks coord:nth-child(2n + 1),*/
+/*.cg-wrap.orientation-black coords.files coord:nth-child(2n + 1) {*/
+/*    user-select: none;*/
+/*    color: rgb(255, 255, 255);*/
+/*}*/
+
+/*.cg-wrap.orientation-black coords.ranks coord:nth-child(2n),*/
+/*.cg-wrap.orientation-black coords.files coord:nth-child(2n),*/
+/*.cg-wrap.orientation-white coords.ranks coord:nth-child(2n + 1),*/
+/*.cg-wrap.orientation-white coords.files coord:nth-child(2n + 1) {*/
+/*    color: rgba(255, 255, 255, 0.8);*/
+/*    user-select: none;*/
+/*}*/
+
+coords.light {
     user-select: none;
-    color: rgb(255, 255, 255);
+    color: white;
+    font-size: 9px;
 }
 
-.cg-wrap.orientation-black coords.ranks coord:nth-child(2n),
-.cg-wrap.orientation-black coords.files coord:nth-child(2n),
-.cg-wrap.orientation-white coords.ranks coord:nth-child(2n + 1),
-.cg-wrap.orientation-white coords.files coord:nth-child(2n + 1) {
-    color: rgba(255, 255, 255, 0.8);
+coords.dark {
     user-select: none;
-
+    color: black;
+    font-size: 9px;
 }

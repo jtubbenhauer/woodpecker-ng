@@ -10,6 +10,7 @@
     height: 600px;
     position: relative;
     display: block;
+
 }
 
 cg-helper {
@@ -18,6 +19,7 @@ cg-helper {
     padding-bottom: 12.5%;
     display: table; /* hack: round to full pixel size in chrome */
     bottom: 0;
+
 }
 
 cg-container {
@@ -26,8 +28,8 @@ cg-container {
     height: 800%;
     display: block;
     bottom: 0;
-    border: 15px solid #4b5563;
-    border-radius: 10px;
+    /*border: 15px solid #4b5563;*/
+    /*border-radius: 10px;*/
 
 }
 
@@ -44,6 +46,7 @@ cg-board {
     line-height: 0;
     background-size: cover;
     cursor: pointer;
+
 }
 
 cg-board square {

@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ChessService } from '../../services/chess.service';
 import { BoardComponent } from '../../components/board/board.component';
 import firebase from 'firebase/compat';
@@ -16,7 +22,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './set.component.html',
   styleUrls: ['./set.component.css'],
 })
-export class SetComponent implements OnInit, OnDestroy {
+export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(BoardComponent) boardChild!: BoardComponent;
   showBackButton = false;
   puzzleComplete!: boolean;
@@ -110,6 +116,12 @@ export class SetComponent implements OnInit, OnDestroy {
     this.completeSub?.unsubscribe();
     this.puzzleFailed.unsubscribe();
     this.authSub?.unsubscribe();
+  }
+
+  ngAfterViewInit() {
+    console.log(
+      this.boardChild.el.nativeElement.children.namedItem('cg-container')
+    );
   }
 
   getNextPuzzle() {
