@@ -26,9 +26,10 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(BoardComponent) boardChild!: BoardComponent;
   showBackButton = false;
   puzzleComplete!: boolean;
-  puzzleTime = 0;
+  interval: any;
   toMove?: string;
   user!: User | null;
+  // https://stackoverflow.com/questions/29971898/how-to-create-an-accurate-timer-in-javascript
   setId!: string;
   setData!: Set;
   puzzles!: Puzzle[];
@@ -85,6 +86,7 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
     this.completeSub = this.chessService.puzzleComplete$.subscribe((next) => {
       if (this.user && next && !this.updatedIncorrect) {
         console.log('complete sub');
+        clearInterval(this.interval);
         this.puzzleComplete = next;
         this.userDataService.updateCorrectPuzzle(
           this.user,
@@ -118,11 +120,7 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
     this.authSub?.unsubscribe();
   }
 
-  ngAfterViewInit() {
-    console.log(
-      this.boardChild.el.nativeElement.children.namedItem('cg-container')
-    );
-  }
+  ngAfterViewInit() {}
 
   getNextPuzzle() {
     this.startTimer();
@@ -137,6 +135,8 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  startTimer() {}
+
   resetPuzzle() {
     this.chessService.resetPuzzle();
   }
@@ -148,8 +148,6 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
   backOneMove() {
     this.chessService.backOne();
   }
-
-  startTimer() {}
 
   //Make Forward one and new buttons for them
 }

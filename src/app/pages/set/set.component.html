@@ -18,16 +18,17 @@
       <button (click)="getHint()" class="btn">Get Hint</button>
     </div>
     <div class="flex gap-8 mt-auto">
-      <div *ngIf="!puzzleComplete && showBackButton">
-        <h2 *ngIf="toMove == 'white'"
-            class="rounded-md px-4 py-2 text-md text-black bg-slate-100 tracking-wide">{{toMove | uppercase}}
-          TO
-          MOVE</h2>
-        <h2 *ngIf="toMove == 'black'"
-            class="rounded-md px-4 py-2 text-md text-slate-100 bg-[#1f1f1f] tracking-wide">{{toMove | uppercase}}
-          TO
-          MOVE</h2>
-      </div>
+      <!--      <div *ngIf="!puzzleComplete && showBackButton">-->
+      <!--        <h2 *ngIf="toMove == 'white'"-->
+      <!--            class="rounded-md px-4 py-2 text-md text-black bg-slate-100 tracking-wide">{{toMove | uppercase}}-->
+      <!--          TO-->
+      <!--          MOVE</h2>-->
+      <!--        <h2 *ngIf="toMove == 'black'"-->
+      <!--            class="rounded-md px-4 py-2 text-md text-slate-100 bg-[#1f1f1f] tracking-wide">{{toMove | uppercase}}-->
+      <!--          TO-->
+      <!--          MOVE</h2>-->
+      <!--      </div>-->
+      <div>{{minutes}}:{{seconds}}</div>
       <div *ngIf="!showBackButton || puzzleComplete">
         <button (click)="backOneMove()"
                 class="btn btn-square btn-error flex items-center justify-center w-44 h-fit">
