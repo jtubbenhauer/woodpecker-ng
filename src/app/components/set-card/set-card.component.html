@@ -1,14 +1,11 @@
-<div class="flex flex-col gap-6 items-center justify-center bg-base-200 p-8 rounded-2xl shadow-xl">
-  <div class="flex flex-wrap w-full gap-4 justify-center items-center">
-    <span *ngIf="set.themes.length == 0" class="text-xs bg-slate-700 p-2 rounded-lg">All Themes</span>
-    <span *ngFor="let theme of set.themes" class="text-xs bg-slate-700 p-2 rounded-lg">{{theme.title}}</span>
-  </div>
-  <div class="stats text-white/90 shadow bg-base-300/90">
+<div class="flex flex-col gap-6 items-center justify-center bg-[#273140] p-8 rounded-2xl shadow-xl">
+
+  <div class="stats bg-[#273140]">
     <div class="stat">
       <div class="stat-title">
         Rating
       </div>
-      <div class="stat-value text-[2rem]">
+      <div class="stat-value text-[1.5rem]">
         {{set.rating}}
       </div>
     </div>
@@ -16,15 +13,15 @@
       <div class="stat-title">
         Size
       </div>
-      <div class="stat-value text-[2rem]">
+      <div class="stat-value text-[1.5rem]">
         {{set.puzzleCount}}
       </div>
     </div>
     <div class="stat">
       <div class="stat-title">
-        Completed
+        Runs
       </div>
-      <div class="stat-value text-[2rem]">
+      <div class="stat-value text-[1.5rem]">
         {{set.timesCompleted}}
       </div>
 
@@ -38,5 +35,9 @@
       Continue
     </button>
     <button class="btn btn-error" (click)="deleteSet()">Delete</button>
+  </div>
+  <div class="flex flex-wrap w-full gap-4 justify-center items-center">
+    <span *ngIf="set.themes.length == 0" class="text-xs bg-slate-700 p-2 rounded-lg">All Themes</span>
+    <span *ngFor="let theme of set.themes" class="text-xs bg-slate-700 p-2 rounded-lg">{{theme.title}}</span>
   </div>
 </div>

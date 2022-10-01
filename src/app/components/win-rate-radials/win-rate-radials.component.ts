@@ -23,9 +23,16 @@ export class WinRateRadialsComponent implements OnInit, OnChanges {
 
     this.best = this.setData.best ? (this.setData.best * 100).toFixed(0) : '0';
 
-    // this.bestRadial = `--value:${this.best}`;
-    this.bestRadial = { '--value': this.best, '--thickness': '5px' };
+    this.bestRadial = {
+      '--value': this.best,
+      '--thickness': '5px',
+      '--size': '4.5rem',
+    };
 
-    this.currentRadial = { '--value': this.current, '--thickness': '5px' };
+    this.currentRadial = {
+      '--value': this.current,
+      '--thickness': '5px',
+      '--size': '4.5rem',
+    };
   }
 }

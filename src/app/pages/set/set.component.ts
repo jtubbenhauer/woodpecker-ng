@@ -27,10 +27,10 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
   showBackButton = false;
   puzzleComplete!: boolean;
   puzzleTime!: number;
-  timeDisplay = { minutes: '0', seconds: '00' };
+  puzzleTimeDisplay = { minutes: '0', seconds: '00' };
+  totalTimeDisplay = { minutes: '0', seconds: '00' };
   interval: any;
   user!: User | null;
-  // https://stackoverflow.com/questions/29971898/how-to-create-an-accurate-timer-in-javascript
   setId!: string;
   setData!: Set;
   puzzles!: Puzzle[];
@@ -50,14 +50,19 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.authSub = this.authService.user.subscribe((next) => {
+    this.authSub = this.authService.user.pipe(first()).subscribe((next) => {
       this.user = next;
-      this.route.queryParams.subscribe((params) => {
+      this.route.queryParams.pipe(first()).subscribe((params) => {
         this.setId = params['id'];
         if (this.user && this.setId) {
           this.userDataService
             .getOneSet(this.user, this.setId)
-            .forEach((set) => (this.setData = set));
+            .forEach((set) => {
+              this.setData = set;
+              this.totalTimeDisplay = this.timeToString(
+                this.setData.currentTime
+              );
+            });
 
           this.incompletePuzzles$ = this.userDataService.getIncompletePuzzles(
             this.user,
@@ -137,13 +142,13 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
 
   startTimer() {
     this.puzzleTime = 0;
-    this.timeDisplay = { minutes: '0', seconds: '00' };
+    this.puzzleTimeDisplay = { minutes: '0', seconds: '00' };
     let start = Date.now();
 
     this.interval = setInterval(() => {
       let delta = Date.now() - start;
       this.puzzleTime = Math.floor(delta / 1000);
-      this.timeToString();
+      this.puzzleTimeDisplay = this.timeToString(this.puzzleTime);
     }, 1000);
   }
 
@@ -159,21 +164,30 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
     this.chessService.backOne();
   }
 
-  timeToString() {
+  timeToString(time: number) {
     let secondString;
-    if (this.puzzleTime) {
-      let minutes = Math.floor(this.puzzleTime / 60);
-      let seconds = this.puzzleTime - minutes * 60;
-      if (seconds.toString().length == 1) {
-        let secondString = `0${seconds.toString()}`;
-        this.timeDisplay.minutes = minutes.toString();
-        this.timeDisplay.seconds = secondString;
-      } else {
-        secondString = seconds.toString();
-        this.timeDisplay.minutes = minutes.toString();
-        this.timeDisplay.seconds = secondString;
-      }
+    let minutes = Math.floor(time / 60);
+    let seconds = time - minutes * 60;
+    if (seconds.toString().length == 1) {
+      secondString = `0${seconds.toString()}`;
+      return { minutes: minutes.toString(), seconds: secondString };
+    } else {
+      secondString = seconds.toString();
+      return { minutes: minutes.toString(), seconds: secondString };
     }
+    // if (this.puzzleTime) {
+    //   let minutes = Math.floor(this.puzzleTime / 60);
+    //   let seconds = this.puzzleTime - minutes * 60;
+    //   if (seconds.toString().length == 1) {
+    //     let secondString = `0${seconds.toString()}`;
+    //     this.timeDisplay.minutes = minutes.toString();
+    //     this.timeDisplay.seconds = secondString;
+    //   } else {
+    //     secondString = seconds.toString();
+    //     this.timeDisplay.minutes = minutes.toString();
+    //     this.timeDisplay.seconds = secondString;
+    //   }
+    // }
   }
 
   //Make Forward one and new buttons for them

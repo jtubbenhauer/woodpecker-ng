@@ -3,15 +3,37 @@
     <app-board></app-board>
   </div>
   <div *ngIf="setData"
-       class="flex flex-col items-center w-[410px] gap-12 select-none gap-8 bg-[#273140] rounded-2xl py-10 min-h-[700px]">
+       class="flex flex-col items-center w-[410px] select-none bg-[#273140] rounded-2xl py-10 min-h-[700px]">
 
-    <div
-      class="flex items-center content-between text-3xl font-bold text-slate-200 w-[5rem]">
-      <span>{{timeDisplay.minutes}}</span><span>:</span><span>{{timeDisplay.seconds}}</span>
+    <div class="flex items-center justify-between w-full px-16">
+      <div
+        class="flex items-center content-between text-3xl font-bold text-slate-200 w-[5rem]">
+        <span>{{puzzleTimeDisplay.minutes}}</span><span>:</span><span>{{puzzleTimeDisplay.seconds}}</span>
+      </div>
+      <div class="flex flex-col items-end">
+        <div class="flex gap-4 items-center">
+          <span class="text-sm">Current Run</span>
+          <span class="font-bold text-lg text-slate-200">
+            {{totalTimeDisplay.minutes}}:{{totalTimeDisplay.seconds}}</span>
+        </div>
+        <div class="flex gap-4 items-center">
+          <span class="text-sm">Best Run</span>
+          <span class="font-bold text-lg text-slate-200">
+            {{totalTimeDisplay.minutes}}:{{totalTimeDisplay.seconds}}</span>
+        </div>
+      </div>
     </div>
-    <app-progress-bar class="w-full" [completed]="setData.completed"
-                      [puzzleCount]="setData.puzzleCount"></app-progress-bar>
-    <app-win-rate-radials *ngIf="setData" [setData]="setData"></app-win-rate-radials>
+
+    <div class="divider"></div>
+
+    <div class="flex flex-col items-center gap-12 my-4">
+      <app-progress-bar class="w-full" [completed]="setData.completed"
+                        [puzzleCount]="setData.puzzleCount"></app-progress-bar>
+      <app-win-rate-radials *ngIf="setData" [setData]="setData"></app-win-rate-radials>
+    </div>
+
+    <div class="divider"></div>
+
     <div *ngIf="user" class="flex flex gap-4">
       <button (click)="resetPuzzle()" class="btn">Reset</button>
       <button (click)="getNextPuzzle()" class="btn">Skip</button>
