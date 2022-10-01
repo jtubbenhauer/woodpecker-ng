@@ -26,8 +26,9 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(BoardComponent) boardChild!: BoardComponent;
   showBackButton = false;
   puzzleComplete!: boolean;
+  puzzleTime!: number;
+  timeDisplay = { minutes: '0', seconds: '00' };
   interval: any;
-  toMove?: string;
   user!: User | null;
   // https://stackoverflow.com/questions/29971898/how-to-create-an-accurate-timer-in-javascript
   setId!: string;
@@ -85,14 +86,14 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.completeSub = this.chessService.puzzleComplete$.subscribe((next) => {
       if (this.user && next && !this.updatedIncorrect) {
-        console.log('complete sub');
-        clearInterval(this.interval);
         this.puzzleComplete = next;
         this.userDataService.updateCorrectPuzzle(
           this.user,
           this.setId,
-          this.currentPuzzle
+          this.currentPuzzle,
+          this.puzzleTime
         );
+        clearInterval(this.interval);
       } else {
         this.puzzleComplete = next;
       }
@@ -105,12 +106,11 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
         this.userDataService.updateIncorrectPuzzle(
           this.user,
           this.setId,
-          this.currentPuzzle
+          this.currentPuzzle,
+          this.puzzleTime
         );
+        clearInterval(this.interval);
       }
-    });
-    this.chessService.currentColour$.subscribe((value) => {
-      this.toMove = value;
     });
   }
 
@@ -135,7 +135,17 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  startTimer() {}
+  startTimer() {
+    this.puzzleTime = 0;
+    this.timeDisplay = { minutes: '0', seconds: '00' };
+    let start = Date.now();
+
+    this.interval = setInterval(() => {
+      let delta = Date.now() - start;
+      this.puzzleTime = Math.floor(delta / 1000);
+      this.timeToString();
+    }, 1000);
+  }
 
   resetPuzzle() {
     this.chessService.resetPuzzle();
@@ -147,6 +157,23 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
 
   backOneMove() {
     this.chessService.backOne();
+  }
+
+  timeToString() {
+    let secondString;
+    if (this.puzzleTime) {
+      let minutes = Math.floor(this.puzzleTime / 60);
+      let seconds = this.puzzleTime - minutes * 60;
+      if (seconds.toString().length == 1) {
+        let secondString = `0${seconds.toString()}`;
+        this.timeDisplay.minutes = minutes.toString();
+        this.timeDisplay.seconds = secondString;
+      } else {
+        secondString = seconds.toString();
+        this.timeDisplay.minutes = minutes.toString();
+        this.timeDisplay.seconds = secondString;
+      }
+    }
   }
 
   //Make Forward one and new buttons for them

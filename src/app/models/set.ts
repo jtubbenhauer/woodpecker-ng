@@ -7,6 +7,8 @@ export interface Set {
   createdAt: Timestamp;
   rating: string;
   puzzleCount: number;
+  currentTime: number;
+  bestTime: number;
   timesCompleted: number;
   currentPuzzleId: string;
   completed: number;

@@ -82,7 +82,7 @@ export class BoardComponent
     if (this.currentColor == 'white') {
       //@ts-ignore
       this.el.nativeElement.children[0].attributes.item(0).value =
-        'border-color: #F1F1F1;';
+        'border-color: #DFDFDF;';
       this.el.nativeElement.children[0].children[4].classList.remove('light');
       this.el.nativeElement.children[0].children[5].classList.remove('light');
       this.el.nativeElement.children[0].children[4].classList.add('dark');

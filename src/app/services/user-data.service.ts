@@ -80,7 +80,7 @@ export class UserDataService {
       .valueChanges();
   }
 
-  updateCorrectPuzzle(user: User, setId: string, puzzle: Puzzle) {
+  updateCorrectPuzzle(user: User, setId: string, puzzle: Puzzle, time: number) {
     const path = `users/${user.uid}/sets/${setId}`;
     this.afs
       .collection(`${path}/puzzles`, (ref) =>
@@ -93,15 +93,26 @@ export class UserDataService {
           .doc(`${path}/puzzles/${value[0].payload.doc.id}`)
           .update({ ...puzzle, completed: true })
       );
-    this.afs.doc(`${path}`).update({ completed: increment(1) });
+    this.afs
+      .doc(`${path}`)
+      .update({ completed: increment(1), currentTime: increment(time) });
   }
 
-  updateIncorrectPuzzle(user: User, setId: string, puzzle: Puzzle) {
+  updateIncorrectPuzzle(
+    user: User,
+    setId: string,
+    puzzle: Puzzle,
+    time: number
+  ) {
     const path = `users/${user.uid}/sets/${setId}`;
 
     this.afs
       .doc(path)
-      .update({ completed: increment(1), failed: increment(1) });
+      .update({
+        completed: increment(1),
+        failed: increment(1),
+        currentTime: increment(time),
+      });
 
     this.afs
       .collection(`${path}/puzzles`, (ref) =>
@@ -190,6 +201,8 @@ export class UserDataService {
           ?.collection('sets')
           .add({
             createdAt: new Date(),
+            currentTime: 0,
+            bestTime: 0,
             rating: rating,
             puzzleCount: next.puzzles.length,
             timesCompleted: 0,
