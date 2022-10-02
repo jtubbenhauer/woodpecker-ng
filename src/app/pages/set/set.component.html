@@ -3,10 +3,10 @@
     <app-board></app-board>
   </div>
   <div *ngIf="setData"
-       class="flex flex-col items-center w-[410px] select-none bg-[#273140] rounded-2xl py-6 min-h-[700px]">
+       class="flex flex-col items-center select-none bg-[#273140] rounded-2xl p-6 min-h-[650px]">
     <div class="flex flex-col gap-6 w-full">
 
-      <div class="flex items-center justify-between w-full px-12 py-3">
+      <div class="flex items-center justify-between w-full px-4 md:px-8 py-3">
         <div
           class="flex items-center content-between text-3xl font-bold text-slate-200 w-[5rem]">
           <span *ngIf="puzzleTimeDisplay.hours !== '0'">{{puzzleTimeDisplay.hours}}
@@ -32,7 +32,7 @@
     <div class="flex flex-col items-center gap-10 my-4 w-3/4">
       <div class="flex gap-2 justify-between w-full">
         <span class="font-bold">Rating:</span>
-        <span class="text-slate-200 font-bold">{{setData.rating}}</span>
+        <span class="text-slate-200 font-bold text-lg">{{setData.rating}}</span>
       </div>
       <app-progress-bar class="w-full" [completed]="setData.completed"
                         [puzzleCount]="setData.puzzleCount"></app-progress-bar>
@@ -41,26 +41,28 @@
 
     <div class="divider"></div>
     <!-- Maybe make these buttons only visible before puzzle is failed or correct-->
-    <div *ngIf="user" class="flex gap-4 mt-auto">
-      <button (click)="resetPuzzle()" class="btn">Reset</button>
-      <button (click)="getNextPuzzle()" class="btn">Skip</button>
-      <button (click)="getHint()" class="btn">Get Hint</button>
-    </div>
-    <div class="flex gap-8 mt-auto">
-      <div *ngIf="!showBackButton || puzzleComplete">
-        <button (click)="backOneMove()"
-                class="btn btn-square btn-error flex items-center justify-center w-36 h-fit">
-          <img alt="" height="24px" src="../../../assets/reload.svg" width="24px">
-        </button>
+    <div class="flex items-center justify-center h-full mb-3">
+      <div *ngIf="!puzzleComplete && puzzleFailed" class="flex gap-6">
+        <button (click)="resetPuzzle()" class="btn btn-primary">Reset</button>
+        <button (click)="getNextPuzzle()" class="btn btn-primary">Skip</button>
+        <button (click)="getHint()" class="btn btn-primary">Hint</button>
       </div>
-      <div *ngIf="puzzleComplete">
-        <button (click)="getNextPuzzle()"
-                class="btn btn-square btn-success flex items-center justify-center w-36 h-fit">
-          <img alt="" height="24px" src="../../../assets/check.svg" width="24px">
-        </button>
+      <div *ngIf="puzzleComplete || !puzzleFailed" class="flex gap-8">
+        <div>
+          <button (click)="backOneMove()"
+                  class="btn btn-square btn-error flex items-center justify-center w-36 h-fit">
+            <img alt="" height="24px" src="../../../assets/reload.svg" width="24px">
+          </button>
+        </div>
+        <div>
+          <button (click)="getNextPuzzle()"
+                  class="btn btn-square btn-success flex items-center justify-center w-36 h-fit">
+            <img alt="" height="24px" src="../../../assets/check.svg" width="24px">
+          </button>
+        </div>
       </div>
     </div>
-    <div class="flex flex-wrap w-full gap-4 justify-center items-center">
+    <div class="flex flex-wrap w-full gap-4 justify-center items-center mt-auto">
       <span *ngIf="setData.themes.length == 0" class="text-xs bg-slate-700 p-2 rounded-lg">All Themes</span>
       <span *ngFor="let theme of setData.themes" class="text-xs bg-slate-700 p-2 rounded-lg">{{theme.title}}</span>
     </div>

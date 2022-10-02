@@ -101,8 +101,8 @@ export class BoardComponent
   onWindowResize(window: any) {
     if (window.innerWidth <= 840) {
       Object.assign(this.el.nativeElement.style, {
-        width: `${window.innerWidth - 50}px`,
-        height: `${window.innerWidth - 50}px`,
+        width: `${window.innerWidth - 20}px`,
+        height: `${window.innerWidth - 20}px`,
       });
     }
   }
