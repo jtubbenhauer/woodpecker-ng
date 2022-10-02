@@ -1,5 +1,8 @@
-<div class="flex flex-col gap-2">
-  <span>Set Completion: {{completed}} / {{puzzleCount}}</span>
+<div class="flex flex-col gap-3">
+  <div class="flex justify-between">
+    <span class="font-bold">Set Completion: </span>
+    <span class="text-slate-200 font-bold">{{completed}} / {{puzzleCount}}</span>
+  </div>
   <div class="bg-white rounded-full">
     <div class="bg-green-600 h-[5px] rounded-l-full" [ngStyle]="{'width': barWidth}"></div>
   </div>

@@ -27,8 +27,9 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
   showBackButton = false;
   puzzleComplete!: boolean;
   puzzleTime!: number;
-  puzzleTimeDisplay = { minutes: '0', seconds: '00' };
-  totalTimeDisplay = { minutes: '0', seconds: '00' };
+  puzzleTimeDisplay = { hours: '', minutes: '00', seconds: '00' };
+  totalTimeDisplay = { hours: '', minutes: '00', seconds: '00' };
+  bestTimeDisplay = { hours: '', minutes: '00', seconds: '00' };
   interval: any;
   user!: User | null;
   setId!: string;
@@ -62,6 +63,7 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
               this.totalTimeDisplay = this.timeToString(
                 this.setData.currentTime
               );
+              this.bestTimeDisplay = this.timeToString(this.setData.bestTime);
             });
 
           this.incompletePuzzles$ = this.userDataService.getIncompletePuzzles(
@@ -79,7 +81,6 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
               );
             }
           });
-          console.log('user subscriptions');
           this.getNextPuzzle();
         }
       });
@@ -142,7 +143,7 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
 
   startTimer() {
     this.puzzleTime = 0;
-    this.puzzleTimeDisplay = { minutes: '0', seconds: '00' };
+    this.puzzleTimeDisplay = { hours: '0', minutes: '0', seconds: '00' };
     let start = Date.now();
 
     this.interval = setInterval(() => {
@@ -165,29 +166,22 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   timeToString(time: number) {
-    let secondString;
-    let minutes = Math.floor(time / 60);
-    let seconds = time - minutes * 60;
-    if (seconds.toString().length == 1) {
-      secondString = `0${seconds.toString()}`;
-      return { minutes: minutes.toString(), seconds: secondString };
-    } else {
-      secondString = seconds.toString();
-      return { minutes: minutes.toString(), seconds: secondString };
-    }
-    // if (this.puzzleTime) {
-    //   let minutes = Math.floor(this.puzzleTime / 60);
-    //   let seconds = this.puzzleTime - minutes * 60;
-    //   if (seconds.toString().length == 1) {
-    //     let secondString = `0${seconds.toString()}`;
-    //     this.timeDisplay.minutes = minutes.toString();
-    //     this.timeDisplay.seconds = secondString;
-    //   } else {
-    //     secondString = seconds.toString();
-    //     this.timeDisplay.minutes = minutes.toString();
-    //     this.timeDisplay.seconds = secondString;
-    //   }
-    // }
+    let hours = Math.floor(time / 3600);
+    let minutes = Math.floor((time % 3600) / 60);
+    let seconds = time % 60;
+    let minuteString =
+      minutes.toString().length == 1
+        ? `0${minutes.toString()}`
+        : minutes.toString();
+    let secondString =
+      seconds.toString().length == 1
+        ? `0${seconds.toString()}`
+        : seconds.toString();
+    return {
+      hours: hours.toString(),
+      minutes: minuteString,
+      seconds: secondString,
+    };
   }
 
   //Make Forward one and new buttons for them
