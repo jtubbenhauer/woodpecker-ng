@@ -24,7 +24,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(BoardComponent) boardChild!: BoardComponent;
-  showBackButton = false;
+  showEndButtons = false;
   puzzleComplete!: boolean;
   puzzleTime!: number;
   puzzleTimeDisplay = { hours: '', minutes: '00', seconds: '00' };
@@ -87,7 +87,7 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.chessService.lastMoveCorrect$.subscribe(
-      (next) => (this.showBackButton = next)
+      (next) => (this.showEndButtons = next)
     );
 
     this.completeSub = this.chessService.puzzleComplete$.subscribe((next) => {
@@ -131,6 +131,7 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
   getNextPuzzle() {
     this.startTimer();
     this.puzzleComplete = false;
+    this.showEndButtons = true;
     this.updatedIncorrect = false;
     this.incompletePuzzles$.pipe(first()).subscribe((next) => {
       this.currentPuzzle = randomArrayEl(next);
