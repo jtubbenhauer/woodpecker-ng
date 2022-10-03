@@ -3,10 +3,15 @@
     <app-board></app-board>
   </div>
   <div *ngIf="setData"
-       class="flex flex-col items-center select-none bg-[#273140] rounded-2xl p-6 min-h-[650px]">
+       class="flex flex-col items-center select-none bg-[#273140] rounded-2xl p-6 min-h-[650px] min-w-[360px]">
+    <label class="label cursor-pointer w-full flex items-center justify-end gap-4">
+      <span class="label-text text-slate-300">Jump to next puzzle</span>
+      <input type="checkbox" class="toggle" checked/>
+    </label>
+
     <div class="flex flex-col gap-6 w-full">
 
-      <div class="flex items-center justify-between w-full px-4 md:px-8 py-3">
+      <div class="flex items-center justify-between w-full px-4 md:px-4 py-3">
         <div
           class="flex items-center content-between text-3xl font-bold text-slate-200 w-[5rem]">
           <span *ngIf="puzzleTimeDisplay.hours !== '0'">{{puzzleTimeDisplay.hours}}
@@ -14,12 +19,12 @@
         </div>
         <div class="flex flex-col items-end">
           <div class="flex gap-2 items-center">
-            <span class="text-sm">Current Run</span>
+            <span class="text-sm">Current</span>
             <span class="font-bold text-lg text-slate-200 min-w-[5rem] text-right">
             {{totalTimeDisplay.hours}}:{{totalTimeDisplay.minutes}}:{{totalTimeDisplay.seconds}}</span>
           </div>
           <div class="flex gap-2 items-center">
-            <span class="text-sm">Best Run</span>
+            <span class="text-sm">Best</span>
             <span class="font-bold text-lg text-slate-200 min-w-[5rem] text-right">
             {{bestTimeDisplay.hours}}:{{bestTimeDisplay.minutes}}:{{bestTimeDisplay.seconds}}</span>
           </div>
@@ -42,21 +47,21 @@
     <div class="divider"></div>
     <!-- Maybe make these buttons only visible before puzzle is failed or correct-->
     <div class="flex items-center justify-center h-full mb-3">
-      <div *ngIf="!puzzleComplete && puzzleFailed && showEndButtons" class="flex gap-6">
+      <div *ngIf="!puzzleComplete && puzzleFailed && showEndButtons" class="flex gap-4">
         <button (click)="resetPuzzle()" class="btn btn-primary text-white gap-2">Reset</button>
         <button (click)="getNextPuzzle()" class="btn btn-primary text-white gap-2">Skip</button>
         <button (click)="getHint()" class="btn btn-primary text-white gap-2">Hint</button>
       </div>
-      <div *ngIf="puzzleComplete || !puzzleFailed || !showEndButtons" class="flex gap-8">
+      <div *ngIf="puzzleComplete || !puzzleFailed || !showEndButtons" class="flex gap-4">
         <div>
           <button (click)="backOneMove()"
-                  class="btn btn-square btn-error flex items-center justify-center w-36 h-fit text-white gap-2">
+                  class="btn btn-square btn-error flex items-center justify-center w-32 h-fit text-white gap-2">
             <img alt="" height="24px" src="../../../assets/reload.svg" width="24px">Reset
           </button>
         </div>
         <div>
           <button (click)="getNextPuzzle()"
-                  class="btn btn-square btn-primary flex items-center justify-center w-36 h-fit text-white gap-2">
+                  class="btn btn-square btn-primary flex items-center justify-center w-32 h-fit text-white gap-2">
             <img alt="" height="24px" src="../../../assets/check.svg" width="24px">Next
           </button>
         </div>

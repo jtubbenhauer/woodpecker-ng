@@ -31,10 +31,10 @@
   <app-win-rate-radials [setData]="set"></app-win-rate-radials>
   <div class="flex gap-8 mt-2">
 
-    <button class="btn btn-success text-black" [routerLink]="['/set']" [queryParams]="{id: set.id}">
+    <button class="btn btn-primary text-white" [routerLink]="['/set']" [queryParams]="{id: set.id}">
       Continue
     </button>
-    <button class="btn btn-error" (click)="deleteSet()">Delete</button>
+    <button class="btn btn-error text-white" (click)="deleteSet()">Delete</button>
   </div>
   <div class="flex flex-wrap w-full gap-4 justify-center items-center">
     <span *ngIf="set.themes.length == 0" class="text-xs bg-slate-700 p-2 rounded-lg">All Themes</span>

@@ -13,7 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UserDataService } from '../../services/user-data.service';
 import { Set } from '../../models/set';
 import { Puzzle } from '../../models/puzzle';
-import { randomArrayEl } from '../../utils/utils';
+import { randomArrayEl, timeToString } from '../../utils/utils';
 import { first, Observable, Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 
@@ -60,10 +60,8 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
             .getOneSet(this.user, this.setId)
             .forEach((set) => {
               this.setData = set;
-              this.totalTimeDisplay = this.timeToString(
-                this.setData.currentTime
-              );
-              this.bestTimeDisplay = this.timeToString(this.setData.bestTime);
+              this.totalTimeDisplay = timeToString(this.setData.currentTime);
+              this.bestTimeDisplay = timeToString(this.setData.bestTime);
             });
 
           this.incompletePuzzles$ = this.userDataService.getIncompletePuzzles(
@@ -107,7 +105,6 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.puzzleFailed = this.chessService.puzzleFailed$.subscribe((next) => {
       if (next && this.user && !this.updatedIncorrect) {
-        console.log('puzzle failed sub');
         this.updatedIncorrect = true;
         this.userDataService.updateIncorrectPuzzle(
           this.user,
@@ -150,7 +147,7 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
     this.interval = setInterval(() => {
       let delta = Date.now() - start;
       this.puzzleTime = Math.floor(delta / 1000);
-      this.puzzleTimeDisplay = this.timeToString(this.puzzleTime);
+      this.puzzleTimeDisplay = timeToString(this.puzzleTime);
     }, 1000);
   }
 
@@ -164,25 +161,6 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
 
   backOneMove() {
     this.chessService.backOne();
-  }
-
-  timeToString(time: number) {
-    let hours = Math.floor(time / 3600);
-    let minutes = Math.floor((time % 3600) / 60);
-    let seconds = time % 60;
-    let minuteString =
-      minutes.toString().length == 1
-        ? `0${minutes.toString()}`
-        : minutes.toString();
-    let secondString =
-      seconds.toString().length == 1
-        ? `0${seconds.toString()}`
-        : seconds.toString();
-    return {
-      hours: hours.toString(),
-      minutes: minuteString,
-      seconds: secondString,
-    };
   }
 
   //Make Forward one and new buttons for them

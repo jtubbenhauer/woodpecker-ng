@@ -1,5 +1,5 @@
 <div class="flex flex-col items-center justify-center mt-8">
-  <label for="new-set-dialog" class="btn modal-button">New Set</label>
+  <label for="new-set-dialog" class="btn btn-primary text-white modal-button">New Set</label>
   <div class="flex items-center justify-center flex-wrap gap-8 mt-8">
     <app-set-card *ngFor="let item of items$ | async" [set]="item">
     </app-set-card>
@@ -7,5 +7,6 @@
 </div>
 
 <app-new-set></app-new-set>
+<ngx-spinner type="ball-spin" bdColor="rgba(22,32,46,0.6)" size="medium"></ngx-spinner>
 <input type="checkbox" id="new-set-dialog" class="modal-toggle"/>
 

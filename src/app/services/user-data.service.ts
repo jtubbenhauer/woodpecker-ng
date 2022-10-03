@@ -10,7 +10,7 @@ import {
 } from '@angular/fire/compat/firestore';
 import { increment } from '@angular/fire/firestore';
 import { SetDoc, UserDoc } from '../models/userData';
-import { first, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, first, Observable, Subscription } from 'rxjs';
 import { Set } from '../models/set';
 import { SetWithId } from '../components/set-card/set-card.component';
 import { Puzzle } from '../models/puzzle';
@@ -29,6 +29,7 @@ export class UserDataService {
   user?: User | null;
   userDoc?: AngularFirestoreDocument<UserDoc>;
   userSub?: Subscription;
+  isLoading = new BehaviorSubject(false);
 
   constructor(
     private http: HttpClient,
@@ -106,13 +107,11 @@ export class UserDataService {
   ) {
     const path = `users/${user.uid}/sets/${setId}`;
 
-    this.afs
-      .doc(path)
-      .update({
-        completed: increment(1),
-        failed: increment(1),
-        currentTime: increment(time),
-      });
+    this.afs.doc(path).update({
+      completed: increment(1),
+      failed: increment(1),
+      currentTime: increment(time),
+    });
 
     this.afs
       .collection(`${path}/puzzles`, (ref) =>
@@ -171,7 +170,7 @@ export class UserDataService {
   }
 
   newSet(rating: string, size: string, themes: Array<Theme>) {
-    //Want a spinner for this request
+    this.isLoading.next(true);
     let themeArray = themes.map((theme) => {
       return theme.slug;
     });
@@ -218,6 +217,9 @@ export class UserDataService {
                 .doc(`${doc.id}`)
                 .collection('puzzles')
                 .add({ ...puzzle, completed: false })
+                .then(() => {
+                  this.isLoading.next(false);
+                })
             )
           );
       });

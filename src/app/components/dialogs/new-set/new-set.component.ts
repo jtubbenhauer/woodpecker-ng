@@ -27,8 +27,8 @@ export class NewSetComponent implements OnInit {
     this.setSize = value;
   }
 
-  createSet() {
-    this.userDataService.newSet(
+  async createSet() {
+    await this.userDataService.newSet(
       this.setRating,
       this.setSize,
       this.selectedThemes
