@@ -6,7 +6,7 @@
        class="flex flex-col items-center select-none bg-[#273140] rounded-2xl p-6 min-h-[650px] min-w-[360px]">
     <label class="label cursor-pointer w-full flex items-center justify-end gap-4">
       <span class="label-text text-slate-300">Jump to next puzzle</span>
-      <input type="checkbox" class="toggle" checked/>
+      <input type="checkbox" class="toggle" (change)="setService.toggleAutoPlay()" [checked]="setService.enableAutoPlay$ | async"/>
     </label>
 
     <div class="flex flex-col gap-6 w-full">

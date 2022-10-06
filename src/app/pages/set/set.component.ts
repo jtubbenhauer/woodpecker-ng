@@ -14,8 +14,9 @@ import { UserDataService } from '../../services/user-data.service';
 import { Set } from '../../models/set';
 import { Puzzle } from '../../models/puzzle';
 import { randomArrayEl, timeToString } from '../../utils/utils';
-import { first, Observable, Subscription } from 'rxjs';
+import {BehaviorSubject, first, Observable, Subscription} from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+import {SetService} from "../../services/set.service";
 
 @Component({
   selector: 'app-set',
@@ -42,9 +43,11 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
   puzzleFailed!: Subscription;
   authSub: Subscription | undefined;
   updatedIncorrect = false;
+  autoPlay = new BehaviorSubject(false);
 
   constructor(
     private chessService: ChessService,
+    public setService: SetService,
     private route: ActivatedRoute,
     private userDataService: UserDataService,
     private authService: AuthService
@@ -161,6 +164,11 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
 
   backOneMove() {
     this.chessService.backOne();
+  }
+
+  toggleAutoPlay() {
+    console.log('works')
+    this.autoPlay.next(!this.autoPlay)
   }
 
   //Make Forward one and new buttons for them
