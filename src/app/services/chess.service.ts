@@ -81,6 +81,12 @@ export class ChessService {
     this.currentColour$.next(toColour(this.chess));
   }
 
+  public getNextPuzzle() {
+
+  }
+
+
+
   public resetPuzzle() {
     this.puzzleComplete$.next(false);
     this.cg.setAutoShapes([]);

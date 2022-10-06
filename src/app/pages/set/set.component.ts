@@ -14,9 +14,10 @@ import { UserDataService } from '../../services/user-data.service';
 import { Set } from '../../models/set';
 import { Puzzle } from '../../models/puzzle';
 import { randomArrayEl, timeToString } from '../../utils/utils';
-import {BehaviorSubject, first, Observable, Subscription} from 'rxjs';
+import { first, Observable, Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
-import {SetService} from "../../services/set.service";
+import { SetService } from '../../services/set.service';
+import { PuzzleTimeFormat } from '../../models/PuzzleTimeFormat';
 
 @Component({
   selector: 'app-set',
@@ -27,11 +28,16 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(BoardComponent) boardChild!: BoardComponent;
   showEndButtons = false;
   puzzleComplete!: boolean;
-  puzzleTime!: number;
-  puzzleTimeDisplay = { hours: '', minutes: '00', seconds: '00' };
-  totalTimeDisplay = { hours: '', minutes: '00', seconds: '00' };
-  bestTimeDisplay = { hours: '', minutes: '00', seconds: '00' };
-  interval: any;
+  totalTimeDisplay: PuzzleTimeFormat = {
+    hours: '',
+    minutes: '00',
+    seconds: '00',
+  };
+  bestTimeDisplay: PuzzleTimeFormat = {
+    hours: '',
+    minutes: '00',
+    seconds: '00',
+  };
   user!: User | null;
   setId!: string;
   setData!: Set;
@@ -43,10 +49,9 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
   puzzleFailed!: Subscription;
   authSub: Subscription | undefined;
   updatedIncorrect = false;
-  autoPlay = new BehaviorSubject(false);
 
   constructor(
-    private chessService: ChessService,
+    public chessService: ChessService,
     public setService: SetService,
     private route: ActivatedRoute,
     private userDataService: UserDataService,
@@ -54,6 +59,7 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
+    clearInterval(this.setService.interval);
     this.authSub = this.authService.user.pipe(first()).subscribe((next) => {
       this.user = next;
       this.route.queryParams.pipe(first()).subscribe((params) => {
@@ -98,9 +104,9 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
           this.user,
           this.setId,
           this.currentPuzzle,
-          this.puzzleTime
+          this.setService.puzzleTime$.getValue()
         );
-        clearInterval(this.interval);
+        clearInterval(this.setService.interval);
       } else {
         this.puzzleComplete = next;
       }
@@ -113,9 +119,9 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
           this.user,
           this.setId,
           this.currentPuzzle,
-          this.puzzleTime
+          this.setService.puzzleTime$.getValue()
         );
-        clearInterval(this.interval);
+        clearInterval(this.setService.interval);
       }
     });
   }
@@ -129,7 +135,7 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {}
 
   getNextPuzzle() {
-    this.startTimer();
+    this.setService.startTimer();
     this.puzzleComplete = false;
     this.showEndButtons = true;
     this.updatedIncorrect = false;
@@ -140,35 +146,6 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
         this.boardChild.el.nativeElement
       );
     });
-  }
-
-  startTimer() {
-    this.puzzleTime = 0;
-    this.puzzleTimeDisplay = { hours: '0', minutes: '0', seconds: '00' };
-    let start = Date.now();
-
-    this.interval = setInterval(() => {
-      let delta = Date.now() - start;
-      this.puzzleTime = Math.floor(delta / 1000);
-      this.puzzleTimeDisplay = timeToString(this.puzzleTime);
-    }, 1000);
-  }
-
-  resetPuzzle() {
-    this.chessService.resetPuzzle();
-  }
-
-  getHint() {
-    this.chessService.getHint();
-  }
-
-  backOneMove() {
-    this.chessService.backOne();
-  }
-
-  toggleAutoPlay() {
-    console.log('works')
-    this.autoPlay.next(!this.autoPlay)
   }
 
   //Make Forward one and new buttons for them

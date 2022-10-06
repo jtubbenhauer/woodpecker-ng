@@ -18,6 +18,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { WinRateRadialsComponent } from './components/win-rate-radials/win-rate-radials.component';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 import { SetInfoComponent } from './components/set-info/set-info.component';
+import { PuzzleTimePipe } from './pipes/puzzle-time.pipe';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { SetInfoComponent } from './components/set-info/set-info.component';
     WinRateRadialsComponent,
     ProgressBarComponent,
     SetInfoComponent,
+    PuzzleTimePipe,
   ],
   imports: [
     BrowserModule,

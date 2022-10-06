@@ -14,8 +14,8 @@
       <div class="flex items-center justify-between w-full px-4 md:px-4 py-3">
         <div
           class="flex items-center content-between text-3xl font-bold text-slate-200 w-[5rem]">
-          <span *ngIf="puzzleTimeDisplay.hours !== '0'">{{puzzleTimeDisplay.hours}}
-            :</span><span>{{puzzleTimeDisplay.minutes}}</span><span>:</span><span>{{puzzleTimeDisplay.seconds}}</span>
+<!--          Can get rid of some of this style which was for 3 spans-->
+          <span>{{(setService.puzzleTime$ | async | puzzleTime)}}</span>
         </div>
         <div class="flex flex-col items-end">
           <div class="flex gap-2 items-center">
@@ -48,13 +48,13 @@
     <!-- Maybe make these buttons only visible before puzzle is failed or correct-->
     <div class="flex items-center justify-center h-full mb-3">
       <div *ngIf="!puzzleComplete && puzzleFailed && showEndButtons" class="flex gap-4">
-        <button (click)="resetPuzzle()" class="btn btn-primary text-white gap-2">Reset</button>
+        <button (click)="chessService.resetPuzzle()" class="btn btn-primary text-white gap-2">Reset</button>
         <button (click)="getNextPuzzle()" class="btn btn-primary text-white gap-2">Skip</button>
-        <button (click)="getHint()" class="btn btn-primary text-white gap-2">Hint</button>
+        <button (click)="chessService.getHint()" class="btn btn-primary text-white gap-2">Hint</button>
       </div>
       <div *ngIf="puzzleComplete || !puzzleFailed || !showEndButtons" class="flex gap-4">
         <div>
-          <button (click)="backOneMove()"
+          <button (click)="chessService.backOne()"
                   class="btn btn-square btn-error flex items-center justify-center w-32 h-fit text-white gap-2">
             <img alt="" height="24px" src="../../../assets/reload.svg" width="24px">Reset
           </button>
