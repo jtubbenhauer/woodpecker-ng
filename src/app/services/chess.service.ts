@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Chessground } from 'chessground';
 import { Chess } from 'chess.js';
 import { Puzzle } from '../models/puzzle';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Set } from '../models/set';
+import { BehaviorSubject, first, Observable, Subject } from 'rxjs';
 import { Api } from 'chessground/api';
 import { Key, Piece } from 'chessground/types';
 import boardSvgs from '../utils/svg';
@@ -17,12 +18,17 @@ import {
   isPromotion,
   toColour,
 } from '../utils/chess';
-import { Howl } from 'howler';
+import { SetService } from './set.service';
+import { AudioService } from './audio.service';
+import { AuthService } from './auth.service';
+import firebase from 'firebase/compat';
+import User = firebase.User;
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChessService {
+  user$: Observable<User | null>;
   puzzle!: Puzzle;
   cg!: Api;
   chess!: Chess;
@@ -30,22 +36,25 @@ export class ChessService {
   currentMove!: number;
   currentColour$ = new BehaviorSubject('');
   lastMoveCorrect$ = new BehaviorSubject(true);
-  puzzleComplete$ = new BehaviorSubject<boolean>(false);
-  puzzleFailed$ = new BehaviorSubject<boolean>(false);
-  moveSound = new Howl({
-    src: ['../assets/move.mp3'],
-  });
-  checkSound = new Howl({
-    src: ['../assets/check.mp3'],
-  });
-  captureSound = new Howl({
-    src: ['../assets/capture.mp3'],
-  });
-  promotionSound = new Howl({
-    src: ['../assets/promotion.mp3'],
-  });
+  puzzleComplete$ = new BehaviorSubject(false);
+  puzzleFailed$ = new BehaviorSubject(false);
+  showEndButtons$ = new BehaviorSubject(false);
+  dbUpdatedIncorrect$ = new BehaviorSubject(false);
+  currentSet$ = new Subject<Set>();
 
-  constructor() {}
+  constructor(
+    private setService: SetService,
+    private audioService: AudioService,
+    private authService: AuthService
+  ) {
+    this.user$ = this.authService.user;
+  }
+
+  public initChessPuzzle(board: HTMLElement) {
+    this.user$.pipe(first()).subscribe((user) => {
+      console.log(user?.uid);
+    });
+  }
 
   public initChessground(puzzle: any, el: HTMLElement): any {
     this.currentMove = 0;
@@ -82,10 +91,11 @@ export class ChessService {
   }
 
   public getNextPuzzle() {
-
+    this.setService.startTimer();
+    this.puzzleComplete$.next(false);
+    this.showEndButtons$.next(true);
+    this.dbUpdatedIncorrect$.next(false);
   }
-
-
 
   public resetPuzzle() {
     this.puzzleComplete$.next(false);
@@ -221,13 +231,13 @@ export class ChessService {
   private playSound(promotion?: string) {
     let lastMove = getLastMove(this.chess);
     if (promotion && !this.chess.inCheck()) {
-      this.promotionSound.play();
+      this.audioService.promotion.play();
     } else if (this.chess.inCheck()) {
-      this.checkSound.play();
+      this.audioService.check.play();
     } else if (lastMove.captured) {
-      this.captureSound.play();
+      this.audioService.capture.play();
     } else {
-      this.moveSound.play();
+      this.audioService.move.play();
     }
   }
 

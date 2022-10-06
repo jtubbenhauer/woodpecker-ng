@@ -5,19 +5,19 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { ChessService } from '../../services/chess.service';
-import { BoardComponent } from '../../components/board/board.component';
+import {ChessService} from '../../services/chess.service';
+import {BoardComponent} from '../../components/board/board.component';
 import firebase from 'firebase/compat';
 import User = firebase.User;
-import { ActivatedRoute } from '@angular/router';
-import { UserDataService } from '../../services/user-data.service';
-import { Set } from '../../models/set';
-import { Puzzle } from '../../models/puzzle';
-import { randomArrayEl, timeToString } from '../../utils/utils';
-import { first, Observable, Subscription } from 'rxjs';
-import { AuthService } from '../../services/auth.service';
-import { SetService } from '../../services/set.service';
-import { PuzzleTimeFormat } from '../../models/PuzzleTimeFormat';
+import {ActivatedRoute} from '@angular/router';
+import {UserDataService} from '../../services/user-data.service';
+import {Set} from '../../models/set';
+import {Puzzle} from '../../models/puzzle';
+import {randomArrayEl, timeToString} from '../../utils/utils';
+import {first, Observable, Subscription} from 'rxjs';
+import {AuthService} from '../../services/auth.service';
+import {SetService} from '../../services/set.service';
+import {PuzzleTimeFormat} from '../../models/PuzzleTimeFormat';
 
 @Component({
   selector: 'app-set',
@@ -56,7 +56,13 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
     private route: ActivatedRoute,
     private userDataService: UserDataService,
     private authService: AuthService
-  ) {}
+  ) {
+  }
+
+  ngAfterViewInit() {
+
+    this.chessService.initChessPuzzle(this.boardChild.el.nativeElement);
+  }
 
   ngOnInit(): void {
     clearInterval(this.setService.interval);
@@ -131,8 +137,6 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
     this.puzzleFailed.unsubscribe();
     this.authSub?.unsubscribe();
   }
-
-  ngAfterViewInit() {}
 
   getNextPuzzle() {
     this.setService.startTimer();

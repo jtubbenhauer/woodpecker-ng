@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
-import firebase from 'firebase/compat';
+import firebase from 'firebase/compat/app';
 import User = firebase.User;
 import { Observable } from 'rxjs';
 
@@ -15,23 +15,22 @@ export class AuthService {
     this.user = this.afAuth.user;
   }
 
-  emailLogin(email: string, password: string) {
-    this.afAuth
-      .signInWithEmailAndPassword(email, password)
-      .then((value) => {
-        console.log('logged in');
-        this.router.navigateByUrl('/');
-      })
-      .catch((err) => console.log(err));
+  getLoggedInUser(): User | null {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
   }
 
-  emailSignUp(email: string, password: string) {
-    this.afAuth
-      .createUserWithEmailAndPassword(email, password)
-      .then((value) => {
-        console.log('signed up');
-        this.router.navigateByUrl('/');
-      })
-      .catch((err) => console.log(err));
+  clearLocalStorage() {
+    localStorage.clear();
+  }
+
+  logout() {
+    this.afAuth.signOut().then(() => {
+      this.router.navigateByUrl('/');
+    });
+  }
+
+  setUserToLocalStorage(user: User) {
+    localStorage.setItem('user', JSON.stringify(user));
   }
 }
