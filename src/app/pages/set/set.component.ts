@@ -5,19 +5,19 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {ChessService} from '../../services/chess.service';
-import {BoardComponent} from '../../components/board/board.component';
+import { ChessService } from '../../services/chess.service';
+import { BoardComponent } from '../../components/board/board.component';
 import firebase from 'firebase/compat';
 import User = firebase.User;
-import {ActivatedRoute} from '@angular/router';
-import {UserDataService} from '../../services/user-data.service';
-import {Set} from '../../models/set';
-import {Puzzle} from '../../models/puzzle';
-import {randomArrayEl, timeToString} from '../../utils/utils';
-import {first, Observable, Subscription} from 'rxjs';
-import {AuthService} from '../../services/auth.service';
-import {SetService} from '../../services/set.service';
-import {PuzzleTimeFormat} from '../../models/PuzzleTimeFormat';
+import { ActivatedRoute } from '@angular/router';
+import { UserDataService } from '../../services/user-data.service';
+import { Set } from '../../models/set';
+import { Puzzle } from '../../models/puzzle';
+import { randomArrayEl, timeToString } from '../../utils/utils';
+import { first, Observable, Subscription, take } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
+import { SetService } from '../../services/set.service';
+import { PuzzleTimeFormat } from '../../models/PuzzleTimeFormat';
 
 @Component({
   selector: 'app-set',
@@ -26,7 +26,6 @@ import {PuzzleTimeFormat} from '../../models/PuzzleTimeFormat';
 })
 export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(BoardComponent) boardChild!: BoardComponent;
-  showEndButtons = false;
   puzzleComplete!: boolean;
   totalTimeDisplay: PuzzleTimeFormat = {
     hours: '',
@@ -56,19 +55,17 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
     private route: ActivatedRoute,
     private userDataService: UserDataService,
     private authService: AuthService
-  ) {
-  }
+  ) {}
 
   ngAfterViewInit() {
-
     this.chessService.initChessPuzzle(this.boardChild.el.nativeElement);
   }
 
   ngOnInit(): void {
     clearInterval(this.setService.interval);
-    this.authSub = this.authService.user.pipe(first()).subscribe((next) => {
+    this.authSub = this.authService.user.pipe(take(1)).subscribe((next) => {
       this.user = next;
-      this.route.queryParams.pipe(first()).subscribe((params) => {
+      this.route.queryParams.pipe(take(1)).subscribe((params) => {
         this.setId = params['id'];
         if (this.user && this.setId) {
           this.userDataService
@@ -99,10 +96,6 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     });
 
-    this.chessService.lastMoveCorrect$.subscribe(
-      (next) => (this.showEndButtons = next)
-    );
-
     this.completeSub = this.chessService.puzzleComplete$.subscribe((next) => {
       if (this.user && next && !this.updatedIncorrect) {
         this.puzzleComplete = next;
@@ -113,6 +106,9 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
           this.setService.puzzleTime$.getValue()
         );
         clearInterval(this.setService.interval);
+        if (this.setService.autoPlay.getValue()) {
+          setTimeout(() => this.getNextPuzzle(), 500);
+        }
       } else {
         this.puzzleComplete = next;
       }
@@ -141,7 +137,7 @@ export class SetComponent implements OnInit, OnDestroy, AfterViewInit {
   getNextPuzzle() {
     this.setService.startTimer();
     this.puzzleComplete = false;
-    this.showEndButtons = true;
+    this.chessService.lastMoveCorrect$.next(true);
     this.updatedIncorrect = false;
     this.incompletePuzzles$.pipe(first()).subscribe((next) => {
       this.currentPuzzle = randomArrayEl(next);

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SetService {
-  private autoPlay$ = new BehaviorSubject(false);
-  enableAutoPlay$ = this.autoPlay$.asObservable();
+  autoPlay = new BehaviorSubject(false);
+  enableAutoPlay$ = this.autoPlay.asObservable();
 
   interval: any;
   puzzleTime$ = new BehaviorSubject(0);
@@ -14,10 +14,9 @@ export class SetService {
   constructor() {}
 
   toggleAutoPlay() {
-    this.autoPlay$.next(!this.autoPlay$.value);
+    this.autoPlay.next(!this.autoPlay.value);
   }
 
-  //This will be private once getNextPuzzle is moved
   startTimer() {
     this.puzzleTime$.next(0);
     let start = Date.now();
